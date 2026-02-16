@@ -6,8 +6,8 @@
 
 #title("Backpropagation")
 
-The #strong[backpropagation] is basically the most important algorithm in deep
-learning, because let a neural network learn through multiple layers.
+The *backpropagation* basically the most important algorithm in deep learning,
+because let a neural network learn through multiple layers.
 
 The key idea to understand backpropagation is that we want to know how much
 every unit contributed to the final output and so to the final error.
@@ -110,7 +110,7 @@ $
 $
 
 Putting everything together gives us the gradient of $E$ with respect to $w_k$
-and $b_k$ that, for the #strong[chain rule] of derivatives are
+and $b_k$ that, for the *chain rule* of derivatives are
 
 $
   frac(partial E, partial w_k) = frac(partial E, partial o_k) dot.op
@@ -211,7 +211,7 @@ and so it’s clear that
 
 $ delta_j = delta_k dot.op w_k dot.op sigma' (upright("net")_j) $
 
-This should give a rough idea of #emph[propagating backward] hence $delta_j$ is
+This should give a rough idea of _propagating backward_ hence $delta_j$ is
 function of $delta_k$, computed in the $k$-th layer. The rest is exactly the
 same and of course the algorithm exploit that it’s not necessary to compute
 again the entire chain every time.
