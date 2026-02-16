@@ -1,19 +1,32 @@
-= Machine Learning <machine-learning>
+#set page(paper: "a4")
+#set text(font: "New Computer Modern", size: 12pt)
+#set par(justify: true)
 
-This course will cover all the basics of #strong[machine learning];, starting
+#title("Machine Learning")
+
+This course will cover all the basics of *machine learning*, starting
 from basic concepts, simple models for regression and classification, moving
 then to neural networks, support vector machines and clustering methods, also
 considering best practices to train, validate and test models.
 
-== Index <index>
+= Index <index>
 
-- \[\[statistical\_learning\_theory\]\]
-- \[\[supervised\_learning\]\]
-- \[\[validation\]\]
-- \[\[bias\_variance\]\]
-- \[\[unsupervised\_learning\]\]
+- Statistical Learning Theory
+- Supervised Learning
+  - Linear Models
+  - K-Nearest Neighbors
+  - Perceptron
+  - Neural Networks
+    - Deep Learning
+  - Support Vector Machine
+- Validation
+- Bias Variance
+- Unsupervised Learning
+  - Autoencoder
+  - K-Means
+  - Self Organizing Map
 
-== References <references>
+= References <references>
 
 - #link(
     "https://elearning.di.unipi.it/course/view.php?id=1111",
