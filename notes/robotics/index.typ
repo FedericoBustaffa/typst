@@ -1,9 +1,8 @@
-#set page(paper: "a4")
-#set text(font: "New Computer Modern", size: 12pt)
-#set par(justify: true)
+#import "@local/note_template:0.1.0": *
+#show: note_template
 
-#title("Robotics")
+#title("Robotics") <robotics>
 
-= Index
+= Index <index>
 
-= References
+= References <references>
