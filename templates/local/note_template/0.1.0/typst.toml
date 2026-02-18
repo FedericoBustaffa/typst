@@ -1,0 +1,5 @@
+[package]
+name = "note_template"
+version = "0.1.0"
+entrypoint = "note_template.typ"
+

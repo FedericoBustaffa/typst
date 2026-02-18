@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.4.2"
 
-#import "note_template.typ": *
+#import "@local/note_template:0.1.0": *
 #show: note_template
 
 #title("Neural Networks")
