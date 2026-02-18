@@ -1,95 +1,93 @@
-= Statistical Learning Theory <statistical-learning-theory>
+#import "note_template.typ": *
+#show: note_template
+
+#title("Statistical Learning Theory")
 
 The #strong[statistical learning theory] (#strong[SLT];) provides the basics for
 model complexity and risk analysis. It formalizes what a machine learning model
 does in the learning phase with respect to the training set, its complexity and
 the true distribution of data.
 
-== Inductive Bias <inductive-bias>
+= Inductive Bias <inductive-bias>
 
 When a model learn search through an #strong[hypothesis space] $H$ the best
 hypothesis $h$ to fit the training data. The hypothesis space is defined by the
 complexity of the model: the more the model is complex and flexible, the more
 the hypothesis space is big.
 
-#block(fill: luma(240))[
-  \[!NOTE\] Consistent Hypothesis An hypothesis $h$ is #strong[consistent]
-  with the training set if, for each example $chevron.l x , y chevron.r$ in
-  the training set it holds $ h (x) = y $
+#note(title: "Consistent Hypothesis")[
+  An hypothesis $h$ is #strong[consistent] with the training set if, for each
+  example $chevron.l x , y chevron.r$ in the training set it holds
+  $ h (x) = y $
 ]
 
-In order to define and search into $H$ we need a #strong[biased learner]
-(our model) that must have an #strong[inductive bias];, that provides in
-a sense an heuristic to shrink the space of possible models to something
-that can be searched more efficiently. The two main types of inductive
-biases are
+In order to define and search into $H$ we need a #strong[biased learner] (our
+model) that must have an #strong[inductive bias];, that provides in a sense an
+heuristic to shrink the space of possible models to something that can be
+searched more efficiently. The two main types of inductive biases are
 
-- #strong[Language bias];: that put constraints on the model. Just
-  choosing a family of models can be a language bias, but for example in
-  neural networks is not the case (universal approximation). Limiting
-  the model flexibility is another language bias, for example by
-  searching in the space of linear model regressor, only the linear
-  regressors.
-- #strong[Search bias];: put constraints on the learning algorithm. For
-  example the regularization leads to models with lower weigths.
+- #strong[Language bias];: that put constraints on the model. Just choosing a
+  family of models can be a language bias, but for example in neural networks is
+  not the case (universal approximation). Limiting the model flexibility is
+  another language bias, for example by searching in the space of linear model
+  regressor, only the linear regressors.
+- #strong[Search bias];: put constraints on the learning algorithm. For example
+  the regularization leads to models with lower weigths.
 
-Typically we are interested in the second because the first basically
-defines the hypothesis space $H$.
+Typically we are interested in the second because the first basically defines
+the hypothesis space $H$.
 
-== True and Empirical Risk
-<true-and-empirical-risk>
-If we would have access to the true function that models our data as a
-black-box it should be possible to sample as many points as we want
-without noise even without knowing the function. So it could be possible
-to build a perfect dataset (possibly infinite) on which testing our
-model. The mean error of the model on that dataset get the name of
-#strong[true risk] $R$, and that’s what machine learning aims to
-minimize. The actual definition of $R$ is the mean risk on the true data
-distribution:
+= True and Empirical Risk <true-and-empirical-risk>
+
+If we would have access to the true function that models our data as a black-box
+it should be possible to sample as many points as we want without noise even
+without knowing the function. So it could be possible to build a perfect dataset
+(possibly infinite) on which testing our model. The mean error of the model on
+that dataset get the name of #strong[true risk] $R$, and that’s what machine
+learning aims to minimize. The actual definition of $R$ is the mean risk on the
+true data distribution:
 
 $ R = integral L (y , h (x)) #h(0em) d P (x , y) $
 
-The problem is that we of course don’t have the function neither in a
-black-box form, neither its actual formula. The only thing we have are
-data coming from measurements, that can (and most likely will be) noisy.
+The problem is that we of course don’t have the function neither in a black-box
+form, neither its actual formula. The only thing we have are data coming from
+measurements, that can (and most likely will be) noisy.
 
-The error our model does on this dataset is called #strong[empirical
-  risk] $R_(upright("emp"))$ that can be used to evaluate the model,
-knowing that it is an estimation of $R$ based only on the observed data.
+The error our model does on this dataset is called #strong[empirical risk]
+$R_(upright("emp"))$ that can be used to evaluate the model, knowing that it is
+an estimation of $R$ based only on the observed data.
 
-So we can shift the problem into the fitting of this empirical data,
-trying to capture the underlying behavior that is the true function. The
-aim is still to minimize $R$ and, more important is not to minimize
-$R_(upright("emp"))$, because minimizing it means fitting also the noise
-(over-fitting).
+So we can shift the problem into the fitting of this empirical data, trying to
+capture the underlying behavior that is the true function. The aim is still to
+minimize $R$ and, more important is not to minimize $R_(upright("emp"))$,
+because minimizing it means fitting also the noise (over-fitting).
 
-What misses is a nice and reliable relation between $R$ and
-$R_(upright("emp"))$ because, we can’t say anything about them. They
-could be the same because the sampling is very accurate (no noise) or
-because the level of precision is low enough. Or they can be different:
+What misses is a nice and reliable relation between $R$ and $R_(upright("emp"))$
+because, we can’t say anything about them. They could be the same because the
+sampling is very accurate (no noise) or because the level of precision is low
+enough. Or they can be different:
 
-- If $R > R_(upright("emp"))$ it means that the model is in over-fitting
-  and so it will not be able to generalize well.
-- If $R < R_(upright("emp"))$ it means that the model generalizes well
-  but of course perform worse on noisy data.
+- If $R > R_(upright("emp"))$ it means that the model is in over-fitting and so
+  it will not be able to generalize well.
+- If $R < R_(upright("emp"))$ it means that the model generalizes well but of
+  course perform worse on noisy data.
 
-There is the need to introduce a new term in order to set an inequality
-that somehow defines a bound on $R$ because the ideal case is the one in
-which
+There is the need to introduce a new term in order to set an inequality that
+somehow defines a bound on $R$ because the ideal case is the one in which
 
 $ R lt.eq R_(upright("emp")) $
 
-for noisy dataset. This is because often the approach to machine
-learning is #strong[empirical risk minimization] (#strong[ERM];), which
-focuses on reducing the error on the training data, in order to have
-better performances on unseen data.
+for noisy dataset. This is because often the approach to machine learning is
+#strong[empirical risk minimization] (#strong[ERM];), which focuses on reducing
+the error on the training data, in order to have better performances on unseen
+data.
 
-== VC-Dimension
-<vc-dimension>
-The VC-dimension is a value that #emph[evaluates] $H$, providing a
-measure of its #strong[complexity];. The VC-dimension can be thinked, by
-restricting on the classification case, as the number of points that $H$
-can correctly discriminate for every possible labeling.
+= VC-Dimension <vc-dimension>
+
+The VC-dimension is a value that #emph[evaluates] $H$, providing a measure of
+its #strong[complexity];. The VC-dimension can be thinked, by restricting on the
+classification case, as the number of points that $H$ can correctly discriminate
+for every possible labeling.
 
 In order to better formalize this concept lets introduce the concept of
 #strong[shattering];. Let be
@@ -99,32 +97,29 @@ In order to better formalize this concept lets introduce the concept of
 - $H$: the hypothesis space.
 - A binary classification problem.
 
-We can define a #strong[dichotomy] as a particular partition or labeling
-of the $N$ points. So the same set of points can has $2^N$ possible
-dichotomies.
+We can define a #strong[dichotomy] as a particular partition or labeling of the
+$N$ points. So the same set of points can has $2^N$ possible dichotomies.
 
 A particular dichotomy is #strong[represented] in $H$ if there exists an
 hypothesis $h in H$ that realizes the dichotomy.
 
-#quote(block: true)[
-  \[!NOTE\] Shattering The hypothesis space $H$ #strong[shatters] $X$ if
-  and only if $H$ can represent all the possible dichotomies on $X$.
+#note(title: "Shattering")[
+  The hypothesis space $H$ #strong[shatters] $X$ if and only if $H$ can
+  represent all the possible dichotomies on $X$.
 ]
 
-In other words $H$ #emph[shatters] $X$ if and only if, for every
-labeling of the points there exists an hypothesis $h in H$ that can
-label them correctly.
+In other words $H$ #emph[shatters] $X$ if and only if, for every labeling of the
+points there exists an hypothesis $h in H$ that can label them correctly.
 
-#quote(block: true)[
-  \[!IMPORTANT\] VC-Dimension The #strong[VC-dimension] of a class of
-  functions $H$ is the maximum cardinality of a set of points in $X$ that
-  can be shattered by $H$.
+#important(title: "VC-Dimension")[
+  The #strong[VC-dimension] of a class of functions $H$ is the maximum
+  cardinality of a set of points in $X$ that can be shattered by $H$.
 ]
 
-In practice to see if $H$ has VC-dimension at least $k$ we need to find
-at least one disposition of $k$ points, for which each dichotomy is
-represented in $H$. Doesn’t matter if there exists one disposition in
-which a dichotomy is not represented. In this case we can say that
+In practice to see if $H$ has VC-dimension at least $k$ we need to find at least
+one disposition of $k$ points, for which each dichotomy is represented in $H$.
+Doesn’t matter if there exists one disposition in which a dichotomy is not
+represented. In this case we can say that
 
 $ V C (H) gt.eq k $
 
@@ -142,7 +137,7 @@ VC-dimension. It’s related because, generally speaking, if paired with the inp
 dimension gives an hint on how flexible the model is. But we can’t directly
 calculate the actual VC-dimension based on that.
 
-=== VC-Bound <vc-bound>
+== VC-Bound <vc-bound>
 
 Now that we have a definition (at least for a class of problems) of
 VC-dimension, we can relate it with the number of examples our model is trained
@@ -186,10 +181,9 @@ model, with respect to the number of data and the complexity of the model:
 
 $ R lt.eq R_(upright("emp")) + epsilon (V C , N , delta) $
 
-in particular the right side of the inequality is called #strong[guaranteed
-  risk];.
+in particular the right side of the inequality is called *guaranteed risk*.
 
-== Structural Risk Minimization <structural-risk-minimization>
+= Structural Risk Minimization <structural-risk-minimization>
 
 So now we have two terms that define the upper bound on the true risk $R$, and
 so it’s possible to model another approach, different from ERM (that only aims
@@ -209,9 +203,10 @@ $
 The structural risk minimization find a trade-off between empirical error and
 VC-confidence in order to reduce the VC-bound on the true risk.
 
-#figure(image("images/vc-bound.png"), caption: [
-  VC-Bound|500
-])
+#figure(
+  image("images/vc-bound.png", width: 70%),
+  caption: [ VC-Bound ],
+)
 
 In other words, when we perform a model selection we choose the model
 with the best bound on the true risk. However this is in practice very
@@ -224,11 +219,11 @@ difficult to use because
 - Regularization heuristics (Tikhonov) already provide an implicit SRM
   implementation.
 
-On the other hand this approach provides theory driven development of
-new models as SVMs, that in the learning process try to minimize the
-empirical error and the VC-confidence automatically.
+On the other hand this approach provides theory driven development of new models
+as SVMs, that in the learning process try to minimize the empirical error and
+the VC-confidence automatically.
 
-== References
-<references>
-- \[\[machine\_learning\]\]
-- \[\[support\_vector\_machine\]\]
+= References <references>
+
+- Machine Learning
+- Support Vector Machine
