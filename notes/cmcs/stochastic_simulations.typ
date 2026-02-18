@@ -31,11 +31,17 @@ $1$ to $0$ with a discrete instantaneous change.
 
 The #strong[Gillespie’s stochastic simulation algorithm (SSA)] is an exact
 procedure for simulating the time evolution of a chemical reacting system by
-taking proper account of the randomness inherent in such a system. Given a set
-of reactions $cal(R) = { R_1 , dots.h , R_n }$, the SSA assumes a stochastic
-reaction constant $C_mu$ for each chemical reaction $R_mu in cal(R)$ such that
-$c_mu d t$ is the probability that a particular combination of reactants of
-$R_mu$ react in an infinitesimal time interval $d t$.
+taking proper account of the randomness inherent in such a system.
+
+#figure(
+  image("images/gillespie_sir.png", width: 80%),
+  caption: [ Gillespie's SSA on SIR ],
+)
+
+Given a set of reactions $cal(R) = { R_1 , dots.h , R_n }$, the SSA assumes a
+stochastic reaction constant $C_mu$ for each chemical reaction $R_mu in cal(R)$
+such that $c_mu d t$ is the probability that a particular combination of
+reactants of $R_mu$ react in an infinitesimal time interval $d t$.
 
 The constant $c_mu$ is used to compute the #strong[propensity] (or stochastic
 rate) of $R_mu$ to occur in the whole chemical solution, denoted $a_mu$, as
