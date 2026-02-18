@@ -1,6 +1,5 @@
-#set page(paper: "a4")
-#set text(font: "New Computer Modern", size: 12pt)
-#set par(justify: true)
+#import "note_template.typ": note_template
+#show: note_template
 
 #title("Perceptron")
 
