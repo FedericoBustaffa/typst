@@ -1,7 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
-
-#title("Vector Space Basis") <vector-space-basis>
+#show: doc => note_template([Vector Space Basis], doc)
 
 Before introducing the concept of *basis* we need to define what is a generating
 set of a vector space.

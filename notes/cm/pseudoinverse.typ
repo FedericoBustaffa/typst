@@ -1,9 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Pseudoinverse Matrix], doc)
 
-#title("Pseudoinverse Matrix") <pseudoinverse-matrix>
-
-The concept of #strong[pseudoinverse] of a matrix is a generalization of the
+The concept of #strong[pseudoinverse] of a matri is a generalization of the
 inverse for square matrices. The pseudoinverse is used for example to solve
 overdetermined systems like a regression problem.
 
@@ -99,7 +97,7 @@ in fact we can obtain the formula by noticing that
 
 $
   (A^tack.b A)^(- 1) A^tack.b &
-  = (V Sigma U^tack.b U Sigma V^tack.b)^(- 1) V Sigma U^tack.b \) \
+  = (V Sigma U^tack.b U Sigma V^tack.b)^(- 1) V Sigma U^tack.b \
   & = (V Sigma^2 V^tack.b)^(- 1) V Sigma U^tack.b \
   & = V Sigma^(- 2) V^tack.b V Sigma U^tack.b = V Sigma^(- 1) U^tack.b
 $

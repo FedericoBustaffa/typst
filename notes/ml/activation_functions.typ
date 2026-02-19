@@ -1,7 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
-
-#title("Activation Functions")
+#show: doc => note_template([Activation Functions], doc)
 
 Until now we used a #strong[step] activation function that is the sign of
 weighted sum of weights and features, but there are many types of activation

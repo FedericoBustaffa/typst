@@ -1,7 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
-
-#title("Singular Value Decomposition") <singular-value-decomposition>
+#show: doc => note_template([Singular Value Decomposition], doc)
 
 The #strong[singular value decomposition] (#strong[SVD];) is a way to the
 decompose every matrix $A in bb(R)^(m times n)$ in a product of three matrices
