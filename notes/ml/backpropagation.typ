@@ -1,8 +1,6 @@
 #import "@preview/cetz:0.4.2"
 #import "@local/note_template:0.1.0": *
-#show: note_template
-
-#title("Backpropagation")
+#show: doc => note_template([Backpropagation], doc)
 
 The *backpropagation* basically the most important algorithm in deep learning,
 because let a neural network learn through multiple layers.
