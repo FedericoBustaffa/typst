@@ -1,7 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
-
-#title("Matrices") <matrices>
+#show: doc => note_template([Matrices], doc)
 
 One of the main objects in linear algebra is the #strong[matrix];, that can be
 seen as an element of $bb(R)^(m times n)$, that can have many meanings as
@@ -40,6 +38,7 @@ For the dot product the following properties are valid:
 Matrices also represent #strong[linear transformations];, for example $A v$ is a
 transformation $A$ applied to the vector $v$ (like translation or rotation).
 
+#pagebreak()
 #note(title: "Order of Transformations")[
   Knowing that the order in matrix multiplication counts, if we apply multiple
   transformations to a vector, the order in which we apply them will change the
