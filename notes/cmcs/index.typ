@@ -1,5 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Complex Systems], doc)
 
 #title("Complex Systems")
 

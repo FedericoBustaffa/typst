@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Continuous Systems], doc)
 
-#title("Continuous Systems") <continuous-systems>
+#title("Continuous Systems")
 
 Some system can naturally be described with discrete time steps, but in many
 cases the precision of those models is too low. In order to provide more

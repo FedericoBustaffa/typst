@@ -1,6 +1,8 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Singular Value Decomposition], doc)
 
+#title[Singular Value Decomposition]
+
 The #strong[singular value decomposition] (#strong[SVD];) is a way to the
 decompose every matrix $A in bb(R)^(m times n)$ in a product of three matrices
 
@@ -16,7 +18,7 @@ The singular values have the following interesting property
 
 $ sigma_1 gt.eq sigma_2 gt.eq dots.h gt.eq sigma_(min (m , n)) gt.eq 0 $
 
-Singular values are unique, while $U$ and $V$, in general, are not; so in other
+Singular values are unique, while $U$ and $V$, in general, are not; in other
 words, the singular values depend only on the matrix $A$, while there are
 multiple choices of $U$ and $V$ that keep the decomposition valid.
 

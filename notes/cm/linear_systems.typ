@@ -1,6 +1,8 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Linear Systems], doc)
 
+#title("Linear Systems")
+
 One of the main goal in linear algebra is to solve #strong[linear systems]
 (systems of linear equations), because many problems can be formulated in this
 way.

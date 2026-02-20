@@ -10,7 +10,6 @@
     width: 100%,
   )
 
-  title(doc_title)
   body
 }
 

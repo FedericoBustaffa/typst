@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Linear Independence], doc)
 
-#title("Linear Independence") <linear-independence>
+#title("Linear Independence")
 
 Starting from basic vector operations (vector sum e multiplication by a scalar)
 and thanks to the definition of closure with respect to those operations, is
