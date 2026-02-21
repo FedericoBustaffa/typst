@@ -1,8 +1,8 @@
 #import "@preview/cetz:0.4.2"
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Orthogonality], doc)
 
-#title("Orthogonality") <orthogonality>
+#title()
 
 The concept of #strong[orthogonality] basically tells us if two vectors are
 #strong[orthogonal];, that in a $2$-dimensional space is equivalent to have two

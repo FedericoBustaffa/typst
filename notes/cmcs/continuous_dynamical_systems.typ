@@ -1,16 +1,16 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Continuous Systems], doc)
 
-#title("Continuous Systems")
+#title()
 
 Some system can naturally be described with discrete time steps, but in many
 cases the precision of those models is too low. In order to provide more
 accurate simulations it’s necessary a continuous representation of time.
 
-In other words, the previous time step $Delta t$ must tend to zero and introduce
-a representation through #strong[ordinary differential equations] (ODEs). We
-have two fundamental ways to obtain a differential equation from a recurrence
-relation:
+In other words, the time step $Delta t$ must tend to zero and a representation
+through *ordinary differential equations (ODEs)* must be introduced. There are
+two fundamental ways to obtain a differential equation from a recurrence
+relation.
 
 The first method can be used when in the recurrence relation there is $Delta t$
 term and the goal is to obtain an equation in this form
@@ -33,9 +33,11 @@ that is a differential equation. Computing the solution of this ODE gives us an
 equation that can be used to compute the value of a generic state variable $N$
 at a given time $t$.
 
-Let’s notice that the solution of the ODE is different from the solution of the
-recurrence relation because we moved parts of the recurrence to the left end
-side, so the behavior of the state variable can differ.
+#note[
+  The solution of the ODE is different from the solution of the recurrence
+  relation because we moved parts of the recurrence to the left end side, so the
+  behavior of the state variable can differ.
+]
 
 The other case is when we don’t have $Delta t$ in the recurrence and we _"copy"_
 the form of the recurrence as a differential equation. The $N_(t + 1)$ part
@@ -125,8 +127,8 @@ $ N_(k + 1) = N_k + tau f (N_k) $
 that describes how to compute the next step and where $N_k$ approximate
 $N (k tau)$.
 
-=== Approximation Errors
-<approximation-errors>
+=== Approximation Errors <approximation-errors>
+
 The two types of error we care about when run numerical simulations are:
 
 - #strong[Local discretization error];: error raised at every step of
@@ -140,8 +142,8 @@ A linear global discretization error means that a very small $tau$ has
 to be used in order to minimize the error; this also can imply a much
 slower simulation because smaller $tau$ means more iterations.
 
-=== Implicit Methods
-<implicit-methods>
+=== Implicit Methods <implicit-methods>
+
 In some cases the method can become unstable unless a very small $tau$
 is used. This systems are called #strong[stiff systems] and often
 #strong[implicit methods] are better for those cases.
@@ -199,8 +201,3 @@ describe the behavior of the system, starting from an initial state in a
 Often can happen that the same system exhibit different behaviors starting from
 the same initial state. This happens when some events in the system are somehow
 *random*. This introduce the need for *probabilistic or stochastic models*.
-
-= References <references>
-
-- Complex Systems
-- Chemistry Metaphor

@@ -72,7 +72,7 @@ Performing some time steps we can obtain a population evolution of this kind
     import plot: *
 
     plot(
-      size: (6, 4),
+      size: (6, 3.5),
       x-tick-step: 1,
       y-tick-step: 100,
       axis-style: "left",
@@ -156,13 +156,89 @@ This is usually modelled by the *logistic equation*:
 
 $ N_(t+1) = r_d N_t (1 - N_t / K) $
 
-Equilibrium is also interesting when we come up with *non linear models*, that
-are used to model *interactions*. Linear models describe systems in which
-individuals do not interact and so the behavior of one individual does not
-depend on others'.
+with $N_t / K$ is called *ratio of occupancy* of the environment.
 
-In real complex systems, interactions lead to interesting emerging behavior, not
-observable with only one individual or by merging single individual behaviors.
+#figure(
+  cetz.canvas({
+    import plot: *
+
+    let logistic(t, N0, r, K) = {
+      if t == 0 {
+        N0
+      } else {
+        let Nt = logistic(t - 1, N0, r, K)
+        r * Nt * (1 - Nt / K)
+      }
+    }
+
+    plot(
+      size: (6, 3.5),
+      x-tick-step: 1,
+      y-tick-step: 20,
+      axis-style: "left",
+      grid: true,
+      {
+        for k in (50, 100, 200) {
+          add(domain: (0, 10), samples: 10, label: [$K = #k$], x => logistic(
+            calc.floor(x),
+            10,
+            2,
+            k,
+          ))
+        }
+      },
+    )
+  }),
+  caption: [ Resource Consumer with $r_d = 2$ and $N_0 = 10$ ],
+)
+
+In this case we can see that, increasing $K$ results in an higher point of
+equilibrium. Let's see what happen by fixing $K$ and instead varying the initial
+number of individuals $N_0$:
+
+#figure(
+  cetz.canvas({
+    import plot: *
+
+    let logistic(t, N0, r, K) = {
+      if t == 0 {
+        N0
+      } else {
+        let Nt = logistic(t - 1, N0, r, K)
+        r * Nt * (1 - Nt / K)
+      }
+    }
+
+    plot(
+      size: (6, 3.5),
+      x-tick-step: 1,
+      y-tick-step: 10,
+      axis-style: "left",
+      grid: true,
+      {
+        for n in (10, 30, 60) {
+          add(domain: (0, 10), samples: 10, label: [$N_0 = #n$], x => logistic(
+            calc.floor(x),
+            n,
+            2,
+            100,
+          ))
+        }
+      },
+    )
+  }),
+  caption: [ Resource Consumer with $r_d = 2$ and $K = 100$ ],
+)
+
+Again all three populations reach equilibrium point around $K / 2$, in fact the
+equilibrium point of this population can be computed as follow
+
+$
+  N_t = r_d N_t (1 - N_t / K) \
+  N_t = K - K / r_d
+$
+
+which in fact, for $r_d = 2$ is equal to $K / 2$
 
 = Limitations <limitations>
 
