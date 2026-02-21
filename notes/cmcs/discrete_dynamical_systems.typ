@@ -1,10 +1,10 @@
 #import "@local/note_template:0.1.0": *
-#show: doc => note_template([Discrete Systems], doc)
+#show: doc => note_template([Discrete Dynamical Systems], doc)
 
 #import "@preview/cetz:0.4.2"
 #import "@preview/cetz-plot:0.1.3": plot
 
-#title("Discrete Systems")
+#title()
 
 In a *discrete dynamical system*, all the variables update at a discrete
 time-step and each behavior is modeled by *recurrence relations*. This models
@@ -138,6 +138,23 @@ $ N_(t+1) = r_d N_t = N_t $
 but this is true only for $r_d = 1$, meaning no births at all.
 
 = Interactions <interactions>
+
+In general, every model that describes non-interacting individuals, is linear;
+*non linear models* are introduced to model *interactions* among individuals,
+like mating, hunting or infection spreading.
+
+This component is central in complex systems if we are interested in seeing
+*emerging behaviors* from simple components.
+
+== Resource Consumer Model
+
+One example can be a competition for limited resources: an environment has a
+certain *carrying capacity* $K$, that can be seen as the maximum number of
+individuals in that environment at the same time.
+
+This is usually modelled by the *logistic equation*:
+
+$ N_(t+1) = r_d N_t (1 - N_t / K) $
 
 Equilibrium is also interesting when we come up with *non linear models*, that
 are used to model *interactions*. Linear models describe systems in which
