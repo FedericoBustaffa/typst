@@ -1,5 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: doc => note_template([Continuous Systems], doc)
+#show: doc => note_template([Continuous Dynamical Systems], doc)
 
 #title()
 
@@ -8,9 +8,9 @@ cases the precision of those models is too low. In order to provide more
 accurate simulations it’s necessary a continuous representation of time.
 
 In other words, the time step $Delta t$ must tend to zero and a representation
-through *ordinary differential equations (ODEs)* must be introduced. There are
-two fundamental ways to obtain a differential equation from a recurrence
-relation.
+through *ordinary differential equations (ODEs)* must be introduced.
+
+= Recurrence to ODE
 
 The first method can be used when in the recurrence relation there is $Delta t$
 term and the goal is to obtain an equation in this form
@@ -49,6 +49,54 @@ current state to compute the next one, meanwhile the differential equation at
 time $t$ let us compute the #emph[change];. In other words the value of the
 derivative at time $t$ tells us how the state variable behaves in that moment:
 how much it grows, decreases or remain constant.
+
+== Linear Birth Model
+
+Let's take as example the linear birth model in its discrete form
+
+$ N(t + Delta t) = N(t) + lambda (Delta t) / sigma N(t) $
+
+and translate it in the continuous form by trying to obtain the _difference
+quotient_:
+
+$ (N(t + Delta t) - N(t)) / (Delta t) = lambda / sigma N(t) $
+
+if we now convert $lambda / sigma$ in $r_c$, the continuous *birth rate*, we can
+write
+
+$
+  lim_(Delta t arrow 0) (N(t + Delta t) - N(t)) / (Delta t) =
+  lim_(Delta t arrow 0) r_c N(t)
+$
+
+since the left side is the derivative of $N(t)$ and the right side does not
+depend on $Delta t$ we can write
+
+$ dot(N) (t) = r_c N(t) $
+
+which is an ODE that relates $N(t)$ to its derivative. To work with it we have
+to find a *solution* (or a *closed form definition*):
+
+$ (dot(N) (t)) / N(t) = r_c $
+
+knowing that
+
+$
+  (dot(N) (t)) / N(t) = (d ln N(t)) / (d t) quad "and" quad
+  r_c = (d r_c t + c) / (d t)
+$
+
+so we can write
+
+$ ln N(t) = r_c t + c $
+
+that brings to
+
+$ N(t) = C e^(r_c t) $
+
+with $C = e^c$, that typically is $N(0)$.
+
+
 
 = Analytical Solutions <analytical-solutions>
 
