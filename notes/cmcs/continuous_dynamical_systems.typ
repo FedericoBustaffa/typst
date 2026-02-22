@@ -46,9 +46,9 @@ with $N_t$ that becomes $N (t)$.
 
 The main difference between the two is that a recurrence relation uses the
 current state to compute the next one, meanwhile the differential equation at
-time $t$ let us compute the #emph[change];. In other words the value of the
-derivative at time $t$ tells us how the state variable behaves in that moment:
-how much it grows, decreases or remain constant.
+time $t$ let us compute the *change*. In other words the value of the derivative
+at time $t$ tells us how the state variable behaves in that moment: how much it
+grows, decreases or remain constant.
 
 == Linear Birth Model
 
@@ -100,26 +100,26 @@ with $C = e^c$, that typically is $N(0)$.
 
 = Analytical Solutions <analytical-solutions>
 
-Similarly to recurrence relations, we can find a #strong[solution] for a
-differential equation. That can be done by find a #emph[closed-form definition]
-that depends only on $t$ and some constants, of $N (t)$ satisfying the equation.
+Similarly to recurrence relations, we can find a *solution* for a differential
+equation. That can be done by find a *closed-form definition* that depends only
+on $t$ and some constants, of $N (t)$ satisfying the equation.
 
-Of course is possibile to find ODEs solutions #strong[analytically];, but there
-is not a general method to solve them; in other words we have to reason case by
-case and so we cannot automate the process with an algorithm.
+Of course is possibile to find ODEs solutions *analytically*, but there is not a
+general method to solve them; in other words we have to reason case by case and
+so we cannot automate the process with an algorithm.
 
 = Recurrence Relations vs Differential Equations
 <recurrence-relations-vs-differential-equations>
 
 An important observation to make is that the recurrence equations describe how
-to compute the #strong[next state];, instead the differential equations describe
-how to compute the difference between the current and the next.
+to compute the *next state*, instead the differential equations describe how to
+compute the difference between the current and the next.
 
-Also the #strong[equilibrium] is computed differently; for recurrence equations
-we want to know when the next state is equal to the current. In other words we
-want to find when the system does not change anymore. In differential equations
-we can set the derivative to $0$ so that we reach a local minimum (or maximum)
-of the function.
+Also the *equilibrium* is computed differently; for recurrence equations we want
+to know when the next state is equal to the current. In other words we want to
+find when the system does not change anymore. In differential equations we can
+set the derivative to $0$ so that we reach a local minimum (or maximum) of the
+function.
 
 = Numerical Solutions <numerical-solutions>
 
@@ -135,8 +135,8 @@ $t gt.eq 0$ since we want to perform a simulation starting from $t = 0$.
 
 == Euler Method <euler-method>
 
-The #strong[Euler’s method] is the simplest numerical method to numerically
-solve an ODE, by approximating the actual function with the derivative.
+The *Euler’s method* is the simplest numerical method to numerically solve an
+ODE, by approximating the actual function with the derivative.
 
 Let $dot(N) (t) = f (N (t))$ be the ODE we want to solve and suppose that we
 know $N (t_0 = 0)$ ($t_0$ can also be different from $0$) the starting point,
@@ -179,34 +179,34 @@ $N (k tau)$.
 
 The two types of error we care about when run numerical simulations are:
 
-- #strong[Local discretization error];: error raised at every step of
-  the algorithm, that has the value of $ lr(|N (tau) - N_1|) $ and is in
-  the order of $O (tau^2)$.
-- #strong[Global discretization error];: the error accumulates and after
-  $k$ steps we have an error of $ lr(|N (k tau) - N_k|) $ and it is in
-  the order of $O (tau)$.
+- *Local discretization error*: error raised at every step of the algorithm,
+  that has the value of $ lr(|N (tau) - N_1|) $ and is in the order of
+  $O (tau^2)$.
+- *Global discretization error*: the error accumulates and after $k$ steps we
+  have an error of $ lr(|N (k tau) - N_k|) $ and it is in the order of
+  $O (tau)$.
 
-A linear global discretization error means that a very small $tau$ has
-to be used in order to minimize the error; this also can imply a much
-slower simulation because smaller $tau$ means more iterations.
+A linear global discretization error means that a very small $tau$ has to be
+used in order to minimize the error; this also can imply a much slower
+simulation because smaller $tau$ means more iterations.
 
 === Implicit Methods <implicit-methods>
 
-In some cases the method can become unstable unless a very small $tau$
-is used. This systems are called #strong[stiff systems] and often
-#strong[implicit methods] are better for those cases.
+In some cases the method can become unstable unless a very small $tau$ is used.
+This systems are called *stiff systems* and often *implicit methods* are better
+for those cases.
 
-An implicit method simply compute the derivative at the end of the time
-interval of length $tau$, so now the formula is slightly different:
+An implicit method simply compute the derivative at the end of the time interval
+of length $tau$, so now the formula is slightly different:
 
 $ N_(k + 1) = N_k + tau f (N_(k + 1)) $
 
 where $N_k$ approximates $N (k tau)$.
 
-With stiff systems this kind of methods are often more efficient and
-greater values of $tau$ can be used. However we have to pay a more heavy
-computation step but it is often more convenient than use the explicit
-version of the method.
+With stiff systems this kind of methods are often more efficient and greater
+values of $tau$ can be used. However we have to pay a more heavy computation
+step but it is often more convenient than use the explicit version of the
+method.
 
 #figure(
   image("images/euler2.png", width: 75%),
@@ -244,7 +244,7 @@ possible but in general this is not true.
 
 Possible limitations for continuous dynamical models based on ODEs are that they
 describe the behavior of the system, starting from an initial state in a
-#strong[deterministic] way.
+*deterministic* way.
 
 Often can happen that the same system exhibit different behaviors starting from
 the same initial state. This happens when some events in the system are somehow

@@ -158,87 +158,100 @@ $ N_(t+1) = r_d N_t (1 - N_t / K) $
 
 with $N_t / K$ is called *ratio of occupancy* of the environment.
 
-#figure(
-  cetz.canvas({
-    import plot: *
-
-    let logistic(t, N0, r, K) = {
-      if t == 0 {
-        N0
-      } else {
-        let Nt = logistic(t - 1, N0, r, K)
-        r * Nt * (1 - Nt / K)
-      }
-    }
-
-    plot(
-      size: (6, 3.5),
-      x-tick-step: 1,
-      y-tick-step: 20,
-      axis-style: "left",
-      grid: true,
-      {
-        for k in (50, 100, 200) {
-          add(domain: (0, 10), samples: 10, label: [$K = #k$], x => logistic(
-            calc.floor(x),
-            10,
-            2,
-            k,
-          ))
-        }
-      },
-    )
-  }),
-  caption: [ Resource Consumer with $r_d = 2$ and $N_0 = 10$ ],
-)
-
-In this case we can see that, increasing $K$ results in an higher point of
-equilibrium. Let's see what happen by fixing $K$ and instead varying the initial
-number of individuals $N_0$:
+#let logistic(t, N0, r, K) = {
+  if t == 0 {
+    N0
+  } else {
+    let Nt = logistic(t - 1, N0, r, K)
+    r * Nt * (1 - Nt / K)
+  }
+}
 
 #figure(
-  cetz.canvas({
-    import plot: *
+  grid(
+    columns: 2,
+    gutter: 0.5cm,
+    {
+      cetz.canvas({
+        import plot: *
 
-    let logistic(t, N0, r, K) = {
-      if t == 0 {
-        N0
-      } else {
-        let Nt = logistic(t - 1, N0, r, K)
-        r * Nt * (1 - Nt / K)
-      }
-    }
+        plot(
+          size: (6, 4),
+          x-label: "Time",
+          y-label: "Individuals",
+          x-tick-step: 1,
+          y-tick-step: 20,
+          y-max: 110,
+          axis-style: "scientific",
+          x-grid: true,
+          y-grid: true,
+          legend: "inner-north-west",
+          {
+            for k in (50, 100, 200) {
+              add(
+                domain: (0, 10),
+                samples: 10,
+                label: [$K = #k$],
+                x => logistic(
+                  calc.floor(x),
+                  10,
+                  2,
+                  k,
+                ),
+              )
+            }
+          },
+        )
+      })
+    },
+    {
+      cetz.canvas({
+        import plot: *
 
-    plot(
-      size: (6, 3.5),
-      x-tick-step: 1,
-      y-tick-step: 10,
-      axis-style: "left",
-      grid: true,
-      {
-        for n in (10, 30, 60) {
-          add(domain: (0, 10), samples: 10, label: [$N_0 = #n$], x => logistic(
-            calc.floor(x),
-            n,
-            2,
-            100,
-          ))
-        }
-      },
-    )
-  }),
-  caption: [ Resource Consumer with $r_d = 2$ and $K = 100$ ],
-)
+        plot(
+          size: (6, 3.9),
+          x-label: "Time",
+          y-label: none,
+          x-tick-step: 1,
+          y-tick-step: 10,
+          axis-style: "scientific",
+          x-grid: true,
+          y-grid: true,
+          legend: "inner-south-east",
+          {
+            for n in (10, 30, 60) {
+              add(
+                domain: (0, 10),
+                samples: 10,
+                label: [$N_0 = #n$],
+                x => logistic(
+                  calc.floor(x),
+                  n,
+                  2,
+                  100,
+                ),
+              )
+            }
+          },
+        )
+      })
+    },
+  ),
+  caption: [ Resource Consumer with $r_d = 2$ ],
+) <carrying-capacity-fig>
 
-Again all three populations reach equilibrium point around $K / 2$, in fact the
-equilibrium point of this population can be computed as follow
+As we can see in @carrying-capacity-fig, by fixing $r_d$ and $N_0$ and gradually
+increasing $K$, the equilibrium point increases too (around $K / 2$). In the
+second plot is shown that with a fixed $K$, and different values of $N_0$, the
+system will end up again in an equilibrium around $K / 2$. In fact we can
+compute the equilibrium point as follows
 
 $
   N_t = r_d N_t (1 - N_t / K) \
   N_t = K - K / r_d
 $
 
-which in fact, for $r_d = 2$ is equal to $K / 2$
+which, for $r_d = 2$, is exactly $K / 2$
 
 = Limitations <limitations>
 
