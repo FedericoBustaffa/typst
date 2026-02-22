@@ -1,3 +1,6 @@
+#import "@preview/cetz:0.4.2"
+#import "@preview/cetz-plot:0.1.3": plot
+
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Continuous Dynamical Systems], doc)
 
@@ -97,6 +100,35 @@ $ N(t) = C e^(r_c t) $
 with $C = e^c$, that typically is $N(0)$.
 
 
+#figure(
+  cetz.canvas({
+    import plot: *
+
+    plot(
+      size: (8, 5),
+      x-label: "Time",
+      y-label: "Individuals",
+      x-tick-step: 1,
+      y-tick-step: 1000,
+      x-min: -0.25,
+      x-max: 4.25,
+      y-min: -250,
+      y-max: 3250,
+      axis-style: "scientific",
+      x-grid: true,
+      y-grid: true,
+      legend: "inner-south-east",
+      {
+        add(
+          domain: (0, 4),
+          samples: 40,
+          x => calc.exp(2 * x),
+        )
+      },
+    )
+  }),
+  caption: [ Resource Consumer with $r_c = 2$ and $C = N_0 = 1$ ],
+)
 
 = Analytical Solutions <analytical-solutions>
 
