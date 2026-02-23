@@ -130,28 +130,90 @@ with $C = e^c$, that typically is $N(0)$.
   caption: [ Resource Consumer with $r_c = 2$ and $C = N_0 = 1$ ],
 )
 
-= Analytical Solutions <analytical-solutions>
+Qualitatively we obtained the same behavior of the discrete version of the same
+model (*exponantial growth*), but what changes is the role of the growth rate:
+in the discrete versione we have
 
-Similarly to recurrence relations, we can find a *solution* for a differential
-equation. That can be done by find a *closed-form definition* that depends only
-on $t$ and some constants, of $N (t)$ satisfying the equation.
+$
+  N_(t+1) & = r_d N_t   &   "recurrence" \
+      N_t & = r_c^t N_0 & "general term"
+$
 
-Of course is possibile to find ODEs solutions *analytically*, but there is not a
-general method to solve them; in other words we have to reason case by case and
-so we cannot automate the process with an algorithm.
+so the population grows if $r_d > 1$. While for the continuous version we have
 
-= Recurrence Relations vs Differential Equations
-<recurrence-relations-vs-differential-equations>
+$
+  dot(N) (t) & = r_c N(t)    &      "ODE" \
+        N(t) & = C e^(r_c t) & "solution"
+$
 
-An important observation to make is that the recurrence equations describe how
-to compute the *next state*, instead the differential equations describe how to
-compute the difference between the current and the next.
+in which the population grows if $r_c > 0$. Let's also notice that in the
+continuous version the growth rate is part of the exponent, in fact for the same
+rate there is a much faster growth.
 
-Also the *equilibrium* is computed differently; for recurrence equations we want
-to know when the next state is equal to the current. In other words we want to
-find when the system does not change anymore. In differential equations we can
-set the derivative to $0$ so that we reach a local minimum (or maximum) of the
+#note(title: "Recurrence vs ODE")[
+  An important observation to make is that recurrence relations describe how to
+  compute the *next state*, differential equations instead describe how to
+  compute the difference between the current and the next.
+]
+
+== Equilibrium <equilibrium>
+
+For recurrence relations we want to know when the next state is equal to the
+current; in other words we want to find when the system does not change anymore.
+
+To find the *equilibrium* point in continuous models we can instead set the
+derivative to $0$ in order to compute the local minimum (or maximum) of the
 function.
+
+=== Resource Consumer Model
+
+Let's consider the *resource consumer* model, described by the logistic
+equation as follows:
+
+$ dot(N) (t) = r_c N(t) (1 - N(t) / K) $
+
+with $r_c$ and $K$ that are respectively _growth rate_ and _carrying capacity_.
+The solution of this ODE is
+
+$ N(t) = K / (1 + (K / N(0) - 1) e^(-r_c t)) $
+
+which tells us that $N(t)$ tends to $K$, since $e^(-r_c t)$ tends to $0$, and so
+the population converges to the carrying capacity of the environment.
+
+
+
+#figure(
+  {
+    cetz.canvas({
+      import plot: *
+
+      let logistic(t, N0, r, K) = { K / (1 + (K / N0 - 1) * calc.exp(-r * t)) }
+
+      plot(
+        size: (6, 4),
+        x-label: "Time",
+        y-label: "Individuals",
+        x-tick-step: 1,
+        y-tick-step: 10,
+        axis-style: "scientific",
+        x-grid: true,
+        y-grid: true,
+        // legend: "inner-south-east",
+        {
+          for n in (10, 20, 45) {
+            add(domain: (0, 4), samples: 30, label: [$N_0 = #n$], x => logistic(
+              x,
+              n,
+              2,
+              30,
+            ))
+          }
+        },
+      )
+    })
+  },
+  caption: [ Resource Consumer with $r_d = 2$ and $K = 30$ ],
+)
 
 = Numerical Solutions <numerical-solutions>
 
@@ -181,7 +243,7 @@ don’t know). The idea is that, for a small step $tau$, the tangent is a good
 approximation of the function.
 
 #figure(
-  image("images/euler.png", width: 75%),
+  image("images/euler.png", width: 65%),
   caption: [ Euler Method ],
 )
 
