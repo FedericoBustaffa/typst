@@ -32,9 +32,9 @@ that can be rewritten as
 
 $ dot(N) (t) = f (N (t)) $
 
-that is a differential equation. Computing the solution of this ODE gives us an
-equation that can be used to compute the value of a generic state variable $N$
-at a given time $t$.
+that is a differential equation. Computing the *solution* of this ODE gives us
+an equation that can be used to compute the value of a generic state variable
+$N$ at a given time $t$.
 
 #note[
   The solution of the ODE is different from the solution of the recurrence
@@ -131,8 +131,8 @@ with $C = e^c$, that typically is $N(0)$.
 )
 
 Qualitatively we obtained the same behavior of the discrete version of the same
-model (*exponantial growth*), but what changes is the role of the growth rate:
-in the discrete versione we have
+model (*exponential growth*), but what changes is the role of the growth rate:
+in the discrete version we have
 
 $
   N_(t+1) & = r_d N_t   &   "recurrence" \
@@ -180,8 +180,6 @@ $ N(t) = K / (1 + (K / N(0) - 1) e^(-r_c t)) $
 which tells us that $N(t)$ tends to $K$, since $e^(-r_c t)$ tends to $0$, and so
 the population converges to the carrying capacity of the environment.
 
-
-
 #figure(
   {
     cetz.canvas({
@@ -218,7 +216,7 @@ the population converges to the carrying capacity of the environment.
 = Numerical Solutions <numerical-solutions>
 
 A simpler and faster way to compute solutions for ODEs is by using *numerical
-methods* that try to solve the so called _initial value problem_. The initial
+methods* that try to solve the so called *initial value problem*. The initial
 value problem is solved by computing a function $F (t)$ that is a solution of
 the ODE
 
@@ -232,20 +230,23 @@ $t gt.eq 0$ since we want to perform a simulation starting from $t = 0$.
 The *Euler’s method* is the simplest numerical method to numerically solve an
 ODE, by approximating the actual function with the derivative.
 
-Let $dot(N) (t) = f (N (t))$ be the ODE we want to solve and suppose that we
-know $N (t_0 = 0)$ ($t_0$ can also be different from $0$) the starting point,
-and let $tau$ be the step size.
+Let
+
+$ dot(N) (t) = f (N (t)) $
+
+be the ODE we want to solve and suppose to know $N (t_0 = 0)$ ($t_0$ can
+also be different from $0$) the starting point, and let $tau$ be the step size.
+
+#figure(
+  image("images/euler.png", width: 70%),
+  caption: [ Euler Method: Linear Birth ],
+)
 
 The method starts by computing $dot(N) (t_0)$ and obtain the tangent’s angular
 coefficient of the function $N$ in $t_0$. Now we can compute an approximation of
 $N (t_0 + tau)$ using the tangent instead of the actual function $N$ (that we
 don’t know). The idea is that, for a small step $tau$, the tangent is a good
 approximation of the function.
-
-#figure(
-  image("images/euler.png", width: 65%),
-  caption: [ Euler Method ],
-)
 
 So if we know the angular coefficient, the starting point, and the step
 we can use the following formula
@@ -275,7 +276,7 @@ The two types of error we care about when run numerical simulations are:
 
 - *Local discretization error*: error raised at every step of the algorithm,
   that has the value of $ lr(|N (tau) - N_1|) $ and is in the order of
-  $O (tau^2)$.
+  $O (tau^2)$ (derived by the Taylor's series).
 - *Global discretization error*: the error accumulates and after $k$ steps we
   have an error of $ lr(|N (k tau) - N_k|) $ and it is in the order of
   $O (tau)$.

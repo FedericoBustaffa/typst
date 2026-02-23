@@ -1,22 +1,25 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Chemical Reaction Metaphor], doc)
 
-#title("Chemical Reaction Metaphor") <chemical-reaction-metaphor>
+#title()
 
-Another, and in many cases, simpler way to deal with continuous  i
-think about them like #strong[chemical reactions];. This can be done because for
-example we deal with quantities like population densities that increase or
-decrease, just like #strong[reactants and products] of a chemical reaction.
+Another, and in many cases, simpler way to deal with continuous models is to
+think about them like *chemical reactions*. This can be done by thinking at each
+quantity like *reactants* and *products* of a chemical reaction.
+
+Particulary useful also when we need to model a situation in which a quantity
+decrease causes another quantity to increase so that the total number remains
+the same.
 
 = Notation <notation>
 
-Chemical reactions describe transformation of molecules: a group of
-#strong[reactants] is transformed in a group of #strong[products];.
+Chemical reactions describe transformation of molecules: a group of *reactants*
+is transformed in a group of *products*.
 
-Every molecule is assumed to float in a #emph[fluid medium] and the quantity of
-each molecule is usually expressed in terms of #strong[concentration];, the
-concentration of molecule $A$ is denoted as $[A]$ and it is usually expressed in
-$upright("mol") \/ upright("L")$.
+Every molecule is assumed to float in a *fluid medium* and the quantity of each
+molecule is usually expressed in terms of *concentration*, the concentration of
+molecule $A$ is denoted as $[A]$ and it is usually expressed in $upright("mol")
+\/ upright("L")$.
 
 A general notation for chemical reactions is the following
 
@@ -26,16 +29,15 @@ $
 
 where
 
-- $S_i$ and $P_i$ are respectively #emph[reactants] and #emph[products];.
-- $l_i , #h(0em) l'_i in bb(N)$ are #strong[stoichiometric coefficients] which
-  express the number of reactants or products of each type that are consumed or
-  produced by the reaction.
-- $k in bb(R)_(gt.eq 0)$ is the #strong[kinetic constant] which is a coefficient
-  used to compute the #strong[rate of occurrence] of the reaction. This constant
-  can be seen as the speed at which the reactants become products.
+- $S_i$ and $P_i$ are respectively *reactants* *products*.
+- $l_i , #h(0em) l'_i in bb(N)$ are *stoichiometric coefficients* which express
+  the number of reactants or products of each type that are consumed or produced
+  by the reaction.
+- $k in bb(R)_(gt.eq 0)$ is the *kinetic constant* which is a coefficient used
+  to compute the *rate of occurrence* of the reaction. This constant can be seen
+  as the speed at which the reactants become products.
 
-Chemical reactions are often #strong[reversible] and they can occur in both
-directions
+Chemical reactions are often *reversible* and they can occur in both directions
 
 $
   l_1 S_1 + dots.h + l_rho S_rho harpoons.rtlb^k_(k_(- 1))
@@ -51,11 +53,11 @@ The assumption we take for modeling chemical reactions is that all the molecules
 float in a fluid medium, where they are free to move and randomly meet with each
 other.
 
-When a group of molecules meet, they #emph[can] react and the dynamics of the
-possible chemical reaction are modeled by the #strong[law of mass action];, used
-to compute the #strong[rate] of a chemical reaction in a given chemical
-solution. In other words, the number of occurrences of such reaction in a given
-chemical solution in a time unit.
+When a group of molecules meet, they can react and the dynamics of the possible
+chemical reaction are modeled by the *law of mass action*, used to compute
+*rate* of a chemical reaction in a given chemical solution. In other words, the
+number of occurrences of such reaction in a given chemical solution in a time
+unit.
 
 #important(title: "Law of Mass Action")[
   The rate of a chemical reaction is proportional to the product of the
@@ -64,11 +66,11 @@ chemical solution in a time unit.
   $ k [S_1]^(l_1) dots.h.c [S_rho]^(l_rho) $
 
   The same is also true for the reverse reaction and in both cases the kinetic
-  constant is the #strong[proportionality ratio] of the reaction.
+  constant is the *proportionality ratio* of the reaction.
 ]
 
-Let’s also notice that the #emph[kinetic constant] is a intrinsic property of
-the chemical reaction, independent of the amount of reactants.
+Let’s also notice that the *kinetic constant* is a intrinsic property of the
+chemical reaction, independent of the amount of reactants.
 
 The rate of a chemical reaction, given a chemical solution and a time span, is
 the number of reactions occurred (coputed in function of the kinetic constant
@@ -76,9 +78,9 @@ and the reactants concentrations).
 
 == Dynamic Equilibrium <dynamic-equilibrium>
 
-The #strong[dynamic equilibrium] is reached when, in a reversible reaction, the
-two reactions constantly compensate each other. This happen when the rate of the
-two is the same
+The *dynamic equilibrium* is reached when, in a reversible reaction, the two
+reactions constantly compensate each other. This happen when the rate of the two
+is the same
 
 $
   k [S_1]^(l_1) dots.h.c [S_rho]^(l_rho) =
@@ -94,7 +96,7 @@ $
   )
 $
 
-and in this state some #emph[conservation properties] are exploited.
+and in this state some *conservation properties* are exploited.
 
 = From Reactions to ODEs <from-reactions-to-odes>
 
@@ -186,8 +188,3 @@ $ frac(d X, d t) = 6 X - 0.2 X Y - Y $
 
 In this case we have the negative term $- Y$ in which $X$ does not appear, but
 the fact that it is negative means that some $X$ must be consumed as a reactant.
-
-= References <references>
-
-- Complex Systems
-- Continuous Systems
