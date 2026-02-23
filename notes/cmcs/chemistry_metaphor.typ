@@ -18,8 +18,7 @@ is transformed in a group of *products*.
 
 Every molecule is assumed to float in a *fluid medium* and the quantity of each
 molecule is usually expressed in terms of *concentration*, the concentration of
-molecule $A$ is denoted as $[A]$ and it is usually expressed in $upright("mol")
-\/ upright("L")$.
+molecule $A$ is denoted as $[A]$ and it is usually expressed in $"mol" / "L"$.
 
 A general notation for chemical reactions is the following
 
@@ -44,8 +43,23 @@ $
   l'_1 P_1 + dots.h + l'_gamma P_gamma
 $
 
-where $k_(- 1)$ is the kinetic constant of the inverse reaction and that is not
-related to $k$.
+where $k_(- 1)$ is the kinetic constant of the inverse reaction, not related to
+$k$. Typical types of reactions used for our purposes are
+
+#align(center)[
+  #table(
+    columns: 2,
+    inset: (y: 7.3pt),
+    align: center,
+    [*Type*], [*Reaction*],
+    [Synthesis], [$arrow.r^k P$],
+    [Degradation], [$S arrow.r^k$],
+    [Transformation], [$S arrow.r^k P$],
+    [Binding], [$S_1 + S_2 arrow.r^k P$],
+    [Unbinding], [$S arrow.r^k P_1 + P_2$],
+    [Catalysis], [$E + S arrow.r^k E + P$],
+  )
+]
 
 = Law of Mass Action <law-of-mass-action>
 
@@ -72,9 +86,40 @@ unit.
 Let’s also notice that the *kinetic constant* is a intrinsic property of the
 chemical reaction, independent of the amount of reactants.
 
-The rate of a chemical reaction, given a chemical solution and a time span, is
-the number of reactions occurred (coputed in function of the kinetic constant
-and the reactants concentrations).
+The *rate* of a chemical reaction, given a chemical solution and a time span, is
+the number of times that reaction occurred (computed in function of the kinetic
+constant and the reactants concentrations).
+
+#note(title: "Kinetic Constant Measure Unit")[
+  Let's notice that kinetic constant's *measure unit* depends on the number of
+  reactants: their concentrations and the reaction rate, respectively having
+  $"mol" / L$ and $"mol" / (L dot "sec")$. For example, for the reaction
+
+  $ A arrow^k B $
+
+  the rate is $r = k [A]$, that implies $k = r / [A]$. In this case the unit
+  measure of $k$ is
+
+  $
+    ("mol" \/ (L dot "sec")) / ("mol" \/ L) =
+    "mol" / (L dot "sec") dot L / "mol" =
+    1 / "sec"
+  $
+
+  Instead for the following reaction
+
+  $ A + B arrow^k C $
+
+  the rate is $r = k [A] [B]$, and so $k = r / ([A][B])$. In this case the unit
+  measure of $k$ is
+
+  $
+    ("mol" \/ (L dot "sec")) / (("mol" \/ L)^2) =
+    "mol" / (L dot "sec") dot L^2 / "mol"^2 =
+    L / ("sec" dot "mol")
+  $
+
+]
 
 == Dynamic Equilibrium <dynamic-equilibrium>
 

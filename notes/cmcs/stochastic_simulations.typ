@@ -1,5 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Chemical Reaction Metaphor], doc)
 
 #title("Stochastic Simulations") <stochastic-simulations>
 
@@ -105,7 +105,6 @@ chemical solution is updated by subtracting reactants and adding products.
 
 = References <references>
 
-- Complex Systems
 - #link(
     "https://scispace.com/papers/stochastic-simulation-of-chemical-kinetics-53h3kqhk7k",
   )[Stochastic Simulation of Chemical Kinetics]
