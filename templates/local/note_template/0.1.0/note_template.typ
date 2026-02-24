@@ -1,6 +1,6 @@
 #let note_template(doc_title, body) = {
   set text(font: "New Computer Modern", size: 12pt)
-  set page(paper: "a4")
+  set page(paper: "a4", numbering: "1")
   set par(justify: true)
   set document(title: doc_title, author: "Federico Bustaffa")
 

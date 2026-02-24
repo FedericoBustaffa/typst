@@ -1,8 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Markov Chains], doc)
 
-#title("Markov Chains") <markov-chains>
+#title()
 
-= References <references>
-
-- Complex Systems
