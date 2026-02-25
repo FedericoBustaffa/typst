@@ -1,3 +1,7 @@
+#import "@preview/cetz:0.4.2"
+#import "@preview/lilaq:0.5.0"
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
+
 #let note_template(doc_title, body) = {
   set text(font: "New Computer Modern", size: 12pt)
   set page(paper: "a4", numbering: "1")

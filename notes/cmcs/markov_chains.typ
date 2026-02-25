@@ -1,4 +1,3 @@
-#import "@preview/cetz:0.4.2"
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Markov Chains], doc)
 
@@ -23,34 +22,135 @@ $ sum_(s' in S) P (s, s') = 1 $
 where $S$ is a set of states.
 
 #figure(
-  cetz.canvas({
-    import cetz.draw: *
+  diagram(
+    node-shape: "circle",
+    node-stroke: 1pt,
+    edge-stroke: 1pt,
+    {
+      let (S0, S1, S2) = ((0, 0), (2, 0), (4, 0))
+      node(S0, [$S_0$])
+      node(S1, [$S_1$])
+      node(S2, [$S_2$])
 
-    circle((0, 0), radius: 0.5, name: "s0")
-    content("s0", $S_0$)
-
-    circle((3, 0), radius: 0.5, name: "s1")
-    content("s1", $S_1$)
-
-    circle((6, 0), radius: 0.5, name: "s2")
-    content("s2", $S_2$)
-
-    set-style(line: (mark: (end: ">", fill: black)))
-
-    line("s0", "s1")
-    content((1.5, -0.35), $1$)
-
-    line("s1", "s2")
-    content((4.5, -0.35), $0.01$)
-
-    set-style(arc: (mark: (end: ">", fill: black)))
-    arc-through((6, 0.5), (6.5, 1), (6.5, 0), symbol: ">")
-    content((7, 1.25), $1$)
-
-    arc-through((3, 0.5), (1.5, 1.25), (0, 0.5), symbol: ">")
-    content((1.5, 1.5), $0.99$)
-  }),
+      edge(S0, "->", S1, $1$)
+      edge(S1, "->", S0, $0.99$, bend: -65deg)
+      edge(S1, "->", S2, $0.01$)
+      edge(S2, "->", S2, $1$, bend: 130deg, loop-angle: 90deg)
+    },
+  ),
   caption: "Discrete Time Markov Chain",
-)
+) <fig-dtmc>
+
+
 
 = Continuous Time Markov Chains
+
+
+#figure(
+  diagram(
+    node-shape: "circle",
+    node-stroke: 1pt,
+    edge-stroke: 1pt,
+    {
+      let (S0, S1, S2) = ((0, 0), (1.5, 0), (0.75, 1.5))
+      node(S0, [$S_0$])
+      node(S1, [$S_1$])
+      node(S2, [$S_2$])
+
+      edge(S0, "->", S1, $2$)
+      edge(S0, "->", S2, $3$, label-side: right)
+      edge(S1, "->", S2, $4$, label-side: left)
+    },
+  ),
+  caption: "Continuous Time Markov Chain",
+) <fig-ctmc>
+
+
+#figure(
+  grid(
+    columns: 2,
+    gutter: 2cm,
+    {
+      diagram(
+        node-shape: "circle",
+        node-stroke: 1pt,
+        edge-stroke: 1pt,
+        {
+          let (S0, S1, S2) = ((0, 0), (1.5, 0), (0.75, 1.5))
+          node(S0, [$S_0$])
+          node(S1, [$S_1$])
+          node(S2, [$S_2$])
+
+          edge(S0, "->", S1, $2$)
+          edge(S0, "->", S2, $3$, label-side: right)
+          edge(S1, "->", S2, $4$, label-side: left)
+        },
+      )
+    },
+    {
+      diagram(
+        node-shape: "circle",
+        node-stroke: 1pt,
+        edge-stroke: 1pt,
+        {
+          let (S0, S1, S2) = ((0, 0), (1.5, 0), (0.75, 1.5))
+          node(S0, [$S_0$])
+          node(S1, [$S_1$])
+          node(S2, [$S_2$])
+
+          edge(S0, "->", S1, $2 \/ 5$)
+          edge(S0, "->", S2, $3 \/ 5$, label-side: right)
+          edge(S1, "->", S2, $1$, label-side: left)
+          edge(S2, "->", S2, $1$, bend: 130deg, loop-angle: -90deg)
+        },
+      )
+    },
+  ),
+  caption: "Embedded DTMC of a CTMC",
+) <fig-embedded-dtmc>
+
+
+#figure(
+  grid(
+    columns: 2,
+    gutter: 2cm,
+    {
+      diagram(
+        node-shape: "circle",
+        node-stroke: 1pt,
+        edge-stroke: 1pt,
+        {
+          let (S0, S1, S2) = ((0, 0), (1.5, 0), (0.75, 1.5))
+          node(S0, [$S_0$])
+          node(S1, [$S_1$])
+          node(S2, [$S_2$])
+
+          edge(S0, "->", S1, $2$)
+          edge(S0, "->", S2, $3$, label-side: right)
+          edge(S1, "->", S2, $4$, label-side: left)
+        },
+      )
+    },
+    {
+      diagram(
+        node-shape: "circle",
+        node-stroke: 1pt,
+        edge-stroke: 1pt,
+        {
+          let (S0, S1, S2) = ((0, 0), (1.5, 0), (0.75, 1.5))
+          node(S0, [$S_0$])
+          node(S1, [$S_1$])
+          node(S2, [$S_2$])
+
+          edge(S0, "->", S1, $0.2$)
+          edge(S0, "->", S2, $0.3$, label-side: right)
+          edge(S1, "->", S2, $0.4$, label-side: left)
+          edge(S0, "->", S0, $0.5$, bend: 130deg, loop-angle: +90deg)
+          edge(S1, "->", S1, $0.6$, bend: 130deg, loop-angle: +90deg)
+          edge(S2, "->", S2, $1$, bend: 130deg, loop-angle: -90deg)
+        },
+      )
+    },
+  ),
+  caption: "Embedded DTMC of a CTMC",
+) <fig-uniformised-dtmc>
