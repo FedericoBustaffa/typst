@@ -1,12 +1,10 @@
-#set page(paper: "a4")
-#set text(font: "New Computer Modern", size: 12pt)
-#set par(justify: true)
+#import "@local/note_template:0.1.0": *
+#show: doc => note_template([Generative and Deep Learning], doc)
 
-#title("Generative and Deep Learning")
+#title()
 
 = Index
 
-= References
-
-- Machine Learning
+- Probability
+- Bayesian Networks
 
