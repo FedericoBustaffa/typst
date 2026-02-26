@@ -5,6 +5,6 @@
 
 = Index
 
-- Probability
+- Probability Recap
 - Bayesian Networks
 
