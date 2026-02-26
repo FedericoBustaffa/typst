@@ -98,6 +98,11 @@ $ P(x_1, dots, x_n | y) $
 measures the effect of the realization of an event $y$ on the occurrence of
 $x_1, dots, x_n$.
 
+#figure(
+  image("images/conditional_discrete.png", width: 100%),
+  caption: [ Discrete Conditional Probability ],
+) <fig-conditional-discrete>
+
 In order to compute conditional probability when many variables are involved we
 can use the *chain rule*:
 
@@ -113,6 +118,11 @@ $ P(X_1 = x_1) = sum_(i) P(X_1 = x_1 | X_i = x_i) P(X_i = x_i) $
 
 that basically sum up all the conditional probabilities between $X_1 = x_1$ and
 every other variable's possible values probabilities.
+
+#figure(
+  image("images/conditional_continuous.png", width: 100%),
+  caption: [ Continuous Conditional Probability ],
+) <fig-conditional-continuous>
 
 == Bayes Rule
 
@@ -170,3 +180,37 @@ $
 with the _shorthand_ notation $X, Y perp Z$ for $I(X, Y | Z)$.
 
 = Expectation
+
+The last main concept is *expectation* that is basically the mean or expected
+value we should obtain by sampling multiple times from the distribution.
+
+For discrete RV $X$ with $n$ possible realizations:
+
+$ bb(E)_(x tilde p (X)) [f(x)] = sum_(i=0)^n p(x_i) f(x_i) $
+
+If $n$ is finite, the expectation can be computed in *closed form*.
+
+For a continuous RV $X$ instead we have
+
+$ bb(E)_(x tilde p(X)) [f(x)] = integral p(x) f(x) d x $
+
+and in this case, if an _analytical_ solution does not exist, we need numerical
+approximations.
+
+In the *multivariate* case we have
+
+$
+  bb(E)_(x, y tilde p(X, Y)) [f(x, y)] = integral integral p(x, y) f(x) d x d y
+$
+
+Let's also list some valid properties of the expectation
+
+$
+  bb(E)_x [k] & = k \
+  bb(E)_x [k dot f(x)] & = k bb(E)_x [f(x)] \
+  bb(E)_x [f(x) + g(x)] & = bb(E)_x [f(x)] + bb(E)_x [g(x)] \
+  bb(E)_(x, y) [f(x) dot g(x)] &
+  = bb(E)_x [f(x)] dot bb(E)_y [g(y)] " if " x perp y \
+$
+
+because it is a *linear operator*.
