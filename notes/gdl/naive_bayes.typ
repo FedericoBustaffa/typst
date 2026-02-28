@@ -46,7 +46,7 @@ distribution of every possible outcome of the three variables and the class
 together, assuming a possible dependency between them. The result is a table
 with $2^4 = 16$ rows (since we have binary variables and label).
 
-= Fully Obvserved Variables
+= Observed Variables
 
 The Naive Bayes model assumes conditional independence among the symptoms, given
 the cause (in this case $I$), so now the conditional probability of
@@ -158,8 +158,70 @@ $
               & = (P(F | I) dot P(C | I) dot P(I)) / P(F, C)
 $
 
-because the marginalization of $M$ simplifies because
+because the marginalization of $M$ simplifies
 
 $ sum_m P(M = m | I) = 1 $
 
-while at the denominator we still have to marginalize.
+while at the denominator we still have to marginalize but only for values of
+$I$, because now, under the assumptions of conditional independence we have
+
+$ P(F, C) = sum_i sum_m P(I = i, F, C, M = m) $
+
+and expand it, we obtain
+
+$
+  P(F, C) & = sum_i sum_m P(I = i, F, C, M = m) \
+          & = P(I = 0, F, C, M = 0) + P(I = 0, F, C, M = 1) \
+          & P(I = 1, F, C, M = 0) + P(I = 1, F, C, M = 1) \
+$
+
+but as long as the factored representation of the joint distribution is
+
+$ P(F | I) dot P(C | I) dot P(M | I) dot P(I) $
+
+the actual denominator is just
+
+$ P(F, C) = sum_i P(I = i, F, C) $
+
+for a final conditional probability
+
+$ P(I | F, C) = (P(F | I) dot P(C | I) dot P(I)) / (sum_i P(I = i, F, C)) $
+
+So in practice, the Naive Bayes handles well cases were there are hidden
+variables by marginalization and conditional independence.
+
+= Joint Distribution Representation
+
+The key concept to understand is the *joint distribution representation*; a
+probabilistic model make assumptions on the joint distribution in order to make
+inference and reduce the amount of computation.
+
+In practice for the previous example of influence, without any prior knowledge
+we cannot (at least not easily) assume conditional independence between two
+variables from data.
+
+Let's take the previous problem, without prior knowledge we cannot assume
+conditional independence given the cause. This means that knowing the patient
+has influence does not automatically means that symptoms are independent from
+each other.
+
+Without observing anything we only have marginal probabilities, but if we
+observe fever, the probability of influence grows and if it grows, also the
+probability of cough grows. In this case we can say that fever and cough are
+marginally dependent.
+
+By looking instead at the cause we can say that if the patient has influence and
+the influence causes fever, what can we say about cough? Maybe the fever can
+directly cause cough or maybe there is an hidden and *unmodeled variable* that
+relates fever to cough. In this case there is no conditional independence among
+effects given the cause.
+
+The Naive Bayes assumes there is conditional independence even if in the real
+world there is some form of dependence. In this case, knowing the patient has
+influence explains the fever and the cough independently. So now we only need to
+know if the patient has influence to know the probability for him to have cough
+or fever.
+
+In this sense Naive Bayes makes a mistake on the real joint distribution in
+order to model less possible worlds. Anyway, even if it results more _corse
+grained_ in modelling the world, it often works quite well in many scenarios.
