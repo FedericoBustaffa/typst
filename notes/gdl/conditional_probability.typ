@@ -104,12 +104,13 @@ $x_1, dots, x_n$.
 ) <fig-conditional-discrete>
 
 In order to compute conditional probability when many variables are involved we
-can use the *chain rule*:
+can use the *chain rule*, defined for the standard case:
 
-$
-  P(x_1, dots, x_i, dots, x_n | y)
-  = product_(i=1)^N P(x_i | x_1, dots, x_(i-1), y)
-$
+$ P(x_1, dots, x_n) = product_(i=1)^N P(x_i | x_1, dots, x_(i-1)) $
+
+and for the _conditional_ case:
+
+$ P(x_1, dots, x_n | y) = product_(i=1)^N P(x_i | x_1, dots, x_(i-1), y) $
 
 when instead we are interested in computing the probability of certain outcome
 we can use the *marginalization*:
