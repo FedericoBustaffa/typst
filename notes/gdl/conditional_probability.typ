@@ -99,9 +99,14 @@ measures the effect of the realization of an event $y$ on the occurrence of
 $x_1, dots, x_n$.
 
 #figure(
-  image("images/conditional_discrete.png", width: 100%),
-  caption: [ Discrete Conditional Probability ],
-) <fig-conditional-discrete>
+  grid(
+    rows: 2,
+    gutter: 0.2cm,
+    image("images/conditional_discrete.png", width: 100%),
+    image("images/conditional_continuous.png", width: 100%),
+  ),
+  caption: [ Discrete and Continuous Conditional Distributions ],
+)
 
 In order to compute conditional probability when many variables are involved we
 can use the *chain rule*, defined for the standard case:
@@ -115,15 +120,13 @@ $ P(x_1, dots, x_n | y) = product_(i=1)^N P(x_i | x_1, dots, x_(i-1), y) $
 when instead we are interested in computing the probability of certain outcome
 we can use the *marginalization*:
 
-$ P(X_1 = x_1) = sum_(i) P(X_1 = x_1 | X_i = x_i) P(X_i = x_i) $
+$
+  P(X = x) & = sum_y P(X = x | Y = y) P(Y = y) \
+           & = sum_i P(X = x, Y = y)
+$
 
 that basically sum up all the conditional probabilities between $X_1 = x_1$ and
 every other variable's possible values probabilities.
-
-#figure(
-  image("images/conditional_continuous.png", width: 100%),
-  caption: [ Continuous Conditional Probability ],
-) <fig-conditional-continuous>
 
 == Bayes Rule
 
