@@ -291,7 +291,7 @@ between $Y_1$ and $Y_2$, then $r$ is *blocked* by a set $Z$ if $r$ contains
 - A _collider_ $Y_i -> Y_c <- Y_j$ such that neither $Y_c$ nor its descendants
   are in $Z$.
 
-== $d$-Separation
+== Global Markov Property
 
 Let's now introduce the concept of *$d$-separation* for a path in the bayesian
 network
@@ -302,7 +302,23 @@ network
   $Y_c in Z$ for which path $r$ is blocked.
 ]
 
-and for two nodes
+An example can be a simple collider where the child is osberved
+
+#figure(
+  diagram(
+    node-stroke: 1pt,
+    {
+      node((0, 0), [$Y_1$])
+      node((1, 0), [$Y_c$], fill: color.aqua)
+      node((2, 0), [$Y_2$])
+      edge((0, 0), "->", (1, 0))
+      edge((2, 0), "->", (1, 0))
+    },
+  ),
+  caption: [ $d$-Separated Collider ],
+) <fig-dsep>
+
+The concept of $d$-separation is also defined for two nodes
 
 #important(title: [$d$-Separation])[
   Two nodes $Y_i$ and $Y_j$ in a bayesian network $cal(G)$ are said to be
@@ -316,6 +332,9 @@ and for two nodes
   $ Y_1 perp_cal(G) Y_2 | Z $
 ]
 
+One example can still be the collider in @fig-dsep considering $Y_1$ and $Y_2$
+to be $d$-separated by $Y_c$.
+
 The concept of $d$-separation let us define the *global Markov property* for an
 entire bayesian network.
 
@@ -327,3 +346,44 @@ entire bayesian network.
 #note[
   Global and local Markov properties are equivalent.
 ]
+
+From this properties of conditional independence is possible to derive the
+*Markov blanket* of a node.
+
+#important(title: "Markov Blanket")[
+  The *Markov blanket* $"Mb" (Y)$ of a node $Y$ is the minimal set of vertices
+  that *shields the node* from the rest of the network.
+]
+
+In a DAG the Markov blanket of $Y$ contains its
+
+- *Parents*: knowing a parent $Y_p$ blocks the path to parents and children of
+  $Y_p$ (confounder and chain block condition).
+- *Children*: knowing the children blocks the path to children's children.
+- *Childrens' parents*: knowing the children unblocks the path to parents' of
+  children so we have to condition also them.
+
+This means that the behavior of a node can completely be determined and
+predicted by its Markov blanket:
+
+$ P(Y | "Mb" (Y), Z) = P(Y | "Mb" (Y)) quad forall Z in.not "Mb" (Y) $
+
+== Faithfulness Property
+
+The *faithfulness property* gives us a strong assumption with Markov properties.
+
+#important(title: "Faithfulness")[
+  A bayesian network is *faithful* whenever conditional independence relations
+  imply $d$-separation.
+
+  $ Y_1 perp Y_2 | Z ==> Y_1 perp_cal(G) Y_2 | Z $
+]
+
+While the global Markov property requires the graph to represent *only*
+conditional independences, the _faithfulness_ requires to represent *all*
+conditional independences.
+
+The faithfulness is fundamental to represent concisely joint distributions
+because the more conditional independences we represent the less parameters we
+need to store in the model.
+
