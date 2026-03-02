@@ -282,3 +282,48 @@ $ Y_1 perp Y_3 $
 #note[
   If any $Y_2$ descendant is observed it *unlocks the path*.
 ]
+
+More in general, let $r = (Y_1 <-> dots.c <-> Y_2)$ be an *undirected path*
+between $Y_1$ and $Y_2$, then $r$ is *blocked* by a set $Z$ if $r$ contains
+
+- A _fork_ $Y_i <- Y_c -> Y_j$ such that $Y_c in Z$.
+- A _chain_ $Y_i -> Y_c -> Y_j$ such that $Y_c in Z$.
+- A _collider_ $Y_i -> Y_c <- Y_j$ such that neither $Y_c$ nor its descendants
+  are in $Z$.
+
+== $d$-Separation
+
+Let's now introduce the concept of *$d$-separation* for a path in the bayesian
+network
+
+#important(title: [$d$-Separated Path])[
+  Let $r = Y_1 <-> dots.c <-> Y_2$ be an *undirected path* between $Y_1$ and
+  $Y_2$, then $r$ is *$d$-separated by $Z$* if there exist at least one node
+  $Y_c in Z$ for which path $r$ is blocked.
+]
+
+and for two nodes
+
+#important(title: [$d$-Separation])[
+  Two nodes $Y_i$ and $Y_j$ in a bayesian network $cal(G)$ are said to be
+  *$d$-separated by $Z subset cal(V)$*:
+
+  $ "Dsep"_cal(G) (Y_i, Y_j | Z) $
+
+  if and only if all undirected paths between $Y_i$  and $Y_j$ are $d$-separated
+  by $Z$.
+
+  $ Y_1 perp_cal(G) Y_2 | Z $
+]
+
+The concept of $d$-separation let us define the *global Markov property* for an
+entire bayesian network.
+
+#important(title: "Global Markov Property")[
+  A bayesian network respects the *global Markov property* whenever
+  $d$-separations in the graph imply conditional independence relations.
+]
+
+#note[
+  Global and local Markov properties are equivalent.
+]
