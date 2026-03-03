@@ -428,3 +428,73 @@ by a bayesian network.
 This can be done instead by *undirected models* that are simpler and have an
 equivalent definition of $d$-separation, which is only based on condition nodes
 to block a path, if a node is not conditioned the path is unblocked.
+
+#figure(
+  image("images/markov_random_field.png", width: 50%),
+  caption: [ Markov Random Fields],
+)
+
+In this case the _Markov blanket_ of a node include all and only its neighbors.
+
+For the *joint probability* of undirected models we can exploit the fact that
+the Markov blanket is composed by the neighbors and so every node that is not a
+neighbor is conditionally independent given the Markov blanket.
+
+$
+  P(X_v, X_i | X_(cal(V) - {v, i})) =
+  P(X_v | X_(cal(V) - {v,i}) P(X_i | X_(cal(V) - {v, i})))
+$
+
+The factorization should be chosen in a way that nodes $X_v$ and $X_i$ are not
+in the same factor. One possible graph structure that includes only nodes that
+are pairwise connected is the *clique*.
+
+#figure(
+  image("images/clique.png", width: 40%),
+  caption: [ Cliques ],
+)
+
+#important(title: "Clique")[
+  A *clique* is a subset of nodes $C$ in a graph $cal(G)$ such that $cal(G)$
+  contains an edge between all pair of nodes in $C$.
+]
+
+#important(title: "Maximal Clique")[
+  A clique $C$ that cannot include any further nodes from the graph without
+  ceasing to be a clique is called *maximal clique*.
+]
+
+In this sense is possible to perform a *maximal clique factorization* by
+defining $X = X_1, dots, X_N$ as the random variables associated to the $N$
+nodes in the undirected graph $cal(G)$
+
+$ P(X) = 1 / Z product_C psi (X_c) $
+
+where
+
+- $X_C$ is the random variable associated with nodes in the maximal clique $C$.
+- $psi(X_C)$ is the *potential function* over the maximal cliques $C$.
+- $Z$ is the *partition function* ensuring normalization defined as
+  $ Z = sum_X product_C psi(X_c) $
+
+The partition function is the computational bottleneck of undirected models,
+with a time complexity in the order of $cal(O) (K^N)$ for $N$ discrete random
+variables with $K$ distinct values.
+
+It's also possible to go from a directed graph to an undirected one just by
+switching all the directed edges in undirected ones
+
+#figure(
+  image("images/directed_to_undirected.png", width: 80%),
+  caption: [ Directed to Undirected Chain ],
+)
+
+and in some cases by also
+performing what is called *moralization* (marrying the parents).
+
+#figure(
+  image("images/moralization.png", width: 60%),
+  caption: [ Moralization ],
+)
+
+and this require to recognize *v-structures*.
