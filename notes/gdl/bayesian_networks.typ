@@ -3,14 +3,13 @@
 
 #title()
 
-The general case of Naive Bayes is represented by *bayesian networks*, that can
-be arbitrarily more flexible, depending on their structure and what we decide to
-model.
+One of the basic probabilistic models that can achieve arbitrarily complex
+representation of the joint probability is the *Bayesian network*.
 
 A bayesian network is a direct acyclic graph $cal(G) = (cal(V), cal(E))$ in
-which nodes $v in cal(V)$ represent random variables, that are typically shaded
-if observed, not shaded otherwise, and edges, describing the conditional
-independence relationships.
+which nodes $v in cal(V)$ represent random variables, that in the graphical
+representation are typically shaded if observed, not shaded otherwise, and
+edges, describing the conditional independence relationships.
 
 #figure(
   diagram(
@@ -31,10 +30,10 @@ independence relationships.
       node(Y4, [$Y_4$], fill: color.aqua)
       node(Y5, [$Y_5$], fill: color.aqua)
 
-      edge(Y1, "->", Y3)
-      edge(Y2, "->", Y3, $P(Y_3 | Y_1, Y_2)$, label-side: left)
-      edge(Y3, "->", Y4, $P(Y_4 | Y_3)$)
-      edge(Y3, "->", Y5, $P(Y_5 | Y_3)$)
+      edge(Y1, "-|>", Y3)
+      edge(Y2, "-|>", Y3, $P(Y_3 | Y_1, Y_2)$, label-side: left)
+      edge(Y3, "-|>", Y4, $P(Y_4 | Y_3)$)
+      edge(Y3, "-|>", Y5, $P(Y_5 | Y_3)$)
     },
   ),
   caption: [ Bayesian Network ],
@@ -45,8 +44,8 @@ In a bayesian network, the *joint probability* is decomposed as
 $ P(Y_1, dots, Y_N) = product_(i=1)^N P(Y_i | "parents" (Y_i)) $
 
 The order to apply the chain rule is not fixed, for example considering the
-bayesian network in @fig-bayesian-net we have that $Y_3$ has two parents to
-choose first.
+bayesian network in @fig-bayesian-net we have that $Y_3$ has two parents from
+which we can choose to apply the rule first.
 
 Another way to visualize it is by starting from the joint probability, for
 example
@@ -57,57 +56,41 @@ and observing that, different orders of chain rule application produce different
 networks
 
 #figure(
-  grid(
-    columns: 2,
-    gutter: 1cm,
+  diagram(
+    node-shape: "circle",
+    node-stroke: 1pt,
+    edge-stroke: 1pt,
     {
-      diagram(
-        node-shape: "circle",
-        node-stroke: 1pt,
-        edge-stroke: 1pt,
-        {
-          let (Y1, Y2, Y3) = (
-            (0, 0),
-            (0, 1),
-            (0, 2),
-          )
-          node(Y1, [$Y_1$])
-          node(Y2, [$Y_2$])
-          node(Y3, [$Y_3$])
+      let (Y1, Y2, Y3) = ((0.5, 0), (1, 0), (1.5, 0))
+      node(Y1, [$Y_1$])
+      node(Y2, [$Y_2$])
+      node(Y3, [$Y_3$])
 
-          edge(Y1, "->", Y2)
-          edge(Y2, "->", Y3)
-          edge(Y1, "->", Y3, bend: 45deg)
+      edge(Y1, "-|>", Y2)
+      edge(Y2, "-|>", Y3)
+      edge(Y1, "-|>", Y3, bend: 45deg)
 
-          node(
-            (-0.8, 1),
-            [$P(Y_3) P(Y_2 | Y_3) P(Y_1 | Y_2, Y_3)$],
-            stroke: 0pt,
-          )
-        },
+      node(
+        (1, 0.7),
+        [$P(Y_3) P(Y_2 | Y_3) P(Y_1 | Y_2, Y_3)$],
+        stroke: 0pt,
+        shape: "rect",
       )
-    },
-    {
-      diagram(
-        node-shape: "circle",
-        node-stroke: 1pt,
-        edge-stroke: 1pt,
-        {
-          let (Y1, Y2, Y3) = (
-            (0, 0),
-            (0, 1),
-            (0, 2),
-          )
-          node(Y1, [$Y_1$])
-          node(Y2, [$Y_3$])
-          node(Y3, [$Y_2$])
 
-          edge(Y1, "->", Y2)
-          edge(Y2, "->", Y3)
-          edge(Y1, "->", Y3, bend: 45deg)
+      let (Y1, Y2, Y3) = ((2, 0), (2.5, 0), (3, 0))
+      node(Y1, [$Y_3$])
+      node(Y2, [$Y_2$])
+      node(Y3, [$Y_1$])
 
-          node((0.9, 1), [$P(Y_3)P(Y_2 | Y_3) P(Y_1 | Y_2, Y_3)$], stroke: 0pt)
-        },
+      edge(Y1, "-|>", Y2)
+      edge(Y2, "-|>", Y3)
+      edge(Y1, "-|>", Y3, bend: 45deg)
+
+      node(
+        (2.5, 0.7),
+        [$P(Y_3) P(Y_2 | Y_3) P(Y_1 | Y_2, Y_3)$],
+        stroke: 0pt,
+        shape: "rect",
       )
     },
   ),
@@ -127,16 +110,16 @@ parameters.
   Let's also notice that typically a *causal interpretation* is given to
   bayesian networks, but in general edges do not represent causality, only
   *statistical dependence*.
-]
 
-However can happen that, under further assumptions, edges might actually
-coincide with the concept of _causal dependence_.
+  However can happen that, under further assumptions, edges might actually
+  coincide with the concept of _causal dependence_.
+]
 
 = Local Markov Property
 
-A very useful assumption if independence bayesian networks do, can be exploited
-with the *local Markov property*, that again reduces the number of parameters to
-model the joint distribution.
+Bayesian networks works under the assumption called *local Markov property*,
+which is a way to define independence and so reducing the number of parameters,
+paying of course a drop in accuracy.
 
 #important(title: "Local Markov Property")[
   Each node is conditionally independent of all its *non-descendants* given a
@@ -156,10 +139,10 @@ A typical application of chain rule and local Markov property is
 
 + Pick a *topological ordering* of nodes.
 + Apply the *chain rule* following the order.
-+ Use the *conditional independence assumptions*.
++ Use the *conditional independence assumptions* (local Markov property).
 
-Again, considering the network in @fig-bayesian-net we can follow the order of
-the enumeration and derive
+Again, considering the network in @fig-bayesian-net we can follow the
+enumeration order as topological order and derive
 
 $
   P(Y_1, Y_2, Y_3, Y_4, Y_5) & = P(Y_1) P(Y_2 | Y_1) P(Y_3 | Y_1, Y_2) P(Y_4 |
@@ -172,7 +155,7 @@ $
 So by applying the rule again we reduced the number of parameters of the
 networks by assuming the local
 
-== Generative Process
+= Generative Process
 
 A bayesian network, once built, can be seen as a *generative process* for
 observations, composed by these steps:
@@ -198,7 +181,7 @@ just to have a first glimpse of why these are also called _generative_ models.
 = Fundamental Structures
 
 In bayesian networks there are three *fundamentals substructures* that
-determine the conditional independence relationships: *fork*, *chain* and
+determine the conditional independence relationships: *confounder*, *chain* and
 *collider*.
 
 #figure(
@@ -207,28 +190,28 @@ determine the conditional independence relationships: *fork*, *chain* and
     node(Y1, [$Y_1$])
     node(Y2, [$Y_2$])
     node(Y3, [$Y_3$])
-    edge(Y2, "->", Y1)
-    edge(Y2, "->", Y3)
-    node((3, 0), [Fork], stroke: 0pt)
+    edge(Y2, "-|>", Y1)
+    edge(Y2, "-|>", Y3)
+    node((3, 0), [Confounder], stroke: 0pt)
 
     node((0, 0.75), [$Y_1$])
     node((1, 0.75), [$Y_2$])
     node((2, 0.75), [$Y_3$])
-    edge((0, 0.75), "->", (1, 0.75))
-    edge((1, 0.75), "->", (2, 0.75))
+    edge((0, 0.75), "-|>", (1, 0.75))
+    edge((1, 0.75), "-|>", (2, 0.75))
     node((3, 0.75), [Chain], stroke: 0pt)
 
     node((0, 1.5), [$Y_1$])
     node((1, 1.5), [$Y_2$])
     node((2, 1.5), [$Y_3$])
-    edge((0, 1.5), "->", (1, 1.5))
-    edge((2, 1.5), "->", (1, 1.5))
+    edge((0, 1.5), "-|>", (1, 1.5))
+    edge((2, 1.5), "-|>", (1, 1.5))
     node((3, 1.5), [Collider], stroke: 0pt)
   }),
-  caption: [ Fork, Chain and Collider ],
+  caption: [ Confounder, Chain and Collider ],
 )
 
-The *fork* corresponds to
+The *confounder* corresponds to
 
 $ P(Y_1, Y_3 | Y_2) P(Y_2) = P(Y_1 | Y_2) P(Y_3 | Y_2) P(Y_2) $
 
@@ -286,12 +269,12 @@ $ Y_1 perp Y_3 $
 More in general, let $r = (Y_1 <-> dots.c <-> Y_2)$ be an *undirected path*
 between $Y_1$ and $Y_2$, then $r$ is *blocked* by a set $Z$ if $r$ contains
 
-- A _fork_ $Y_i <- Y_c -> Y_j$ such that $Y_c in Z$.
+- A _confounder_ $Y_i <- Y_c -> Y_j$ such that $Y_c in Z$.
 - A _chain_ $Y_i -> Y_c -> Y_j$ such that $Y_c in Z$.
 - A _collider_ $Y_i -> Y_c <- Y_j$ such that neither $Y_c$ nor its descendants
   are in $Z$.
 
-== Global Markov Property
+= Global Markov Property
 
 Let's now introduce the concept of *$d$-separation* for a path in the bayesian
 network
@@ -302,7 +285,7 @@ network
   $Y_c in Z$ for which path $r$ is blocked.
 ]
 
-An example can be a simple collider where the child is osberved
+An example can be a simple confounder where the child is osberved
 
 #figure(
   diagram(
@@ -311,14 +294,12 @@ An example can be a simple collider where the child is osberved
       node((0, 0), [$Y_1$])
       node((1, 0), [$Y_c$], fill: color.aqua)
       node((2, 0), [$Y_2$])
-      edge((0, 0), "->", (1, 0))
-      edge((2, 0), "->", (1, 0))
+      edge((1, 0), "-|>", (0, 0))
+      edge((1, 0), "-|>", (2, 0))
     },
   ),
-  caption: [ $d$-Separated Collider ],
+  caption: [ $d$-Separated Confounder ],
 ) <fig-dsep>
-
-The concept of $d$-separation is also defined for two nodes
 
 #important(title: [$d$-Separation])[
   Two nodes $Y_i$ and $Y_j$ in a bayesian network $cal(G)$ are said to be
@@ -332,7 +313,7 @@ The concept of $d$-separation is also defined for two nodes
   $ Y_1 perp_cal(G) Y_2 | Z $
 ]
 
-One example can still be the collider in @fig-dsep considering $Y_1$ and $Y_2$
+One example can still be the confounder in @fig-dsep considering $Y_1$ and $Y_2$
 to be $d$-separated by $Y_c$.
 
 The concept of $d$-separation let us define the *global Markov property* for an
@@ -342,6 +323,10 @@ entire bayesian network.
   A bayesian network respects the *global Markov property* whenever
   $d$-separations in the graph imply conditional independence relations.
 ]
+
+It basically says that if two nodes are $d$-separated by a set of nodes $Z$,
+they are conditionally independent given $Z$. In other words, if the model
+represents conditional independence, that must be true also in the distribution.
 
 #note[
   Global and local Markov properties are equivalent.
@@ -363,14 +348,23 @@ In a DAG the Markov blanket of $Y$ contains its
 - *Childrens' parents*: knowing the children unblocks the path to parents' of
   children so we have to condition also them.
 
+#figure(
+  image("images/markov_blanket.png", width: 30%),
+  caption: [ Markov Blanket ],
+) <fig-markov-blanket>
+
 This means that the behavior of a node can completely be determined and
 predicted by its Markov blanket:
 
 $ P(Y | "Mb" (Y), Z) = P(Y | "Mb" (Y)) quad forall Z in.not "Mb" (Y) $
 
+and if this is true for every node in the network we can say that the graph is
+*Markovian to the distribution*.
+
 == Faithfulness Property
 
-The *faithfulness property* gives us a strong assumption with Markov properties.
+The *faithfulness property* gives us strong assumptions if paired with Markov
+properties.
 
 #important(title: "Faithfulness")[
   A bayesian network is *faithful* whenever conditional independence relations
@@ -383,7 +377,54 @@ While the global Markov property requires the graph to represent *only*
 conditional independences, the _faithfulness_ requires to represent *all*
 conditional independences.
 
+In other words it says that if there is conditional independence in the
+distribution, the model have to represent it.
+
 The faithfulness is fundamental to represent concisely joint distributions
 because the more conditional independences we represent the less parameters we
 need to store in the model.
 
+We can say that a graph is *faithful* to the distribution if it represents all
+conditional independences. Paired with the Markov property we can obtain
+
+$ Y_1 perp Y_2 | Z <==> Y_1 perp_cal(G) Y_2 | Z $
+
+which basically say that the model represent *all and only* the conditional
+independences present in the distribution.
+
+= Undirected Graphs
+
+Bayesian networks are used to model *asymmetric dependencies*, and in order to
+model also *symmetric dependencies*, like bidirectional effects we need
+*undirected approaches*.
+
+In fact directed models cannot represent some (bidirectional) dependencies in
+the distributions.
+
+#figure(
+  diagram(
+    node-stroke: 1pt,
+    {
+      let (Y1, Y2, Y3, Y4) = ((0, 0), (0.75, -0.75), (1.5, 0), (0.75, 0.75))
+
+      node(Y1, $Y_1$)
+      node(Y2, $Y_2$)
+      node(Y3, $Y_3$)
+      node(Y4, $Y_4$)
+
+      edge(Y1, "-|>", Y2)
+      edge(Y2, "-|>", Y3)
+      edge(Y4, "-|>", Y3)
+      edge(Y1, "-|>", Y4)
+    },
+  ),
+)
+
+Considering the BN above we can represent $Y_1 perp Y_3 | Y_2, Y_4$ but we
+cannot represent $Y_2 perp Y_4 | Y_1, Y_3$. Even changing edges, in whatever
+configurations, the two conditional independeces cannot be represented together
+by a bayesian network.
+
+This can be done instead by *undirected models* that are simpler and have an
+equivalent definition of $d$-separation, which is only based on condition nodes
+to block a path, if a node is not conditioned the path is unblocked.
