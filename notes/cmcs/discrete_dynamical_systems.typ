@@ -68,17 +68,17 @@ $ N_(t+1) = (1 dot.c (1 \/ 3) / (1 \/ 3) + 1) N_t = 2 N_t $
 Performing some time steps we can obtain a population evolution of this kind
 
 #figure(
-  cetz.canvas({
-    import plot: *
-
-    plot(
-      size: (6, 3.5),
-      x-tick-step: 1,
-      y-tick-step: 100,
-      axis-style: "left",
-      add(domain: (0, 9), x => calc.pow(2, x)),
-    )
-  }),
+  lq.diagram(
+    title: [ $r_d = 2$, $N_0 = 1$ ],
+    xlabel: [ Time ],
+    ylabel: [ Individuals ],
+    width: 60%,
+    height: 5cm,
+    {
+      let x = lq.linspace(0, 9)
+      lq.plot(x, x => calc.pow(2, x), mark: none)
+    },
+  ),
   caption: [ Bacteria Exponential Growth ],
 )
 
@@ -168,76 +168,20 @@ with $N_t / K$ is called *ratio of occupancy* of the environment.
 }
 
 #figure(
-  grid(
-    columns: 2,
-    gutter: 0.5cm,
-    {
-      cetz.canvas({
-        import plot: *
-
-        plot(
-          size: (6, 4),
-          x-label: "Time",
-          y-label: "Individuals",
-          x-tick-step: 1,
-          y-tick-step: 20,
-          y-max: 110,
-          axis-style: "scientific",
-          x-grid: true,
-          y-grid: true,
-          legend: "inner-north-west",
-          {
-            for k in (50, 100, 200) {
-              add(
-                domain: (0, 10),
-                samples: 10,
-                label: [$K = #k$],
-                x => logistic(
-                  calc.floor(x),
-                  10,
-                  2,
-                  k,
-                ),
-              )
-            }
-          },
-        )
-      })
-    },
-    {
-      cetz.canvas({
-        import plot: *
-
-        plot(
-          size: (6, 3.9),
-          x-label: "Time",
-          y-label: none,
-          x-tick-step: 1,
-          y-tick-step: 10,
-          axis-style: "scientific",
-          x-grid: true,
-          y-grid: true,
-          legend: "inner-south-east",
-          {
-            for n in (10, 30, 60) {
-              add(
-                domain: (0, 10),
-                samples: 10,
-                label: [$N_0 = #n$],
-                x => logistic(
-                  calc.floor(x),
-                  n,
-                  2,
-                  100,
-                ),
-              )
-            }
-          },
-        )
-      })
-    },
+  lq.diagram(
+    title: [ $r_d = 2$, $N_0 = 1$ ],
+    xlabel: [ Time ],
+    ylabel: [ Individuals ],
+    width: 60%,
+    height: 5cm,
+    legend: (position: top + left),
+    ..(50, 100, 200).map(K => lq.plot(
+      lq.arange(0, 10),
+      t => logistic(t, 10, 2, K),
+      label: [$K = #K$],
+    )),
   ),
-  caption: [ Resource Consumer with $r_d = 2$ ],
+  caption: [ Resource Consumer ],
 ) <carrying-capacity-fig>
 
 As we can see in @carrying-capacity-fig, by fixing $r_d$ and $N_0$ and gradually

@@ -1,6 +1,3 @@
-#import "@preview/cetz:0.4.2"
-#import "@preview/cetz-plot:0.1.3": plot
-
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Continuous Dynamical Systems], doc)
 
@@ -99,35 +96,19 @@ $ N(t) = C e^(r_c t) $
 
 with $C = e^c$, that typically is $N(0)$.
 
-
 #figure(
-  cetz.canvas({
-    import plot: *
-
-    plot(
-      size: (8, 5),
-      x-label: "Time",
-      y-label: "Individuals",
-      x-tick-step: 1,
-      y-tick-step: 1000,
-      x-min: -0.25,
-      x-max: 4.25,
-      y-min: -250,
-      y-max: 3250,
-      axis-style: "scientific",
-      x-grid: true,
-      y-grid: true,
-      legend: "inner-south-east",
-      {
-        add(
-          domain: (0, 4),
-          samples: 40,
-          x => calc.exp(2 * x),
-        )
-      },
-    )
-  }),
-  caption: [ Resource Consumer with $r_c = 2$ and $C = N_0 = 1$ ],
+  lq.diagram(
+    title: [ $r_c = 2$, $C = N_0 = 1$ ],
+    xlabel: [ Time ],
+    ylabel: [ Individuals ],
+    width: 60%,
+    height: 5cm,
+    {
+      let x = lq.linspace(0, 4)
+      lq.plot(x, x => calc.exp(2 * x), mark: none)
+    },
+  ),
+  caption: [ Linear Birth ],
 )
 
 Qualitatively we obtained the same behavior of the discrete version of the same
@@ -180,38 +161,38 @@ $ N(t) = K / (1 + (K / N(0) - 1) e^(-r_c t)) $
 which tells us that $N(t)$ tends to $K$, since $e^(-r_c t)$ tends to $0$, and so
 the population converges to the carrying capacity of the environment.
 
-#figure(
-  {
-    cetz.canvas({
-      import plot: *
-
-      let logistic(t, N0, r, K) = { K / (1 + (K / N0 - 1) * calc.exp(-r * t)) }
-
-      plot(
-        size: (6, 4),
-        x-label: "Time",
-        y-label: "Individuals",
-        x-tick-step: 1,
-        y-tick-step: 10,
-        axis-style: "scientific",
-        x-grid: true,
-        y-grid: true,
-        // legend: "inner-south-east",
-        {
-          for n in (10, 20, 45) {
-            add(domain: (0, 4), samples: 30, label: [$N_0 = #n$], x => logistic(
-              x,
-              n,
-              2,
-              30,
-            ))
-          }
-        },
-      )
-    })
-  },
-  caption: [ Resource Consumer with $r_d = 2$ and $K = 30$ ],
-)
+// #figure(
+//   {
+//     cetz.canvas({
+//       import plot: *
+//
+//       let logistic(t, N0, r, K) = { K / (1 + (K / N0 - 1) * calc.exp(-r * t)) }
+//
+//       plot(
+//         size: (6, 4),
+//         x-label: "Time",
+//         y-label: "Individuals",
+//         x-tick-step: 1,
+//         y-tick-step: 10,
+//         axis-style: "scientific",
+//         x-grid: true,
+//         y-grid: true,
+//         // legend: "inner-south-east",
+//         {
+//           for n in (10, 20, 45) {
+//             add(domain: (0, 4), samples: 30, label: [$N_0 = #n$], x => logistic(
+//               x,
+//               n,
+//               2,
+//               30,
+//             ))
+//           }
+//         },
+//       )
+//     })
+//   },
+//   caption: [ Resource Consumer with $r_d = 2$ and $K = 30$ ],
+// )
 
 = Numerical Solutions <numerical-solutions>
 
