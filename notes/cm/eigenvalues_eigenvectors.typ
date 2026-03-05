@@ -8,9 +8,9 @@ that
 
 $ A v = lambda v $
 
-we call $lambda$ and $v$ respectively an *eigenvalue* and an *eigenvector* of
-$A$. To compute eigenvalues and eigenvectors we need to *diagonalize* the matrix
-$A$, but it has to be *diagonalizable* in the first place.
+$lambda$ and $v$ are respectively an *eigenvalue* and an *eigenvector* of $A$.
+To compute eigenvalues and eigenvectors we need to *diagonalize* the matrix $A$,
+that of course has to be *diagonalizable* in the first place.
 
 #important(title: "Diagonalizable Matrix")[
   A matrix $A in bb(R)^(n times n)$ is *diagonalizable* if exists a matrix $V in
@@ -19,24 +19,23 @@ $A$, but it has to be *diagonalizable* in the first place.
   $
     A = V D V^(- 1) =
     mat(
-      delim: "[",
       #none, , ;
-      upright(bold(v))_1, dots.h.c, upright(bold(v))_n;
+      bold(v)_1, dots.h.c, bold(v)_n;
       #none, ,
     )
     mat(
-      delim: "[", lambda_1, , ;
+      lambda_1, , ;
       #none, dots.down, ;
       #none, , lambda_n
     )
     mat(
-      delim: "[", #none, upright(bold(w))_1^tack.b, ;
+      #none, bold(w)_1^tack.b, ;
       #none, dots.v, ;
-      #none, upright(bold(w))_n^tack.b,
+      #none, bold(w)_n^tack.b,
     )
   $
 
-  This is also called *eigendecomposition*.
+  This is also called *eigen-decomposition*.
 ]
 
 where $(lambda_i , v_i)$ are *eigenpairs* of $A$, formed by the eigenvalue
@@ -68,7 +67,7 @@ resulting in
 $
   A^k = V D^k V^(- 1) =
   V mat(
-    delim: "[", lambda_1^k, , ;
+    lambda_1^k, , ;
     #none, dots.down, ;
     #none, , lambda_n^k
   ) V^(- 1)
@@ -106,7 +105,6 @@ and so the eigenvalues of $p (A)$ are
 
 $
   p (D) = mat(
-    delim: "[",
     p (lambda_1), , ;
     #none, dots.down, ;
     #none, , p (lambda_n)
@@ -129,9 +127,9 @@ theorem*.
 This theorem implies a lot of interesting properties like the fact that if a
 matrix is symmetric then is *always diagonalizable*.
 
-Another interesting fact is that the matrix $U$ containing the eigenvectors is
+Another interesting fact is that the matrix $U$, containing the eigenvectors, is
 orthogonal and so the diagonalization is simplified due to the fact that we
-don’t need to compute its inverse but its transpose.
+don't need to compute its inverse but its transpose.
 
 Two interesting properties, derived by the fact that $U$ is orthogonal are that
 
@@ -142,33 +140,33 @@ Two interesting properties, derived by the fact that $U$ is orthogonal are that
   If $A in bb(R)^(n times n)$ is symmetric, then
 
   $
-    lambda_(upright("min")) parallel x parallel^2 lt.eq x^tack.b A x lt.eq
-    lambda_(upright("max")) parallel x parallel^2
+    lambda_"min" || x ||^2 <= x^tack.b A x lt.eq
+    lambda_"max" || x ||^2
   $
 
   for any $x$. Of course the formula can be changed in
 
   $
-    lambda_(upright("min")) lt.eq frac(x^tack.b A x, parallel x parallel^2)
-    lt.eq lambda_(upright("max"))
+    lambda_"min" lt.eq frac(x^tack.b A x, || x ||^2)
+    lt.eq lambda_"max"
   $
 ]
 
-Let’s notice that when $parallel x parallel = 1$ the formula is simplified in
+Let’s notice that when $|| x || = 1$ the formula is simplified in
 
-$ lambda_(upright("min")) lt.eq x^tack.b A x lt.eq lambda_(upright("max")) $
+$ lambda_"min" lt.eq x^tack.b A x lt.eq lambda_"max" $
 
 The result given by this theorem is a consequence of the fact that if $v eq.not
-0$ such that $A v = lambda_(upright("max")) v$, then
+0$ such that $A v = lambda_"max" v$, then
 
 $
-  v^tack.b A v = v^tack.b (lambda_(upright("max")) v) = lambda_(upright("max"))
-  v^tack.b v = lambda_(upright("max")) parallel v parallel^2
+  v^tack.b A v = v^tack.b (lambda_"max" v) = lambda_"max"
+  v^tack.b v = lambda_"max" || v ||^2
 $
 
-the same holds for $lambda_(upright("min"))$.
+the same holds for $lambda_"min"$.
 
-= Symmetric Positive (Semi)Definite Matrices <symmetric-positive-semidefinite-matrices>
+= Symmetric Positive (Semi)Definite Matrices <spsd>
 
 Some interesting matrices are the *symmetric positive definite* matrices
 *[SPD*), that are defined as symmetric matrices whose eigenvalue are all
@@ -176,7 +174,7 @@ Some interesting matrices are the *symmetric positive definite* matrices
 
 $ A succ 0 $
 
-It’s easy to imagine that *symmetric positive semidefinite* matrices *[SPSD*)
+It's easy to imagine that *symmetric positive semidefinite* matrices *[SPSD*)
 are symmetric matrices with all eigenvalues greater or equal than $0$ and are
 denoted as
 
@@ -198,9 +196,9 @@ $
 and their eigenvalues are greater or equal than $0$
 
 $
-  x^tack.b A^tack.b A x & = (A x)^tack.b (A x) = parallel A x parallel^2 gt.eq 0 \
-  x^tack.b A A^tack.b x & = (A^tack.b x)^tack.b (A^tack.b x) = parallel A^tack.b
-                          x parallel^2 gt.eq 0 \
+  x^tack.b A^tack.b A x & = (A x)^tack.b (A x) = || A x ||^2 gt.eq 0 \
+  x^tack.b A A^tack.b x & = (A^tack.b x)^tack.b (A^tack.b x)
+                          = || A^tack.b x ||^2 gt.eq 0 \
 $
 
 so they are both SPSD.

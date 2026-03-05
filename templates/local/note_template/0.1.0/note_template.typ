@@ -8,6 +8,9 @@
   set par(justify: true)
   set document(title: doc_title, author: "Federico Bustaffa")
 
+  set math.vec(delim: "[")
+  set math.mat(delim: "[")
+
   show heading: it => block(below: 0.8em, it)
 
   show raw.where(block: true): block.with(

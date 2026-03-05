@@ -36,8 +36,8 @@ So in other words $A$ has the minimum number of vectors to represent every
 vector in $V$ as linear combinations of its vectors.
 
 #important(title: "Basis")[
-  If a set $B$ of linearly independet vectors is also a minimal generating set
-  of $V$, then it’s called a #strong[basis] of $V$.
+  If a set $B$ of linearly independent vectors is also a minimal generating set
+  of $V$, then it’s called a *basis* of $V$.
 ]
 
 This has some interesting implications like
@@ -55,44 +55,40 @@ finite dimensional space, is the number of basis vectors of $V$.
 
 = Change of Basis <change-of-basis>
 
-The change of basis operation can be seen as a change of coordinate system in
-some cases.
+We can see a basis as a reference systems that gives us coordinates about
+vectors living in the vector space we are considering. If we consider for
+example the basis
 
-#example(title: "Change of Coordinates System")[
-  Let’s take the vector $v = (2 , 1)$ and let’s consider the canonical basis
+$ B = { vec(1, 0) vec(0, 1) } $
 
-  $ mat(delim: "[", 1; 0) mat(delim: "[", 0; 1) $
+and the vector
 
-  as coordinates system. If we consider another basis, for example
+$ v = vec(2, 1) $
 
-  $ mat(delim: "[", 1; - 1) mat(delim: "[", 1; 1) $
+its coordinates can be found by solving this linear system
 
-  we need to solve the following system
+$ mat(1, 0; 0, 1) vec(x_1, x_2) = vec(2, 1) $
 
-  $
-    mat(delim: "[", 1, 1; - 1, 1) mat(delim: "[", x_1; x_2) =
-    mat(delim: "[", 2; 1)
-  $
+that is equal to
 
-  in order to find the new coordinates of $v$.
+$ cases(x_1 = 2, x_2 = 1) $
 
-  $
-    cases(
-      x_1 + x_2 = 2,
-      - x_1 + x_2 = 1
-    )
-    arrow.r.double.long
-    cases(
-      x_1 = 2 - x_2,
-      x_2 = 3 \/ 2
-    )
-    arrow.r.double.long
-    cases(
-      x_1 = 1 \/ 2 = 0.5,
-      x_2 = 3 \/ 2 = 1.5
-    )
-  $
+that gives to use exactly the $v$ vector we started from because in this case we
+used the *canonical basis*.
 
-  so the new coordinates of $v$ with the new basis are $v = (0.5 , 1.5)$.
-]
+If now we are interested in changing coordinates system (and so change basis)
+and use for example
+
+$ vec(1, 1) vec(1, -1) $
+
+we just need to solve same linear system as before but now using the new basis
+
+$ mat(1, 1; 1, -1) vec(x_1, x_2) = vec(2, 1) $
+
+that is equal to
+
+$ cases(x_1 + x_2 = 2, x_1 - x_2 = 1) ==> cases(x_1 = 0.5, x_2 = 1.5) $
+
+This of course is a geometric view that can be useful for example for modeling
+symple dynamics.
 

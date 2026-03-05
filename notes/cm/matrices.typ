@@ -1,6 +1,8 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Matrices], doc)
 
+#title()
+
 One of the main objects in linear algebra is the *matrix*, that can be seen as
 an element of $bb(R)^(m times n)$, that can have many meanings as collection of
 column or row vectors, the representation of a system of linear equations or a

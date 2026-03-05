@@ -4,12 +4,12 @@
 
 #title()
 
-The concept of #strong[orthogonality] basically tells us if two vectors are
-#strong[orthogonal];, that in a $2$-dimensional space is equivalent to have two
-perpendicular lines. Or in terms of linear algebra, it means that there is a
-$90$ degree angle between the two vectors. For example
+Conceptually, two vectors are orthogonal if they are perpendicular or, in terms
+of linear algebra, it means that there is a $90$ degree angle between them. For
+example
 
-$ mat(delim: "[", 1; 0) quad mat(delim: "[", 0; 1) $
+
+$ vec(1, 0) quad vec(0, 1) $
 
 are orthogonal vectors.
 
@@ -37,7 +37,7 @@ are orthogonal vectors.
     // Opzionale: un puntino nell'origine
     circle((0, 0), radius: 0.05, fill: black)
   }),
-  caption: [Rappresentazione dei vettori ortogonali $hat(v)_1$ e $hat(v)_2$],
+  caption: [ Orthogonal Vectors ],
 )
 
 #important(title: "Orthogonality")[
@@ -46,7 +46,7 @@ are orthogonal vectors.
 ]
 
 If two vectors are orthogonal and have both length $1$ (euclidean norm),
-than they are called #strong[orthonormal];.
+than they are called *orthonormal*.
 
 #figure(
   image("images/orthogonal_orthonormal.jpg", width: 50%),
@@ -58,12 +58,12 @@ concept to matrices, except that for matrices the orthogonality is defined for
 only one matrix and not between two (like vectors).
 
 #important(title: "Matrix Orthogonality")[
-  A matrix $U in bb(R)^(n times n)$ is #strong[orthogonal] if
+  A matrix $U in bb(R)^(n times n)$ is *orthogonal* if
   $ U U^tack.b = U^tack.b U = I $
   A direct implication is that $U^tack.b = U^(- 1)$.
 ]
 
-Equivalently we can say that $U$’s columns are an #strong[orthonormal basis] of
+Equivalently we can say that $U$’s columns are an *orthonormal basis* of
 $bb(R)^n$. So we can see an orthogonal matrix as a collection of column vectors
 that are orthonormal with each other.
 
@@ -79,7 +79,7 @@ $
   An interesting property is that if $U in bb(R)^(n times n)$ is orthogonal and
   $x in bb(R)^n$ then it holds
 
-  $ parallel U x parallel_2 = parallel x parallel_2 $
+  $ || U x ||_2 = || x ||_2 $
 
   And more in general
 
@@ -93,9 +93,9 @@ $
   Let’s prove first the first case
 
   $
-    parallel U x parallel_2 & = sqrt((U x)^tack.b (U x)) \
-                            & = sqrt(x^tack.b U^tack.b U x) \
-                            & = sqrt(x^tack.b x) = parallel x parallel_2 \
+    || U x ||_2 & = sqrt((U x)^tack.b (U x)) \
+                & = sqrt(x^tack.b U^tack.b U x) \
+                & = sqrt(x^tack.b x) = || x ||_2 \
   $
 
   For the second case is even simpler
@@ -103,16 +103,15 @@ $
 ]
 
 Let’s also notice that two non-zero and orthogonal vectors are also linearly
-independent and this can be easily by observing that, if $u$ and $v$ are
-orthogonal, then
+independent; if $u$ and $v$ are orthogonal, then
 
 $ chevron.l u , v chevron.r = u^tack.b v = 0 $
 
-and if $u$ and $v$ are linearly independent, it means that they’re not null and
+and if $u$ and $v$ are linearly independent, it means that they're not null and
 
 $ alpha u + beta v = 0 $
 
-with $alpha = beta = 0$. So we can set
+only if $alpha = beta = 0$. So we can set
 
 $
   u^tack.b (alpha u) + u^tack.b (beta v) = alpha u^tack.b u + beta u^tack.b v =
@@ -151,7 +150,7 @@ their scalar product is
 
 $
   chevron.l u_i , u_j chevron.r = u_i^tack.b u_j = u^tack.b u =
-  parallel u parallel = 1
+  || u || = 1
 $
 
 because $u_i = u_j = u$ that is orthonormal.
