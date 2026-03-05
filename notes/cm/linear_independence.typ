@@ -3,10 +3,9 @@
 
 #title()
 
-Starting from basic vector operations (vector sum e multiplication by a scalar)
-and thanks to the definition of closure with respect to those operations, is
-possible to define what is a *linear combination*, that a core concept in linear
-algebra.
+Starting from basic vector operations (vector sum and multiplication by a
+scalar) and thanks to the definition of closure with respect to those
+operations, is possible to define what is a *linear combination*.
 
 #important(title: "Linear Combination")[
   Given a set of vectors $x_1 , dots.h , x_n$, the vector
@@ -17,7 +16,7 @@ algebra.
 
 Of course the $0$-vector is always a linear combination of $n$ vector and so, it
 is typically more interesting the study of non trivial linear combinations,
-where there is at least $lambda_i eq.not 0$, so that the resulting vector will
+where there is at least one $lambda_i != 0$, so that the resulting vector will
 not be $0$.
 
 #important(title: "Linear Independence")[
@@ -33,8 +32,8 @@ not be $0$.
 
 This means that chosen a vector $x_i$, is not possible to express it as a linear
 combination of the others. This is interesting because it says that this set of
-vectors has no redundancy, and removing one of this vectors from set means to
-lose something.
+vectors has no redundancy, and removing one of this vectors from set means
+losing _information_.
 
 Another interesting analysis is to check if multiple linear combinations of a
 linearly independent set of vectors is still linearly independent.
