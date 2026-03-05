@@ -140,24 +140,60 @@ Two interesting properties, derived by the fact that $U$ is orthogonal are that
   If $A in bb(R)^(n times n)$ is symmetric, then
 
   $
-    lambda_"min" || x ||^2 <= x^tack.b A x lt.eq
+    lambda_"min" || x ||^2 <= x^tack.b A x <=
     lambda_"max" || x ||^2
   $
 
   for any $x$. Of course the formula can be changed in
 
   $
-    lambda_"min" lt.eq frac(x^tack.b A x, || x ||^2)
-    lt.eq lambda_"max"
+    lambda_"min" <= frac(x^tack.b A x, || x ||^2)
+    <= lambda_"max"
+  $
+
+  *Proof*
+
+  First let's consider a *simple case* where $A$ is a diagonal matrix with its
+  eigenvalues on the diagonal
+
+  $
+    A = mat(
+      lambda_1, #none, #none ;
+      #none, dots.down, #none ;
+      #none, #none, lambda_n;
+    )
+  $
+
+  and let's also assume that
+
+  $ lambda_1 = lambda_"max" >= dots.c >= lambda_n = lambda_"min" $
+
+  In this case we have that
+
+  $ x^tack.b A x = lambda_1 x_1^2 + dots.c + lambda_n x_n^2 $
+
+  that of course satisfies the inequality because $lambda_"max" ||x||^2$ is
+  essentially the same thing but with the maximum eigenvalue (same reasoning for
+  $lambda_"min"$).
+
+  For the *general case*, things do not change that much we just have to use the
+  _spectral theorem_, since $A$ is symmetric
+
+  $ x^tack.b A x = x^tack.b U D U^tack.b x $
+
+  so if we know consider that $x^tack.b U$ and $U^tack.b x$ are still vector of
+  the same shape as before and $D$ is exactly the $A$ matrix of the simple case
+  we're done
+
+  $
+    lambda_"min" || U^tack.b x ||^2 <=
+    x^tack.b U D U^tack.b x <=
+    lambda_"max" || U^tack.b x ||^2
   $
 ]
 
-Let’s notice that when $|| x || = 1$ the formula is simplified in
-
-$ lambda_"min" lt.eq x^tack.b A x lt.eq lambda_"max" $
-
-The result given by this theorem is a consequence of the fact that if $v eq.not
-0$ such that $A v = lambda_"max" v$, then
+If of course we choose $x$ as an eigenvector of $A$, in particular the the
+associated with $lambda_"max"$, we have
 
 $
   v^tack.b A v = v^tack.b (lambda_"max" v) = lambda_"max"
@@ -168,15 +204,13 @@ the same holds for $lambda_"min"$.
 
 = Symmetric Positive (Semi)Definite Matrices <spsd>
 
-Some interesting matrices are the *symmetric positive definite* matrices
-*[SPD*), that are defined as symmetric matrices whose eigenvalue are all
-*strictly* positive and are denoted as
+Some interesting matrices are the *symmetric positive definite (SPD)*, that are
+defined as symmetric matrices whose eigenvalue are all *strictly* positive
 
 $ A succ 0 $
 
-It's easy to imagine that *symmetric positive semidefinite* matrices *[SPSD*)
-are symmetric matrices with all eigenvalues greater or equal than $0$ and are
-denoted as
+It's easy to imagine that *symmetric positive semidefinite (SPSD)*
+are symmetric matrices with all eigenvalues greater or equal than $0$
 
 $ A succ.eq 0 $
 
@@ -198,7 +232,7 @@ and their eigenvalues are greater or equal than $0$
 $
   x^tack.b A^tack.b A x & = (A x)^tack.b (A x) = || A x ||^2 gt.eq 0 \
   x^tack.b A A^tack.b x & = (A^tack.b x)^tack.b (A^tack.b x)
-                          = || A^tack.b x ||^2 gt.eq 0 \
+                          = || A^tack.b x ||^2 gt.eq 0
 $
 
 so they are both SPSD.

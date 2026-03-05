@@ -157,8 +157,8 @@ networks by assuming the local
 
 = Generative Process
 
-A bayesian network, once built, can be seen as a *generative process* for
-observations, composed by these steps:
+A bayesian network, once built, can be seen as a *generative process*, called
+*ancestral sampling* for observations, composed by these steps:
 
 + Pick a *topological ordering* of nodes.
 + Generate data by sampling from the local conditional probabilities following
