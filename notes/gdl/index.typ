@@ -7,4 +7,9 @@
 
 - Probability Recap
 - Bayesian Networks
+- Markov Random Fields
+- Causal Bayesian Networks
+- Naive Bayes
+- Gaussian Mixture Model
+- Hidden Markov Model
 
