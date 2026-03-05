@@ -1,21 +1,23 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Least Squares], doc)
 
-#title("Least Squares") <least-squares>
+#title()
 
 Some linear system cannot be solved exactly, for example in a system $A x = y$,
 where $A$ is not invertible, has $0$ or infinite solutions.
 
-Another case is when the system is #emph[overdetermined];, so that we need to
-satisfy more equations than the number of unknow values.
+Another case is when the system is *overdetermined*, so that we need to satisfy
+more equations than the number of unknow values.
 
-In both cases is possible to find #emph["the best"] possible solution, that is,
-the solution that is the #strong[closest] to the wanted solution.
+In both cases is possible to find *the best"* possible solution, that is, the
+solution that is the *closest* to the wanted solution.
 
 #example(title: "Example")[
-  We have two foods, each with their own carbohydrates and protein intakes $ A =
-  mat(delim: "[", 40, 80; 10, 20) $ For our ideal diet we want a certain amount
-  of carbohydrates and proteins.
+  We have two foods, each with their own carbohydrates and protein intakes
+
+  $ A = mat(delim: "[", 40, 80; 10, 20) $
+
+  For our ideal diet we want a certain amount of carbohydrates and proteins.
 
   $ y = mat(delim: "[", 100; 50) $
 
@@ -42,16 +44,15 @@ the solution that is the #strong[closest] to the wanted solution.
   As we can see is different from $y$ but it’s the closest solution we can get.
 ]
 
-A way to find the best possible $x$ is by solving the #strong[least squares]
-problem, that aims to minimize the quadratic distance between the wanted
-solution and the one we found.
+A way to find the best possible $x$ is by solving the *least squares* problem,
+that aims to minimize the quadratic distance between the wanted solution and the
+one we found.
 
 $ min_x parallel A x - y parallel^2 $
 
-The quadratic distance (or error) is a common choice to get a
-#emph[differentiable] function, that can be minimized with #emph[gradient-based]
-methods. But for now what we are interested in is what we can do starting from
-that formula:
+The quadratic distance (or error) is a common choice to get a *differentiable*
+function, that can be minimized with *gradient-based* methods. But for now what
+we are interested in is what we can do starting from that formula:
 
 $
   parallel A x - y parallel^2 & = (A x - y)^tack.b (A x - y)\
@@ -61,7 +62,7 @@ $
   & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - (A x)^tack.b y + y^tack.b y\
   & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - x^tack.b A^tack.b y + y^tack.b y\
   & = x^tack.b A^tack.b A x - 2 chevron.l x , A^tack.b y chevron.r + chevron.l y , y
-  chevron.r\
+  chevron.r
 $
 
 So minimize $parallel A x - y parallel^2$ is equivalent to minimize that
@@ -80,8 +81,8 @@ $
     chevron.l q , x chevron.r + 1 / 2 chevron.l y , y chevron.r)
 $
 
-This problem #strong[has a unique solution] when $Q$ is SPD, but most important
-the #strong[gradient] of that equation is
+This problem *has a unique solution* when $Q$ is SPD, but most important the
+*gradient* of that equation is
 
 $ Q x + q = A^tack.b A x - A^tack.b y $
 
@@ -90,12 +91,12 @@ and so we obtain that
 
 $ A^tack.b A x - A^tack.b y = 0 $
 
-So now we have a strategy to solve the #emph[least squares] problem made of $3$
-key points:
+So now we have a strategy to solve the *least squares* problem made of three key
+points:
 
 + Compute $A^tack.b A$
 + Compute $A^tack.b y$
-+ Solve $(A^tack.b A) x = A^tack.b y$ (#strong[normal equations];)
++ Solve $(A^tack.b A) x = A^tack.b y$ *[normal equations*)
 
 We end up with a problem whose solution gives us the closest possible vector to
 $y$.
@@ -105,9 +106,9 @@ $y$.
   solution if and only if $A$ has full column rank.
 ]
 
-To solve the #emph[normal equations] we need the #strong[pseudoinverse] of $A$,
-that is defined as $(A^tack.b A)^(- 1) A^tack.b$, and that let us generalize the
-concept of inverse for rectangular (overdetermined) linear systems.
+To solve the *normal equations* we need the *pseudoinverse* of $A$, that is
+defined as $(A^tack.b A)^(- 1) A^tack.b$, and that let us generalize the concept
+of inverse for rectangular (overdetermined) linear systems.
 
 In this way is possible to solve the system by computing
 
@@ -119,10 +120,3 @@ $ x = A^(+) y $
 
 where $A^(+) = (A^tack.b A)^(- 1) A^tack.b$ is the pseudoinverse of $A$.
 
-= References <references>
-
-- Computational Mathematics
-- Eigenvalues Eigenvectors
-- Pseudoinverse
-- Gradient Descent
-- Conjugate Gradient

@@ -1,6 +1,8 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Pseudoinverse Matrix], doc)
 
+#title()
+
 The concept of #strong[pseudoinverse] of a matri is a generalization of the
 inverse for square matrices. The pseudoinverse is used for example to solve
 overdetermined systems like a regression problem.
@@ -104,9 +106,3 @@ $
 
 that is the same thing we get with the previous definition.
 
-= References <references>
-
-- Linear Algebra
-- Matrices
-- Singular Value Decomposition
-- Least Squares

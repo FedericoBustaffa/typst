@@ -1,6 +1,8 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Vector Space Basis], doc)
 
+#title()
+
 Before introducing the concept of *basis* we need to define what is a generating
 set of a vector space.
 
@@ -94,7 +96,3 @@ some cases.
   so the new coordinates of $v$ with the new basis are $v = (0.5 , 1.5)$.
 ]
 
-= References <references>
-
-- Linear Algebra
-- Linear Independence

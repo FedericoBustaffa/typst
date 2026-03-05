@@ -1,41 +1,43 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Matrices], doc)
 
-One of the main objects in linear algebra is the #strong[matrix];, that can be
-seen as an element of $bb(R)^(m times n)$, that can have many meanings as
-collection of column or row vectors, the representation of a system of linear
-equations or a linear mapping.
+One of the main objects in linear algebra is the *matrix*, that can be seen as
+an element of $bb(R)^(m times n)$, that can have many meanings as collection of
+column or row vectors, the representation of a system of linear equations or a
+linear mapping.
 
 Before using matrices for some specific task is useful to define some
 properties, always valid regardless of context.
 
-- #strong[Sum];: given $A , B in bb(R)^(m times n)$
+- *Sum*: given $A , B in bb(R)^(m times n)$
   $ A + B = C in bb(R)^(m times n) $
   that is the element-wise sum of $A$ and $B$ ($c_(i j) = a_(i j) + b_(i j)$).
-- #strong[Product];: given $A in bb(R)^(m times n)$ and $B in bb(R)^(n times p)$
+- *Product*: given $A in bb(R)^(m times n)$ and $B in bb(R)^(n times p)$
   $ A dot.op B = C in bb(R)^(m times p) $
-  is the so called #strong[dot product] between $A$ and $B$. This works also for
-  $1$-column (and $1$-row) matrices, defining the #emph[matrix by vector]
+  is the so called *dot product* between $A$ and $B$. This works also for
+  $1$-column (and $1$-row) matrices, defining the _matrix by vector_
   multiplication.
 
 #note(title: "Matrix-Matrix Multiplication")[
   Given two matrices $A in bb(R)^(m times n)$ and $B in bb(R)^(n times p)$, the
   elements of product matrix $C in bb(R)^(m times p)$ are computed as follows:
+
   $ c_(i j) = sum_(k = 1)^n a_(i k) dot.op b_(k j) $
+
   with $i = 1 , dots.h , m$ and $j = 1 , dots.h , p$.
 ]
 
 For the dot product the following properties are valid:
 
-- #strong[Associativity];: $(A B) C = A (B C)$
-- #strong[Distributivity];: $(A + B) C = A C + B C$ and $A (B + C) = A B + A C$
+- *Associativity*: $(A B) C = A (B C)$
+- *Distributivity*: $(A + B) C = A C + B C$ and $A (B + C) = A B + A C$
 
 #important(title: "Dot Product Commutativity")[
-  The #emph[dot product] is, in general, not commutative
+  The _dot product_ is, in general, not commutative
   $ A B eq.not B A $
 ]
 
-Matrices also represent #strong[linear transformations];, for example $A v$ is a
+Matrices also represent *linear transformations*, for example $A v$ is a
 transformation $A$ applied to the vector $v$ (like translation or rotation).
 
 #pagebreak()
@@ -64,10 +66,10 @@ can approximate to $O (n^3)$ if we consider almost squared matrices with
 dimension $n times n$.
 
 An important matrix, that is useful to define other matrices and represents the
-neutral element for the dot product, is the #strong[identity] matrix
+neutral element for the dot product, is the *identity* matrix
 
 #note(title: "Identity Matrix")[
-  The #strong[identity matrix] is defined as a square matrix with all zeros
+  The *identity matrix* is defined as a square matrix with all zeros
   except on the main diagonal, that has only ones.
 
   $
@@ -78,18 +80,18 @@ neutral element for the dot product, is the #strong[identity] matrix
   $
 ]
 
-The identity matrix is crucial to define the #strong[inverse] matrix of a matrix
-$A$, that is very important in many situations like solving linear systems.
+The identity matrix is crucial to define the *inverse* matrix of a matrix $A$,
+that is very important in many situations like solving linear systems.
 
 #note(title: "Inverse Matrix")[
-  Given a #emph[square] matrix $A$, its inverse is a matrix $B$ such that
+  Given a _square_ matrix $A$, its inverse is a matrix $B$ such that
   $ A B = B A = I $
   and it is denoted as $A^(- 1)$.
 ]
 
 Unfortunately, not all (square) matrices have a inverse, if so, they are called
-#strong[singular] or #strong[non invertible];; if instead a matrix has a inverse
-is called #strong[regular];, #strong[non singular] or #strong[invertible];.
+*singular* or *non invertible*; if instead a matrix has a inverse is called
+*regular*, *non singular* or *invertible*.
 
 A direct consequence of this definition is that, if we have $A$ and $I$ is
 possible to find $A^(- 1)$ by computing the dot product
@@ -99,9 +101,8 @@ $ A A^(- 1) = I $
 and solving a linear system. Now should be more clear that not always is
 possible to have a inverse.
 
-Another special matrix is the #strong[transpose] that, unlike the inverse, is
-always defined for every matrix square and rectangular matrix (so also for
-vectors).
+Another special matrix is the *transpose* that, unlike the inverse, is always
+defined for every matrix square and rectangular matrix (so also for vectors).
 
 #note(title: "Transpose Matrix")[
   Given a matrix $A in bb(R)^(m times n)$, the matrix $B in bb(R)^(n times m)$
@@ -127,7 +128,7 @@ $ (A^(- 1))^tack.b = (A^tack.b)^(- 1) = A^(- tack.b) $
 #note(title: "Symmetric Matrix")[
   Given a matrix $A$ such that
   $ A = A^tack.b $
-  then is called #strong[symmetric];.
+  then is called *symmetric*.
 ]
 
 The sum of symmetric matrices is also symmetric, while the product is not
@@ -145,7 +146,3 @@ $lambda , psi in bb(R)$ it holds:
 These are general properties and useful matrices to start doing things with
 linear algebra.
 
-= References <references>
-
-- Linear Algebra
-- Linear Systems

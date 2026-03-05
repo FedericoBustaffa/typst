@@ -1,6 +1,8 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Computational Mathematics], doc)
 
+#title()
+
 In this particular case, the course aim to a build theoretical and practical
 knowledge in fields like numerical analysis and optimization.
 
@@ -32,8 +34,6 @@ machine learning they are seen as elements of $bb(R)^n$.
 - Low Rank Approximation
 
 = References <references>
-
-- Linear Algebra
 
 - #link(
     "https://elearning.di.unipi.it/course/view.php?id=1048",

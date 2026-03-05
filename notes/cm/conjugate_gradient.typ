@@ -1,8 +1,4 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Conjugate Gradient], doc)
 
-#title("Conjugate Gradient") <conjugate-gradient>
-
-= References <references>
-
-- Computational Mathematics
+#title()

@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Matrix Norms], doc)
 
-#title("Matrix Norms") <matrix-norms>
+#title()
 
 As vectors, also matrices has the concept of #emph[norm] and it is quite
 similar; in fact a #strong[matrix norm] is a function
@@ -81,8 +81,3 @@ $
   parallel Sigma parallel_F = sqrt(sigma_1^2 + dots.h.c + sigma_n^2)
 $
 
-= References <references>
-
-- Linear Algebra
-- Vector Norms
-- Singular Value Decomposition

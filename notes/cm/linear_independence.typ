@@ -1,12 +1,12 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Linear Independence], doc)
 
-#title("Linear Independence")
+#title()
 
 Starting from basic vector operations (vector sum e multiplication by a scalar)
 and thanks to the definition of closure with respect to those operations, is
-possible to define what is a #emph[linear combination];, that a core concept in
-linear algebra.
+possible to define what is a *linear combination*, that a core concept in linear
+algebra.
 
 #important(title: "Linear Combination")[
   Given a set of vectors $x_1 , dots.h , x_n$, the vector
@@ -27,8 +27,8 @@ not be $0$.
   $ sum_(i = 1)^n lambda_i x_i = 0 $
 
   can be obtained only if $lambda_1 = dots.h.c = lambda_n = 0$, then the set of
-  vectors is #strong[linearly independent];. If instead there is at least one
-  $i$ sucht that $lambda_i eq.not 0$, the set is #strong[linearly dependent];.
+  vectors is *linearly independent*. If instead there is at least one $i$ sucht
+  that $lambda_i eq.not 0$, the set is *linearly dependent*.
 ]
 
 This means that chosen a vector $x_i$, is not possible to express it as a linear
@@ -76,6 +76,3 @@ So we can conclude that $x_1 , dots.h , x_m$ are linearly independet vectors if
 and only if the vectors composed by the $lambda$ coefficients of every linear
 combination, are linearly independent.
 
-= References <references>
-
-- Linear Algebra

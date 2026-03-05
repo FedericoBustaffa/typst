@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Singular Value Decomposition], doc)
 
-#title[Singular Value Decomposition]
+#title()
 
 The #strong[singular value decomposition] (#strong[SVD];) is a way to the
 decompose every matrix $A in bb(R)^(m times n)$ in a product of three matrices
@@ -82,9 +82,3 @@ $
 
 because every $v_i^tack.b dot.op v_(r + 1) = 0$.
 
-= References <references>
-
-- Linear Algebra
-- Eigenvalues Eigenvectors
-- Computational Mathematics
-- Least Squares

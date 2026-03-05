@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Matrix Rank], doc)
 
-#title("Matrix Rank") <matrix-rank>
+#title()
 
 The matrix #strong[rank] is a useful value that provides some information about
 the matrix itself, that can be also useful check linear systems has solutions
@@ -58,9 +58,3 @@ column rank if $ker (A) = { 0 }$. In other words there is no vectore $v eq.not
   $A^tack.b A$ is SPD.
 ]
 
-= References <references>
-
-- Linear Algebra
-- Linear Independence
-- Linear Systems
-- Eigenvalues Eigenvectors

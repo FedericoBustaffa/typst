@@ -162,8 +162,3 @@ $ U U^tack.b = sum_(i = 1)^k u_i u_i^tack.b $
 
 that must be computed and could be any matrix.
 
-= References <references>
-
-- Linear Algebra
-- Matrices
-- Vector Norms

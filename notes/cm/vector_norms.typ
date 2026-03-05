@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Vector Norms], doc)
 
-#title("Vector Norms") <vector-norms>
+#title()
 
 In order to measure vectors #emph[length] there are some metrics that can be
 used, called #strong[norms];, functions
@@ -53,6 +53,3 @@ $ v = alpha dot.op w $
 where $alpha = parallel v parallel$ and $w = v \/ parallel v parallel$ is the
 unit vector.
 
-= References <references>
-
-- Linear Algebra

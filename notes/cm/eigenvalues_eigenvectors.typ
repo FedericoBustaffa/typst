@@ -1,22 +1,20 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Eigenvalues and Eigenvectors], doc)
 
-#title("Eigenvalues and Eigenvectors") <eigenvalues-and-eigenvectors>
+#title()
 
 Given a matrix $A in bb(R)^(n times n)$, a scalar $lambda$ and a vector $v$ such
 that
 
 $ A v = lambda v $
 
-we call $lambda$ and $v$ respectively an #strong[eigenvalue] and an
-#strong[eigenvector] of $A$. To compute eigenvalues and eigenvectors we need to
-#strong[diagonalize] the matrix $A$, but it has to be #strong[diagonalizable] in
-the first place.
+we call $lambda$ and $v$ respectively an *eigenvalue* and an *eigenvector* of
+$A$. To compute eigenvalues and eigenvectors we need to *diagonalize* the matrix
+$A$, but it has to be *diagonalizable* in the first place.
 
 #important(title: "Diagonalizable Matrix")[
-  A matrix $A in bb(R)^(n times n)$ is #strong[diagonalizable] if exists a
-  matrix $V in bb(R)^(n times n)$ that is invertible and a #strong[diagonal]
-  matrix $D$, such that
+  A matrix $A in bb(R)^(n times n)$ is *diagonalizable* if exists a matrix $V in
+  bb(R)^(n times n)$ that is invertible and a *diagonal* matrix $D$, such that
 
   $
     A = V D V^(- 1) =
@@ -38,13 +36,13 @@ the first place.
     )
   $
 
-  This is also called #strong[eigendecomposition];.
+  This is also called *eigendecomposition*.
 ]
 
-where $(lambda_i , v_i)$ are #strong[eigenpairs] of $A$, formed by the
-eigenvalue $lambda_i$ and the eigenvector $v_i$.
+where $(lambda_i , v_i)$ are *eigenpairs* of $A$, formed by the eigenvalue
+$lambda_i$ and the eigenvector $v_i$.
 
-The set ${ v_1 , dots.h , v_n }$ is a basis of $bb(R)^n$ made of eigenvectors of
+The set ${ v_1 , dots , v_n }$ is a basis of $bb(R)^n$ made of eigenvectors of
 $A$.
 
 Some interesting property of eigenvectors are
@@ -55,10 +53,8 @@ Some interesting property of eigenvectors are
   $A$
   $ A (v + w) = A v + A w = lambda v + lambda w = lambda (v + w) $
 
-
-Let’s now consider a matrix $A = V D V^(- 1)$ and its eigenvalues
-${ lambda_1 , dots.h , lambda_n }$, the eigenvalues of $A^k$ can be easily
-computed by notice that
+Let’s now consider a matrix $A = V D V^(- 1)$ and its eigenvalues $lambda_1,
+dots, lambda_n$, the eigenvalues of $A^k$ can be easily computed by notice that
 
 $ A^k = product_(i = 1)^k A = product_(i = 1)^k V D V^(- 1) $
 
@@ -78,9 +74,9 @@ $
   ) V^(- 1)
 $
 
-from which we can deduce that the eigenvalues of $A$ are ${ lambda_1^k , dots.h
-  , lambda_n^k }$ while the eigenvectors are the same, because the matrix $V$ is
-still the same, so we can take their columns as eigenvectors.
+from which we can deduce that the eigenvalues of $A$ are $lambda_1^k, dots,
+lambda_n^k$ while the eigenvectors are the same, because the matrix $V$ is still
+the same, so we can take their columns as eigenvectors.
 
 A direct implication of this is with polynomials. Let’s consider a classic
 polynomial of degree $k$
@@ -94,7 +90,7 @@ $ p (A) = c_0 I + c_1 A + c_2 A^2 + dots.h.c + c_k A^k $
 Like before, we can expand every $A^i$ in $V D^i V^(- 1)$, for all $k$
 
 $
-  p (A) = c_0 I + c_1 V D V^(- 1) + c_2 V D^2 V^(- 1) + dots.h.c + c_k V D^k
+  p (A) = c_0 I + c_1 V D V^(- 1) + c_2 V D^2 V^(- 1) + dots.c + c_k V D^k
   V^(- 1)
 $
 
@@ -127,11 +123,11 @@ theorem*.
   bb(R)^(n times n)$ that is orthogonal and there exists a diagonal matrix $D in
   bb(R)^(n times n)$ with the eigenvalues of $A$ on its diagonal such that
   $ A = U D U^T $
-  and this is called #strong[spectral decomposition] of $A$.
+  and this is called *spectral decomposition* of $A$.
 ]
 
 This theorem implies a lot of interesting properties like the fact that if a
-matrix is symmetric then is #emph[always diagonalizable];.
+matrix is symmetric then is *always diagonalizable*.
 
 Another interesting fact is that the matrix $U$ containing the eigenvectors is
 orthogonal and so the diagonalization is simplified due to the fact that we
@@ -174,15 +170,15 @@ the same holds for $lambda_(upright("min"))$.
 
 = Symmetric Positive (Semi)Definite Matrices <symmetric-positive-semidefinite-matrices>
 
-Some interesting matrices are the #strong[symmetric positive definite] matrices
-(#strong[SPD];), that are defined as symmetric matrices whose eigenvalue are all
-#emph[strictly] positive and are denoted as
+Some interesting matrices are the *symmetric positive definite* matrices
+*[SPD*), that are defined as symmetric matrices whose eigenvalue are all
+*strictly* positive and are denoted as
 
 $ A succ 0 $
 
-It’s easy to imagine that #strong[symmetric positive semidefinite] matrices
-(#strong[SPSD];) are symmetric matrices with all eigenvalues greater or equal
-than $0$ and are denoted as
+It’s easy to imagine that *symmetric positive semidefinite* matrices *[SPSD*)
+are symmetric matrices with all eigenvalues greater or equal than $0$ and are
+denoted as
 
 $ A succ.eq 0 $
 
@@ -209,6 +205,3 @@ $
 
 so they are both SPSD.
 
-= References <references>
-
-- Linear Algebra
