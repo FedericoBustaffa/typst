@@ -1,5 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: doc => note_template([Chemical Reaction Metaphor], doc)
+#show: doc => note_template([Chemical Reactions], doc)
 
 #title()
 
@@ -215,7 +215,7 @@ concentrations.
   kinetic constant but, as we can see the exponent of $X$ is $1$, so it is its
   stoichiometric coefficient and so we have that
 
-  $ 1 \* k = 6 arrow.l.r.double k = 6 $
+  $ 1 dot k = 6 <==> k = 6 $
 
   the final reaction obtained is
 
