@@ -3,14 +3,14 @@
 
 #title()
 
-The #strong[singular value decomposition] (#strong[SVD];) is a way to the
-decompose every matrix $A in bb(R)^(m times n)$ in a product of three matrices
+The *singular value decomposition* *[SVD*) is a way to the decompose every
+matrix $A in bb(R)^(m times n)$ in a product of three matrices
 
 $ A = U Sigma V^tack.b $
 
 where $U in bb(R)^(m times m)$ and $V in bb(R)^(n times n)$ orthogonal and
 $Sigma in bb(R)^(m times n)$ diagonal, where, on the diagonal we have the so
-called #strong[singular values];:
+called *singular values*:
 
 $ { sigma_1 , dots.h , sigma_(min (m , n)) } $
 
@@ -23,9 +23,9 @@ words, the singular values depend only on the matrix $A$, while there are
 multiple choices of $U$ and $V$ that keep the decomposition valid.
 
 As said, ${ sigma_1 , dots.h , sigma_(min (m , n)) }$ are the singular values of
-$A$, while the columns of $U$ are called the #strong[left singular vectors] of
-$A$ and in a similar way, the rows of $V^tack.b$ (or the columns of $V$) are
-called the #strong[right singular vectors] of $A$.
+$A$, while the columns of $U$ are called the *left singular vectors* of $A$ and
+in a similar way, the rows of $V^tack.b$ (or the columns of $V$) are called the
+*right singular vectors* of $A$.
 
 = SVD and Eigenvalues <svd-and-eigenvalues>
 
@@ -42,10 +42,9 @@ $
   & = V Sigma^tack.b Sigma V^tack.b = V Sigma^2 V^tack.b & Sigma = Sigma^tack.b
 $
 
-That is the #strong[spectral decomposition] of $A^tack.b A$ from which we can
-deduce that $sigma_1 , dots.h , sigma_n$ are the singular values of $A$ if and
-only if $sigma_1^2 , dots.h , sigma_n^2$ are the eigenvalues values of $A^tack.b
-A$.
+That is the *spectral decomposition* of $A^tack.b A$ from which we can deduce
+that $sigma_1 , dots.h , sigma_n$ are the singular values of $A$ if and only if
+$sigma_1^2 , dots.h , sigma_n^2$ are the eigenvalues values of $A^tack.b A$.
 
 
 If we take a look at the rank of $A$, we can see that it is equal to the number
@@ -59,8 +58,8 @@ words, to write $A$ we only need the first $r = upright("rank") (A)$ singular
 values, left and right singular vectors.
 
 This leads to a more compact representation of $A$ and the SVD in general that
-takes the name of #strong[thin] SVD of a rectangular #emph[tall] matrix $A in
-bb(R)^(m times n)$ ($m > n$). In this form the columns of $U$ are orthonormal.
+takes the name of *thin* SVD of a rectangular #emph[tall] matrix $A in bb(R)^(m
+times n)$ ($m > n$). In this form the columns of $U$ are orthonormal.
 
 The SVD gives also some information on the $4$ fundamental subspaces of $A$
 

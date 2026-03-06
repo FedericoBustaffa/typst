@@ -3,112 +3,72 @@
 
 #title()
 
-Some linear system cannot be solved exactly, for example in a system $A x = y$,
-where $A$ is not invertible, has $0$ or infinite solutions.
+Some linear system cannot be solved exactly, for example a system $A x = y$ can
+have zero or infinite solutions if $A$ is not invertible.
 
 Another case is when the system is *overdetermined*, so that we need to satisfy
 more equations than the number of unknow values.
 
-In both cases is possible to find *the best"* possible solution, that is, the
-solution that is the *closest* to the wanted solution.
-
-#example(title: "Example")[
-  We have two foods, each with their own carbohydrates and protein intakes
-
-  $ A = mat(delim: "[", 40, 80; 10, 20) $
-
-  For our ideal diet we want a certain amount of carbohydrates and proteins.
-
-  $ y = mat(delim: "[", 100; 50) $
-
-  So the amount of each food can be found by solving the following linear system
-
-  $
-    mat(delim: "[", 40, 80; 10, 20) mat(delim: "[", x_1; x_2) =
-    mat(delim: "[", 100; 50)
-  $
-
-  Unfortunately $A$ is not invertible and so we can’t have an exact solution,
-  but we can find the closest $x$ vector, such that
-
-  $ parallel A x - y parallel $
-
-  is minimized. For the moment let’s take a solution given by an oracle
-
-  $ x = mat(delim: "[", 0.5294; 1.0588) $
-
-  that gives us the following vector $A x$
-
-  $ A x = mat(delim: "[", 105.882; 26.471) $
-
-  As we can see is different from $y$ but it’s the closest solution we can get.
-]
+In both cases is possible to find *the best* possible solution, that from a
+geometrical point of view can be seen as the *closest* to the desired one.
 
 A way to find the best possible $x$ is by solving the *least squares* problem,
-that aims to minimize the quadratic distance between the wanted solution and the
-one we found.
+that aims to minimize the quadratic distance between our solution and the
+desired one.
 
-$ min_x parallel A x - y parallel^2 $
+$ min_x || A x - y ||^2 $
 
 The quadratic distance (or error) is a common choice to get a *differentiable*
-function, that can be minimized with *gradient-based* methods. But for now what
-we are interested in is what we can do starting from that formula:
+function, that can be minimized with methods based on *gradient*. But for now
+what we are interested in is what we can do starting from that formula:
 
 $
-  parallel A x - y parallel^2 & = (A x - y)^tack.b (A x - y)\
+  || A x - y ||^2 & = (A x - y)^tack.b (A x - y)\
   & = ((A x)^tack.b - y^tack.b) (A x - y)\
   & = (x^tack.b A^tack.b - y^tack.b) (A x - y)\
   & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - y^tack.b A x + y^tack.b y\
   & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - (A x)^tack.b y + y^tack.b y\
   & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - x^tack.b A^tack.b y + y^tack.b y\
-  & = x^tack.b A^tack.b A x - 2 chevron.l x , A^tack.b y chevron.r + chevron.l y , y
-  chevron.r
+  & = x^tack.b A^tack.b A x - 2 x^tack.b A^tack.b y + y^tack.b y
 $
 
-So minimize $parallel A x - y parallel^2$ is equivalent to minimize that
-equation. Let’s make one more step that will make sense in a while and let’s
-divide everything by $2$, so that the problem becomes
+So minimize $|| A x - y ||^2$ is equivalent to minimize that equation. Let’s
+make one more step that will make sense in a while and let’s divide everything
+by $2$, so that the problem becomes
 
 $
-  min_x 1 / 2 parallel A x - y parallel^2 = min_x (1 / 2 x^tack.b A^tack.b A x -
-    chevron.l x , A^tack.b y chevron.r + 1 / 2 chevron.l y , y chevron.r)
+  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^tack.b A^tack.b A x -
+    x^tack.b A^tack.b y + 1 / 2 y^tack.b y)
 $
 
 Let now $Q = A^tack.b A$ and $q = - A^tack.b y$, the problem can be rewritten as
 
 $
-  min_x 1 / 2 parallel A x - y parallel^2 = min_x (1 / 2 x^tack.b Q x +
-    chevron.l q , x chevron.r + 1 / 2 chevron.l y , y chevron.r)
+  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^tack.b Q x +
+    x^tack.b q + 1 / 2 y^tack.b y)
 $
 
-This problem *has a unique solution* when $Q$ is SPD, but most important the
-*gradient* of that equation is
+This problem *has a unique solution* when $Q$ is SPD or has full column rank
+and, in order to find its solution, it's necessary to compute the *gradient*
 
 $ Q x + q = A^tack.b A x - A^tack.b y $
 
-To minimize the objective function it’s necessary to let the gradient be $0$,
-and so we obtain that
+that we need to set to zero in order to minimize the objective function
 
 $ A^tack.b A x - A^tack.b y = 0 $
 
 So now we have a strategy to solve the *least squares* problem made of three key
 points:
 
-+ Compute $A^tack.b A$
-+ Compute $A^tack.b y$
-+ Solve $(A^tack.b A) x = A^tack.b y$ *[normal equations*)
++ Compute $A^tack.b A$: we can just compute half of the matrix.
++ Compute $A^tack.b y$: Cholesky factorization.
++ Solve the so called *normal equations* $(A^tack.b A) x = A^tack.b y$
 
-We end up with a problem whose solution gives us the closest possible vector to
-$y$.
-
-#important(title: "Theorem")[
-  The least squares problem $min_x parallel A x - y parallel^2$ has a unique
-  solution if and only if $A$ has full column rank.
-]
-
-To solve the *normal equations* we need the *pseudoinverse* of $A$, that is
-defined as $(A^tack.b A)^(- 1) A^tack.b$, and that let us generalize the concept
-of inverse for rectangular (overdetermined) linear systems.
+In the first two points everything is known so, aside from computational
+optimization, we don't need anything. Instead to solve the _normal equations_ we
+need the *pseudoinverse* of $A$, that is defined as $(A^tack.b A)^(- 1)
+A^tack.b$, and that let us generalize the concept of inverse for rectangular
+(overdetermined) linear systems.
 
 In this way is possible to solve the system by computing
 
@@ -120,3 +80,18 @@ $ x = A^(+) y $
 
 where $A^(+) = (A^tack.b A)^(- 1) A^tack.b$ is the pseudoinverse of $A$.
 
+= Uniqueness of Solution
+
+#important(title: "Theorem")[
+  A matrix $A in RR^(m times n)$ has full column rank if and only if is SPD.
+]
+
+In particular if $ker(A) != { 0 }$ it means that there is a vector $z != 0$ such
+that $A z = 0$; if we now take a vector $x$ solution of the problem, also $x +
+z$ is a solution:
+
+$ A (x + z) = y <==> A x + A z = y $
+
+but $A z = 0$ so again we have $A x$ that was a solution. So, since full column
+rank matrices have the kernel composed by only the zero vector, there is a
+unique solution for the least squares problem.
