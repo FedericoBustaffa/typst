@@ -3,12 +3,12 @@
 
 #title()
 
-As vectors, also matrices has the concept of #emph[norm] and it is quite
-similar; in fact a #strong[matrix norm] is a function
+As vectors, also matrices has the concept of _norm_ and it is quite
+similar; in fact a *matrix norm* is a function
 
-$ || dot.op || : { upright("matrices") } arrow.r bb(R) $
+$ || dot.op || : { "matrices" } arrow.r bb(R) $
 
-that needs to satisfy $4$ properties:
+that needs to satisfy 4 properties:
 
 - $|| A || gt.eq 0$ for all $A$ and
   $|| A || = 0$ if and only if $A = 0$.
@@ -20,10 +20,10 @@ that needs to satisfy $4$ properties:
   for all $A , B$ (sub-multiplicativity)
 
 Starting from a vector norm is possible to define a matrix norm, defining the so
-called #strong[induced matrix norm];, that is defined, given a vector norm
+called *induced matrix norm*, that is defined, given a vector norm
 $|| dot.op ||$ as
 
-$ || A || = max_(v eq.not 0) frac(|| A v ||, || v ||) $
+$ || A || = max_(v != 0) frac(|| A v ||, || v ||) $
 
 in fact we also can say that if $|| dot.op ||$ is an induced matrix
 norm, then for any $A$ and for any $v$, we have
@@ -32,7 +32,7 @@ $ || A v || <= || A || dot.op || v || $
 
 = Spectral Norm <spectral-norm>
 
-The matrix norm induced by the Euclidean norm is called #strong[spectral norm]
+The matrix norm induced by the Euclidean norm is called *spectral norm*
 that has an interesting property: if $Q_1$ and $Q_2$ are two orthogonal matrices
 of dimension $n times n$ and $A in bb(R)^(n times n)$ then
 
@@ -41,9 +41,9 @@ $ || Q_1 A Q_2 || = || A || $
 and this is because
 
 $
-  || Q_1 A Q_2 || & = max_(v eq.not 0) frac(|| Q_1 A Q_2 v ||, || v ||) \
-                  & = max_(v eq.not 0) frac(|| A Q_2 v ||, || Q_2 v ||) \
-                  & = max_(z eq.not 0) frac(|| A z ||, || z ||) = || A ||
+  || Q_1 A Q_2 || & = max_(v != 0) frac(|| Q_1 A Q_2 v ||, || v ||) \
+                  & = max_(v != 0) frac(|| A Q_2 v ||, || Q_2 v ||) \
+                  & = max_(z != 0) frac(|| A z ||, || z ||) = || A ||
 $
 
 And this is interesting because in the SVD we have the left and right matrices
@@ -62,8 +62,8 @@ Another interesting norm that has a relation with SVD is the *Frobenius norm*
 
 $ || A ||_F = sqrt(sum_(i , j) a_(i j)^2) $
 
-that is, like the spectral norm, #emph[unitary invariant];, that is, for $Q_1$
-and $Q_2$ orthogonal it holds
+that is, like the spectral norm, _unitary invariant_, that is, for $Q_1$ and
+$Q_2$ orthogonal it holds
 
 $ || Q_1 A Q_2 ||_F = || A ||_F $
 

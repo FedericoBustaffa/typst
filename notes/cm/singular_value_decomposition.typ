@@ -77,7 +77,7 @@ that proves $U$ being an orthogonal matrix.
 
 If we take a look at the rank of $A$, we can see that it is equal to the number
 of strictly positive singular values. In fact is possible to write $A$ as the
-sum of $r = "rank"(A)$ terms of rank-$1$.
+sum of $r = "rank"(A)$ terms of rank equal to $1$.
 
 $ A = sigma_1 u_1 v_1^tack.b + dots.c + sigma_r u_r v_r^tack.b $
 
@@ -86,15 +86,15 @@ words, to write $A$ we only need the first $r = "rank"(A)$ singular
 values, left and right singular vectors.
 
 This leads to a more compact representation of $A$ and the SVD in general that
-takes the name of *thin* SVD of a rectangular #emph[tall] matrix $A in bb(R)^(m
-times n)$ ($m > n$). In this form the columns of $U$ are orthonormal.
+takes the name of *thin* (or *economy*) SVD of a rectangular _tall_ matrix $A in
+RR^(m times n)$ ($m > n$). In this form the columns of $U$ are orthonormal.
 
 The SVD gives also some information on the $4$ fundamental subspaces of $A$
 
-- $im(A) = "span"{ u_1 , dots.h , u_r }$
-- $ker(A) = "span"{ v_(r + 1) , dots.h , v_n }$
-- $im(A^tack.b) = "span"{ v_1 , dots.h , v_r }$
-- $ker(A^tack.b) = "span"{ u_(r + 1) , dots.h , u_m }$
+- $im(A) = "span"(u_1 , dots.h , u_r)$
+- $ker(A) = "span"(v_(r + 1) , dots.h , v_n)$
+- $im(A^tack.b) = "span"(v_1 , dots.h , v_r)$
+- $ker(A^tack.b) = "span"(u_(r + 1) , dots.h , u_m)$
 
 In fact we can for example test it like this
 
@@ -103,8 +103,8 @@ $ A = sigma_1 u_1 v_1^tack.b + dots.h + sigma_r u_r v_r^tack.b $
 and so
 
 $
-  A v_(r + 1) = sigma_1 u_1 v_1^tack.b v_(r + 1) + dots.h + sigma_r u_r
-  v_r^tack.b v_(r + 1) = 0
+  A v_(r + 1) = sigma_1 u_1 v_1^tack.b v_(r + 1) + dots.h +
+  sigma_r u_r v_r^tack.b v_(r + 1) = 0
 $
 
 because every $v_i^tack.b dot.op v_(r + 1) = 0$.
