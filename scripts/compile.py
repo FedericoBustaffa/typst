@@ -1,18 +1,17 @@
-import argparse
 import os
 import pathlib
 import subprocess as sp
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "path", default="notes", type=str, help="directory or file path to compile"
-    )
-    args = parser.parse_args()
-    path = args.path
-
-    subjects = os.listdir(path)
+    subjects = os.listdir("notes")
 
     for s in subjects:
         s = "notes/" + s
-        print(os.listdir(s))
+        files = os.listdir(s)
+
+        files = [f for f in files if f"{s}/{f}".endswith(".typ")]
+        for f in files:
+            exit_code = sp.call(["typst", "compile", f"{s}/{f}"])
+            if exit_code != 0:
+                print(f"compile error for {s}/{f}")
+                exit(1)
