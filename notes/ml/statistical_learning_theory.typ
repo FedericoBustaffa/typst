@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Statistical Learning Theory], doc)
 
-#title("Statistical Learning Theory")
+#title()
 
 The #strong[statistical learning theory] (#strong[SLT];) provides the basics for
 model complexity and risk analysis. It formalizes what a machine learning model

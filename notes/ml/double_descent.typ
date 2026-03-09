@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Double Descent], doc)
 
-#title("Double Descent")
+#title()
 
 A relatively new phenomenon discovered is called #strong[double descent] and it
 occurs when the model is #strong[overparametrized];, in other words when the
@@ -50,8 +50,6 @@ degree polynomial with smaller weights.
 
 = References <references>
 
-- Deep Learning
-- Bias Variance
 - #link(
     "https://www.youtube.com/watch?v=z64a7USuGX0&t=1808s",
   )[WelchLabs YouTube video]

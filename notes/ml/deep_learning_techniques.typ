@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Deep Learning Techniques], doc)
 
-#title("Deep Learning Techniques")
+#title()
 
 In order to train a deep neural networks standard appraches and techniques are
 not enough. In the past training was done by pre-training but nowadays there are
@@ -29,18 +29,18 @@ optimization process.
 )
 
 In order to avoid this and mantain a smooth stable training, is possible to
-#strong[clip] the gradient if its norm exceeds a threshold $v$, so if $parallel
+*clip* the gradient if its norm exceeds a threshold $v$, so if $parallel
 g parallel > v$, where $g$ is the gradient vector, the new gradient becomes
 
 $ g = v dot.op frac(g, parallel g parallel) $
 
 Take into account that the clipping can be done layer by layer during
-backpropagation or #emph[globally] in a single step:
+backpropagation or _globally_ in a single step:
 
-- #strong[Layer wise];: during backpropagation each layer computes its gradient
+- *Layer wise*: during backpropagation each layer computes its gradient
   vector and clip it if necessary. Can be finer for each layer but can modify
   proportions between layers.
-- #strong[Global];: each layer computes its gradient vector. The clipping is
+- *Global*: each layer computes its gradient vector. The clipping is
   based on the norm of the global gradient vector of each layer. This is more
   stable and preserve relative gradient directions through layers.
 
@@ -55,12 +55,12 @@ functions that reach saturations and produce very small gradient.
 Also repetition of multiplication of small quantities through many layers leads
 to exponentially small gradients going towards input layer.
 
-This problem can be addressed in many ways, for example with #strong[ReLU]
-activation function (and its variants) or with #strong[batch normalization];.
+This problem can be addressed in many ways, for example with *ReLU*
+activation function (and its variants) or with *batch normalization*.
 
 == Batch Normalization <batch-normalization>
 
-An interesting technique is called #strong[batch normalization] at it consists
+An interesting technique is called *batch normalization* at it consists
 in normalizing each batch through a standardization, keeping $w x + b$ with mean
 to 0 and variance to 1.
 
@@ -69,16 +69,16 @@ easily and it adds a regularization effect due to the introduced noise.
 
 = Dropout <dropout>
 
-Another interesting technique for deep learning is #strong[dropout] that
+Another interesting technique for deep learning is *dropout* that
 basically randomly selects a subset of the network during training.
 
 Basically a mask is applied the entire network, turning on and off some neurons
-and train them for an epoch. Typically the number of #strong[subnet] is fixed
+and train them for an epoch. Typically the number of *subnet* is fixed
 (like 10-20) and some configuration might not be valid: there isn’t a path from
 input to output.
 
 #figure(
-  image("images/dropout.png", width: 50%),
+  image("images/dropout.png", width: 45%),
   caption: [ Dropout ],
 )
 
@@ -98,8 +98,3 @@ implicit weights sharing among them. This also brings a side effect for each
 shared unit: now an hidden unit is not just a good feature, but a good feature
 in many contexts.
 
-= References <references>
-
-- Deep Learning
-- Neural Networks
-- Neural Networks Training
