@@ -53,3 +53,10 @@ $ v = alpha dot.op w $
 where $alpha = parallel v parallel$ and $w = v \/ parallel v parallel$ is the
 unit vector.
 
+A particular vector norm, useful for some numerical approach like _conjugate
+gradient method_, is the *A-norm*, defined with a SPD matrix $A$ as
+
+$ || v ||_A = sqrt(v^tack.b A v) $
+
+that for $A = I$ is equivalent to the euclidean norm.
+
