@@ -192,8 +192,8 @@ Two interesting properties, derived by the fact that $U$ is orthogonal are that
   $
 ]
 
-If of course we choose $x$ as an eigenvector of $A$, in particular the the
-associated with $lambda_"max"$, we have
+If we choose $x$ as an eigenvector of $A$, in particular the the associated with
+$lambda_"max"$, we have
 
 $
   v^tack.b A v = v^tack.b (lambda_"max" v) = lambda_"max"
