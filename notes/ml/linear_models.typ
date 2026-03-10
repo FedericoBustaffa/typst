@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Linear Models], doc)
 
-#title("Linear Models")
+#title()
 
 #strong[Linear models] are in a sense the baseline for many other machine
 learning models, cause it introduces many recurring aspects and most important

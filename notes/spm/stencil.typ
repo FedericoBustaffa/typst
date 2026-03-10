@@ -28,14 +28,12 @@ because in a stencil computation every update is done considering the
 initial grid values and not the updated one.
 
 Also to simplify the logic of the computation, so called #strong[halo
-cells] are added, in order to let the compute the border cells the same
+  cells] are added, in order to let the compute the border cells the same
 way of the others without the need of any conditional statement.
 
-#figure(image("stencil2D.png"),
-  caption: [
-    Stencil|300
-  ]
-)
+#figure(image("images/stencil2D.png"), caption: [
+  Stencil|300
+])
 
 The main challenge in this case is to partition data elements to the
 processors, in order to reduce the communication overhead and balance
@@ -54,17 +52,21 @@ Considering that we can overlap the computation of internal elements
 with the communication of the border elements, the stencil completion
 time is
 
-$ T_c^(upright("stencil")) (n^2 , k , F) = T_(upright("scatter")) (n^2 , k) + T_(upright("compute")) (n^2 , k , F) + T_(upright("gather")) (n^2 , k) $
+$
+  T_c^(upright("stencil")) (n^2 , k , F) = T_(upright("scatter")) (n^2 , k) +
+  T_(upright("compute")) (n^2 , k , F) + T_(upright("gather")) (n^2 , k)
+$
 
 where
 
-$ T_(upright("compute")) (n^2 , k , F) = m dot.op [max (T_F dot.op (sqrt(k) - 2)^2 , 4 dot.op T_(upright("comm")) (sqrt(k))) + 4 dot.op T_F dot.op sqrt(k)] $
+$
+  T_(upright("compute")) (n^2 , k , F) = m dot.op [max (T_F dot.op (sqrt(k) -
+        2)^2 , 4 dot.op T_(upright("comm")) (sqrt(k))) + 4 dot.op T_F dot.op sqrt(k)]
+$
 
-#figure(image("stencil2D_tile.png"),
-  caption: [
-    2D Tile Stencil|600
-  ]
-)
+#figure(image("images/stencil2D_tile.png"), caption: [
+  2D Tile Stencil|600
+])
 
 More complex stencils can be #strong[irregular] or #strong[dyanmic];,
 for example unstructured grids or #emph[wavefront] that could add

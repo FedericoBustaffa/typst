@@ -61,7 +61,7 @@ The efficiency measures how effectively a parallel program utilizes the
 $p$ resources used.
 
 There is also another correlated metric called #strong[cost of
-parallelization];, that can be obtained by multiply the completion time
+  parallelization];, that can be obtained by multiply the completion time
 of the parallel program by the number of processors used.
 
 $ T_c (p) times p > T_(c_(upright("seq"))) $
@@ -106,8 +106,6 @@ processor. The #emph[weak scaling] metric assumes that, as the size of
 the problem grows, the amount of serial work and
 communication/synchronization remain constant.
 
-#horizontalrule
-
 When we want to measure the weak scaling we should be careful with the
 scaling factor we use to increase the problem size.
 
@@ -125,15 +123,13 @@ parallelization overhead. It is defined as
 $ gamma = alpha / beta $
 
 where $alpha > 0$ and $beta > 0$ are the the #emph[amount of
-computation] and the #emph[amount of communication/synchronization];,
+  computation] and the #emph[amount of communication/synchronization];,
 respectively.
 
 Obviously the higher this ratio is, the higher speedup and efficiency
 will be. Note also that an high value of $gamma$ could mean that the
 workload is very large, so we cannot imply anything on the completion
 time.
-
-#horizontalrule
 
 So we can say that the #emph[speedup] depends on the both the processing
 elements used and the #emph[computation-to-communication ratio];.

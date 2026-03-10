@@ -38,7 +38,7 @@ different $h$; and so $h_1 (x)$ will be much different from $h_2 (x)$.
 <decomposition>
 Let’s for example take a linear model involved in a regression task and
 suppose to have a training set composed by examples
-$angle.l x , y angle.r$ where the true function is
+$chevron.l x , y chevron.r$ where the true function is
 
 $ y = f (x) + epsilon.alt $
 
@@ -68,8 +68,10 @@ distribution $P (Z)$
 
 So now is possible to decompose the expected value formula like follows
 
-$ E_P [(y - h (x))^2] & = E_P [h (x)^2 - 2 y h (x) + y^2]\
- & = E_P [h (x)^2] + E_P [y^2] - 2 E_P [y] E_P [h (x)] $
+$
+  E_P [(y - h (x))^2] & = E_P [h (x)^2 - 2 y h (x) + y^2] \
+                      & = E_P [h (x)^2] + E_P [y^2] - 2 E_P [y] E_P [h (x)]
+$
 
 Let now $overline(h) (x)$ be the mean prediction of all the hypothesis
 on the $x$ value. We also have that, for definition of variance that
@@ -86,32 +88,28 @@ $ E_P [y^2] = E_P [(y - f (x))^2] + f (x)^2 $
 
 We can now put everything together
 
-$ E_P [(y - h (x))^2] & = & E_P [(h (x) - overline(h) (x))^2] + overline(h) (x)^2 & \
- &  & - 2 f (x) overline(h) (x) & \
- &  & + f (x)^2 + E_P [(y - f (x))^2] & \
- & = & E_P [h (x) - overline(h) (x)^2] + & upright(" (variance)")\
- &  & (overline(h) (x) - f (x))^2 + & upright(" (bias)")^2\
- &  & E_P [(y - f (x))^2] & upright(" (noise)")^2\
- $
+$
+  E_P [(y - h (x))^2] & = & E_P [(h (x) - overline(h) (x))^2] + overline(h) (x)^2 & \
+  & & - 2 f (x) overline(h) (x) & \
+  & & + f (x)^2 + E_P [(y - f (x))^2] & \
+  & = & E_P [h (x) - overline(h) (x)^2] + & upright(" (variance)")\
+  & & (overline(h) (x) - f (x))^2 + & upright(" (bias)")^2\
+  & & E_P [(y - f (x))^2] & upright(" (noise)")^2\
+$
 
 and so is possible to rewrite the formulation of the expetcted error on
 a given data point as
 
-$ E_P [(y - h (x))^2] & = upright("Var") [h (x)] + upright("Bias") [h (x)]^2 + E_P [epsilon.alt^2]\
- & = upright("Var") [h (x)] + upright("Bias") [h (x)]^2 + sigma^2 $
+$
+  E_P [(y - h (x))^2] & = upright("Var") [h (x)] + upright("Bias") [h (x)]^2 + E_P [epsilon.alt^2]\
+  & = upright("Var") [h (x)] + upright("Bias") [h (x)]^2 + sigma^2
+$
 
 So now it’s possible to see which of the three is a major component of
 error on a given $x$ point.
-
-#horizontalrule
 
 In practice is not possible to have all the possible realizations of a
 given distribution, but is possible to train the model on a finite (yet
 statistically relevant) number different datasets, in order to have an
 empirical expected error.
 
-== References
-<references>
-- \[\[machine\_learning\]\]
-- \[\[statistical\_learning\_theory\]\]
-- \[\[validation\]\]

@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Machine Learning], doc)
 
-#title("Machine Learning")
+#title()
 
 This course will cover all the basics of *machine learning*, starting
 from basic concepts, simple models for regression and classification, moving

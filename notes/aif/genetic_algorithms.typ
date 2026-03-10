@@ -97,7 +97,7 @@ produce multiple features of the phenotype.
 === Compositional Patterns Producing Networks
 <compositional-patterns-producing-networks>
 A technique used in many fields is the so called #strong[compositional
-patterns producing networks];, that is a popular way to design
+  patterns producing networks];, that is a popular way to design
 #strong[developmental encodings];.
 
 A developmental encoding is a function that takes phenotypical’s space
@@ -108,10 +108,9 @@ kind, like an image. The process makes the network evolve in order to
 produce images with some shape or pattern, or for example images that
 approximates other images.
 
-#figure(image("cppn.png"),
-  caption: [
-    CPPN|300
-  ]
+#figure(
+  image("images/cppn.png"),
+  caption: [ CPPN ],
 )
 
 For example the genotype encodes the network topology, and the function
@@ -124,8 +123,6 @@ So in this case the advantage of indirect encoding that we obtain a
 function that can potentially produce images of some kind of arbitrary
 dimensions (very flexible and modular). With direct encoding instead we
 need to evolve again every feature (pixel) if we change $m$ or $n$.
-
-#horizontalrule
 
 For CPPN the most popular algorithm is #strong[NEAT] that uses a direct
 encoding (all nodes and connections are in the genome) to produce

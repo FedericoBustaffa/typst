@@ -35,11 +35,9 @@ that is equivalent to say that for every model where $alpha$ is true
 then also $beta$ is true. In this sense $alpha$ is a stronger assertion
 than $beta$ as it rules out more possible models.
 
-#figure(image("entailment.png"),
-  caption: [
-    Entailment
-  ]
-)
+#figure(image("images/entailment.png"), caption: [
+  Entailment
+])
 
 Entailment itself is defined semantically over all possible models, but
 in practice agents use inference rules to derive conclusions without
@@ -85,11 +83,9 @@ We enumerate all the possible models where KB is true, and all the
 possible models where $alpha$ is true, considering also what we already
 know about the environment.
 
-#figure(image("wumpus_entailment1.png"),
-  caption: [
-    Entailment on Wumpus World|400
-  ]
-)
+#figure(image("images/wumpus_entailment1.png"), caption: [
+  Entailment on Wumpus World|400
+])
 
 If the knowledge base rules out the sentence $alpha$, then we obtain the
 possible models where the sentence is true and where all the knowledge
@@ -101,11 +97,9 @@ be true with respect to the KB.
 Let’s notice that the KB models where $alpha$ is true must be a subset
 of $alpha$ in order to conclude that the sentence is true also for KB.
 
-#figure(image("wumpus_entailment2.png"),
-  caption: [
-    Entailment on Wumpus World|400
-  ]
-)
+#figure(image("images/wumpus_entailment2.png"), caption: [
+  Entailment on Wumpus World|400
+])
 
 If the models of KB are not contained in the models of $alpha$, the
 entailment does not hold. This is like saying that there are possible
@@ -120,11 +114,9 @@ tries to check if $K B tack.r.double alpha$ by
 + Search for assignments that let KB be true and check if $alpha$ is
   also true.
 
-#figure(image("truth_table_model_checking.png"),
-  caption: [
-    Truth Table|600
-  ]
-)
+#figure(image("images/truth_table_model_checking.png"), caption: [
+  Truth Table|600
+])
 
 Doing inference by enumeration is sound and complete but it costs
 $O (2^n)$ in time and space.
@@ -145,11 +137,19 @@ some facts, the most important rules are
 
 - #strong[Unit resolution];: that is used to delete a couple of
   complementary literals
-  $ frac(l_1 or dots.h.c or l_k , #h(0em) m, l_1 or dots.h.c or l_(i - 1) or l_(i + 1) or l_k) $
+  $
+    frac(l_1 or dots.h.c or l_k \, #h(0em) m, l_1 or dots.h.c or l_(i - 1) or l_(i + 1) or l_k)
+  $
   where $l_i$ and $m$ are complementary literals ($A and not A$).
 - #strong[Full resolution];: that is used to delete multiple
   complementary literals
-  $ frac(l_1 or dots.h.c or l_k , #h(0em) m_1 or dots.h.c or m_n, l_1 or dots.h.c or l_(i - 1) or l_(i + 1) or dots.h.c or l_k or m_1 or dots.h.c or m_(j - 1) or m_(j + 1) dots.h.c m_n) $
+  $
+    frac(
+      l_1 or dots.h.c or l_k \, #h(0em) m_1 or dots.h.c or m_n, l_1 or dots.h.c
+      or l_(i - 1) or l_(i + 1) or dots.h.c or l_k or m_1 or dots.h.c or m_(j - 1)
+      or m_(j + 1) dots.h.c m_n
+    )
+  $
   where $l_i$ and $m$ are complementary literals (e.g.~$A$ and $not A$).
 
 So we can now apply inference rules in order to be able to say if
@@ -165,14 +165,13 @@ unsatisfiable.
 
 Resolution is sound and complete for propositional logic.
 
-#figure(image("resolution_inference.png"),
-  caption: [
-    Resolution Inference|700
-  ]
+#figure(
+  image("images/resolution_inference.png"),
+  caption: [ Resolution Inference ],
 )
 
-=== Horn Clause Inference
-<horn-clause-inference>
+=== Horn Clause Inference <horn-clause-inference>
+
 A particular CNF is called #strong[Horn form] and is defined, as a
 classical CNF, as a conjuctions of clauses, with at most one positive
 symbol in each clause:
@@ -185,7 +184,7 @@ algorithm proceeds by creating a chain of implications by using
 respect to the size of the KB.
 
 There are two possible ways to run this algorithm: #strong[forward
-chaining] and #strong[backward chaining];:
+  chaining] and #strong[backward chaining];:
 
 - In the #emph[forward chaining] we start from the fact, like from
   literals and their truth values. Going on this process let us

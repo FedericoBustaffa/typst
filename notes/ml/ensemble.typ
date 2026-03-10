@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Ensemble], doc)
 
-#title("Ensemble")
+#title()
 
 Training models on different training sets, generally leads to obtain different
 models. It is possible to take advantage of this fact by using them together in

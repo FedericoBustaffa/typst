@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([K-Means], doc)
 
-#title("K-Means")
+#title()
 
 One of the simplest clustering algorithm based on vector quantization is the
 #strong[K-means] that, given a number of centroids, finds the optimal position

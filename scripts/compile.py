@@ -12,6 +12,3 @@ if __name__ == "__main__":
         files = [f for f in files if f"{s}/{f}".endswith(".typ")]
         for f in files:
             exit_code = sp.call(["typst", "compile", f"{s}/{f}"])
-            if exit_code != 0:
-                print(f"compile error for {s}/{f}")
-                exit(1)

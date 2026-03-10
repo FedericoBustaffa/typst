@@ -2,11 +2,11 @@
 <constraint-satisfaction-problem>
 There are problems where the goal is to reach a state that satisfies
 some #emph[constraints];, these are called #strong[constraint
-satisfaction problems] (#strong[CSP];) and in order to solve them, we
+  satisfaction problems] (#strong[CSP];) and in order to solve them, we
 need to
 
 - Define a #strong[structured state] via #strong[factored
-  representation];. In other words we pass from an #strong[atomic] state
+    representation];. In other words we pass from an #strong[atomic] state
   to a state that has the shape of a vector, whose components are in a
   sense independent. $ X = { X_1 , X_2 , dots.h , X_n } $
 - The #strong[domain knowledge] is expressed by a set $C$ of
@@ -27,8 +27,6 @@ Let’s also define some type of assignment or solution
 
 Of course the aim is to find a #emph[complete] and #emph[consistent]
 solution.
-
-#horizontalrule
 
 There are different types of constraints:
 

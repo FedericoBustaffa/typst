@@ -8,11 +8,9 @@ is to improve the throughput of one single stage of the computation.
 The most common pattern involves an initial phase of task distribution,
 a computation phase and a final phase in which the results are gathered.
 
-#figure(image("farm.png"),
-  caption: [
-    Farm|700
-  ]
-)
+#figure(image("images/farm.png"), caption: [
+  Farm|700
+])
 
 Often the notation to describe farms involve the definition of two
 entities in addition to worker, #strong[emitters] and
@@ -25,11 +23,9 @@ and collectors are implemented to better overlap communication and
 communication, for example in a multithreaded and distributed
 application.
 
-#figure(image("farm_skeletons.png"),
-  caption: [
-    Farm Skeletons
-  ]
-)
+#figure(image("images/farm_skeletons.png"), caption: [
+  Farm Skeletons
+])
 
 In order to reduce the cost of a sequential communication, the farm can
 implemented with a tree of emitters and collectors, trying to achieve a
@@ -51,13 +47,13 @@ $ T_s^e < T_a quad and quad T_s^e < T_s^w $
 
 If $n$ tasks are submitted, the #strong[completion time] is
 
-$ T_c (n , k) = (k + 1) dot.op T_(upright("comm")) + n / k dot.op (T_s^w + T_(upright("comm"))) $
+$
+  T_c (n , k) = (k + 1) dot.op T_(upright("comm")) + n / k dot.op (T_s^w + T_(upright("comm")))
+$
 
-#figure(image("farm_time.png"),
-  caption: [
-    Farm Completion Time
-  ]
-)
+#figure(image("images/farm_time.png"), caption: [
+  Farm Completion Time
+])
 
 A farm is a #emph[bottleneck] if the workers stage service time higher
 than the inter-arrival time, so it must hold:
@@ -74,7 +70,9 @@ $ k_(upright("opt")) = ⌈frac(T_s^w (F), T_a)⌉ $
 
 In general, given a farm with $k$ workers, each with a service time of
 
-$ T_s^w (F) = cases(delim: "{", T_s^(upright("seq")) + T_(upright("comm")) & upright("no communication overlap"), max (T_s^(upright("seq")) (F) , T_(upright("comm"))) & upright("otherwise")) $
+$
+  T_s^w (F) = cases(delim: "{", T_s^(upright("seq")) + T_(upright("comm")) & upright("no communication overlap"), max (T_s^(upright("seq")) (F) , T_(upright("comm"))) & upright("otherwise"))
+$
 
 The #strong[service time] is
 

@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Decision Tree], doc)
 
-#title("Decision Tree")
+#title()
 
 The #strong[decision tree] model (#strong[DT];) can be used for both
 classification and regression tasks; however its structure suggests a propensity

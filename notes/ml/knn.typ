@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([K-Nearest Neighbor], doc)
 
-#title("K-Nearest Neighbor")
+#title()
 
 A model, mostly used for classification, is the #strong[$k$-nearest neighbors];,
 where there is no real #emph[learning phase];; the model is a

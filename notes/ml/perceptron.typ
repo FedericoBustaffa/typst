@@ -1,7 +1,7 @@
-#import "note_template.typ": note_template
-#show: note_template
+#import "@local/note_template:0.1.0": *
+#show: doc => note_template([Perceptron], doc)
 
-#title("Perceptron")
+#title()
 
 Behind the idea of the perceptron there was a more formal intuition given by
 McCulloch e Pitts, that proposed a logic model for an artificial neuron for

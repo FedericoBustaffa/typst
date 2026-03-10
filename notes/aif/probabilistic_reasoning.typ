@@ -8,7 +8,7 @@ represents a random variable, each depending on its parents:
 $ P (X divides upright("parents") (X)) $
 
 For easy problems we can employ a simple #strong[conditional probability
-table (CPT)] that gives the value of $X$ for each combination of values
+  table (CPT)] that gives the value of $X$ for each combination of values
 of its parents. The advantage of bayesian networks is that, once the
 structure of the network is defined, information about each conditional
 distribution is sufficient to specify the full joint distribution,
@@ -27,7 +27,9 @@ Another concept is the #strong[Markov blanket];, which says that each
 node $X$ is conditionally independent of any other node given its Markov
 blanket $upright("MB")$:
 
-$ upright("MB") (X) = upright("Parents") (X) + upright("Children") (X) + upright("Parents") (upright("Children") (X)) $
+$
+  upright("MB") (X) = upright("Parents") (X) + upright("Children") (X) + upright("Parents") (upright("Children") (X))
+$
 
 To build a bayesian network using the chain rule of probability we can
 follow this algorithm:
@@ -39,7 +41,9 @@ follow this algorithm:
   + Add $X_i$ as a node of the network.
   + Select the minimal set of parents from $X_1 , dots.h , X_(i - 1)$
     such that
-    $ P (X_i divides upright("Parents") (X_i)) = P (X_i divides X_1 , dots.h , X_(i - 1)) $
+    $
+      P (X_i divides upright("Parents") (X_i)) = P (X_i divides X_1 , dots.h , X_(i - 1))
+    $
   + Insert a link from $X_i$ to all $upright("Parents") (X_i)$ and fill
     the CPT.
 
@@ -51,14 +55,16 @@ $ P (X_1 , dots.h , X_n) = product_i P \( X_i divides X_1 , dots.h , X_(i - 1) $
 after we exploit the local semantics (conditional independence) to
 obtain
 
-$ product_i P \( X_i divides X_1 , dots.h , X_(i - 1) = product_i P \( X_i divides upright("Parents") (X_i) $
+$
+  product_i P \( X_i divides X_1 , dots.h , X_(i - 1) = product_i P \( X_i divides upright("Parents") (X_i)
+$
 
 == Compact Conditional Distributions
 <compact-conditional-distributions>
 In case random variables are continuous, CPTs become of infinite size
 and also grows exponentially with the number of parents. To compactly
 define infinite cases we can exploit the #strong[canonical
-distributiion] in three ways
+  distributiion] in three ways
 
 - #strong[Deterministic nodes];: let $f$ be a function, the variable $X$
   is defined as $ X = f (upright("Parents") (X)) $
@@ -74,7 +80,7 @@ distributiion] in three ways
 The #strong[noisy-OR] is based on two assumptions
 
 + Parents include all causes. If not is possible to add a #strong[leak
-  node] that covers all other causes.
+    node] that covers all other causes.
 + The causal relationship between cause and effect can be
   #strong[inhibited] and the #strong[inhibition probability] $q_i$ is
   independent of inhibition of other causes.
@@ -85,7 +91,9 @@ if its true parents are inhibited.
 Then, the CPT for a given node with parents $U$ under the previous
 assumptions can be computed compactly via
 
-$ P (X divides U_1 , dots.h U_j , not U_(j + 1) , dots.h , not U_k) = 1 - product_(i = 1)^j q_i $
+$
+  P (X divides U_1 , dots.h U_j , not U_(j + 1) , dots.h , not U_k) = 1 - product_(i = 1)^j q_i
+$
 
 The parents that are false (inhibited) do not contribute to the
 probability mass; only the inhibition probability of the true parents
@@ -133,7 +141,9 @@ To compute the posteriors in a bayesian network there is the need of
 
 Making use of unobserved, hidden variables
 
-$ H : P (Y divides e) = frac(P (Y , e), P (e)) = alpha P (Y , e) = alpha sum_(h in H) P (Y , e , h) $
+$
+  H : P (Y divides e) = frac(P (Y , e), P (e)) = alpha P (Y , e) = alpha sum_(h in H) P (Y , e , h)
+$
 
 is possible to make #strong[inference by enumeration] where
 
@@ -151,7 +161,7 @@ $cal(O) (n)$ in space.
 === Variable Elimination
 <variable-elimination>
 A good optimization to avoid recomputation is #strong[variable
-elimination];, where summations are carried out right to left and
+  elimination];, where summations are carried out right to left and
 intermediate results are stored.
 
 For this optimization is necessary to define the #strong[factors];, for

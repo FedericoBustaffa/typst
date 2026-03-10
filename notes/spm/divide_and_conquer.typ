@@ -1,9 +1,9 @@
-= Divide And Conquer
-<divide-and-conquer>
-This pattern is commonly used to #emph[divide] problems in subproblems,
-until the reach of a #emph[minimal] subproblem that is usually the base
-case. Then the subproblem is #emph[solved] and #emph[merged] with the
-result of another subproblem of the same size.
+= Divide And Conquer <divide-and-conquer>
+
+This pattern is commonly used to #emph[divide] problems in subproblems, until
+the reach of a #emph[minimal] subproblem that is usually the base case. Then the
+subproblem is #emph[solved] and #emph[merged] with the result of another
+subproblem of the same size.
 
 The #strong[divide and conquer] pattern is a bit different from the map
 pattern in which the division is only on data. The main difference is
@@ -19,10 +19,9 @@ So, even if the divide and conquer can be implemented like a map
 skeleton, the concept is different and can lead to a more efficient
 algorithm.
 
-#figure(image("divide_conquer.png"),
-  caption: [
-    Divide and Conquer|400
-  ]
+#figure(
+  image("images/divide_conquer.png"),
+  caption: [ Divide and Conquer ],
 )
 
 Achieving efficient parallel DC requires addressing two challenges:
@@ -60,11 +59,15 @@ unbalanced among workers:
 <cost-model>
 For the divide and conquer parallel pattern the completion time is
 
-$ T_c^(upright("DC")) (C , k) = T_(upright("div")) + T_(upright("conq")) + T_(w s - t e r m) + T_(c o l l) $
+$
+  T_c^(upright("DC")) (C , k) = T_(upright("div")) + T_(upright("conq")) + T_(w s - t e r m) + T_(c o l l)
+$
 
 where
 
-$ T_(upright("div")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i) + frac(T_(upright("divide")) (C), k) $
+$
+  T_(upright("div")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i) + frac(T_(upright("divide")) (C), k)
+$
 
 is the scatter and per-worker cost to divide the collection.
 
@@ -74,19 +77,21 @@ is the time to #emph[conquer] the local subproblems and where $beta = 1$
 assumes perfect load balancing among workers and $beta > 1$ means the
 workload is unbalanced.
 
-$ T_(upright("ws-term")) = c dot.op T_(upright("steal")) + ⌈ log_2 k ⌉ dot.op T_(upright("comm")) (1) $
+$
+  T_(upright("ws-term")) = c dot.op T_(upright("steal")) + ⌈ log_2 k ⌉ dot.op T_(upright("comm")) (1)
+$
 
 is the cost of the steal attempt (without success) and barrier cost and
 where $c$ is a constant number of attempts to steal work, after such
 attempts there must be an assumption that the conquer phase is going to
 finish.
 
-$ T_(upright("coll")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i) + ⌈ log_2 k ⌉ dot.op T_(upright("merge")) $
+$
+  T_(upright("coll")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i) + ⌈ log_2 k ⌉ dot.op T_(upright("merge"))
+$
 
 is the gather and merging cost for all $D$ subproblems, where the cost
 of merging can be linear in $D$ or logaritmic for tree-like structures.
-
-#horizontalrule
 
 So in the end we can say that the divide and conquer is a naturally
 parallelizable pattern that is also potentially scalable for systems
@@ -100,6 +105,3 @@ It’s also not easy to to find the threshold under which not to go for
 the #emph[divide] phase. Also the #emph[merge] phase can be complex and
 challenging to do in parallel.
 
-== References
-<references>
-- \[\[structured\_parallel\_programming\]\]

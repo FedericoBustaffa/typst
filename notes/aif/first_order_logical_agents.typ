@@ -1,9 +1,8 @@
-= First Order Logical Agents
-<first-order-logical-agents>
-A more powerfull type of logical agent, with respect to propositional
-logical agents, are #strong[first order logical agents];, that exploit
-#strong[first order logic] (#strong[FOL];) constructs in order to be
-more general.
+= First Order Logical Agents <first-order-logical-agents>
+
+A more powerfull type of logical agent, with respect to propositional logical
+agents, are #strong[first order logical agents];, that exploit #strong[first
+  order logic] (#strong[FOL];) constructs in order to be more general.
 
 Propositional logic is only able to model #emph[facts];, while in the
 FOL, is possible to model objects and relations or properties of them.
@@ -41,7 +40,7 @@ A model with an interpretation is a model in the propositional logic.
 == Computational Issues
 <computational-issues>
 A common assumption for FOL agents is the #emph[closed world
-assumption];: atomic sentences that are not known to be true or false
+  assumption];: atomic sentences that are not known to be true or false
 are assumed false. This allows to get rid of boilerplate stuff that
 handles incomplete information. In this kind of agents we assume one
 unique referent of each constant, predicate or function.
@@ -70,7 +69,7 @@ possibly infinite disjunction of instances of $x$.
 == Knowledge Base
 <knowledge-base>
 In order to build a FOL agent we need to build a #strong[FOL knowledge
-base] and this is typically done by
+  base] and this is typically done by
 
 + Identify questions.
 + Assemble the relevant knowledge.
@@ -103,7 +102,7 @@ the resulting sentence is
 $ S sigma = upright("Smarter") (upright("Mario") , upright("Luigi")) $
 
 This is used when the agent query the KB, for example #emph[Ask(KB,
-$S$)];; the answer will be some or all substitutions $sigma$ such that
+  $S$)];; the answer will be some or all substitutions $sigma$ such that
 $K B tack.r.double S sigma$.
 
 == Quantifiers Instantiations
@@ -153,8 +152,10 @@ $theta$ substitution.
 
 If for example we have
 
-$ alpha & = upright("Knows") (upright("John") , x)\
-beta & = upright("Knows") (upright("John") , upright("Jane")) $
+$
+  alpha & = upright("Knows") (upright("John") , x) \
+   beta & = upright("Knows") (upright("John") , upright("Jane"))
+$
 
 the unifier will be
 
@@ -167,9 +168,11 @@ that is equivalent to $beta$.
 === Generalized Modus Ponens
 <generalized-modus-ponens>
 The unification let us define the #strong[generalized Modus Ponens
-(GMP)] as follows
+  (GMP)] as follows
 
-$ frac(p_1' , dots.h , p_2' , #h(0em) (p_1 and dots.h.c p_n arrow.r q), q theta) $
+$
+  (p_1 ', dots.h, p_2 ' \, #h(0.5em) (p_1 and dots.h.c p_n arrow.r q)) / (q theta)
+$
 
 where for all $i$ $p_i' theta = p_i theta$ and $p_i'$ and $p_i$ are
 #emph[atomic];.
@@ -197,9 +200,13 @@ infinite space or loops.
 == Resolution in FOL
 <resolution-in-fol>
 What is needed for an inference algorithm with FOL is #strong[resolution
-rule];:
+  rule];:
 
-$ frac(p_i or dots.h.c or p_k , #h(0em) m_1 or dots.h.c or m_n, p_1 or dots.h.c or p_(i - 1) or p_(i + 1) or dots.h.c or p_k or m_1 or dots.h.c or m_(j - 1) or m_(j + 1) or dots.h.c or m_n) theta' $
+$
+  (p_i or dots.h.c or p_k, #h(0em) m_1 or dots.h.c or m_n) / (p_1 or
+  dots.h.c or p_(i - 1) or p_(i + 1) or dots.h.c or p_k or m_1 or dots.h.c or m_(j
+  - 1) or m_(j + 1) or dots.h.c or m_n) theta'
+$
 
 where
 

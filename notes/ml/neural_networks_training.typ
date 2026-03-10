@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Neural Networks Training], doc)
 
-#title("Neural Networks Training")
+#title()
 
 With neural networks achieving a good training is not so complex but there are
 many aspects to take care of. This is because the model often has a lot of

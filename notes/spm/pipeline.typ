@@ -8,11 +8,9 @@ next stage.
 The stages operate in parallel, enabling overlapping computation and
 improved throughput.
 
-#figure(image("pipeline.png"),
-  caption: [
-    Pipeline
-  ]
-)
+#figure(image("images/pipeline.png"), caption: [
+  Pipeline
+])
 
 In general it can be applied on problems where a big computation $F (x)$
 can be divided in something like
@@ -41,7 +39,7 @@ pipeline go through three phases over time: #strong[fill];,
 #strong[steady] and #strong[draining];.
 
 When all stages are working in parallel we can talk about #strong[steady
-state phase];, where all different computations of different $f_i$ are
+  state phase];, where all different computations of different $f_i$ are
 overlapped, providing a speedup that can be approximated with $k$ (the
 number of stages).
 
@@ -76,20 +74,24 @@ $ T_c (n) = n dot.op (T_f + T_(upright("comm"))) $
 
 for a speedup of
 
-$ S (k) = frac(T_F, T_f + T_(upright("comm"))) = frac(T_F, T_F / k + T_(upright("comm"))) = k dot.op frac(T_F, T_F + k dot.op T_(upright("comm"))) $
+$
+  S (k) = frac(T_F, T_f + T_(upright("comm"))) = frac(T_F, T_F / k + T_(upright("comm"))) = k dot.op frac(T_F, T_F + k dot.op T_(upright("comm")))
+$
 
 and a throughput at steady state of
 
-$ frac(1, T_f + T_(upright("comm"))) = k dot.op frac(1, T_F + k dot.op T_(upright("comm"))) $
+$
+  frac(1, T_f + T_(upright("comm"))) = k dot.op frac(1, T_F + k dot.op T_(upright("comm")))
+$
 
 #quote(block: true)[
-\[!NOTE\] Latency is worse than the serial version because of the
-overhead introduced with the communication between stages. From the
-standpoint of one individual task there is no improvement but a
-worsening:
+  \[!NOTE\] Latency is worse than the serial version because of the
+  overhead introduced with the communication between stages. From the
+  standpoint of one individual task there is no improvement but a
+  worsening:
 
-- All the stages are executed one after the other.
-- There is communication overhead between stages.
+  - All the stages are executed one after the other.
+  - There is communication overhead between stages.
 ]
 
 In general a $k$-stages pipeline with balanced stages has a completion
@@ -113,7 +115,9 @@ $ T_c^(upright("seq")) = n dot.op T_s^(upright("seq")) = 15600 $
 
 and for the parallel version we have a completion time of
 
-$ T_c = (T_s^1 + T_(upright("comm"))) + n dot.op (T_s^2 + T_(upright("comm"))) + T_s^3 = 9032 $
+$
+  T_c = (T_s^1 + T_(upright("comm"))) + n dot.op (T_s^2 + T_(upright("comm"))) + T_s^3 = 9032
+$
 
 That is in fact a similar time as if all stages have the service time of
 the slowest stage (in this case stage 2):
@@ -132,7 +136,9 @@ $ T_s^(upright("seq")) (F) = sum_(i = 1)^k T_s^i (f_i) $
 
 - The #strong[service time] is
   $ T_s = max_(i = 1 dots.h k) (T_s^i (f_i)) $ where
-  $ T_s^i (f_i) = cases(delim: "{", T_(f_i) + T_(upright("comm")) & upright("if no communication overlap"), max (T_(f_i) , T_(upright("comm"))) & upright("otherwise")) $
+  $
+    T_s^i (f_i) = cases(delim: "{", T_(f_i) + T_(upright("comm")) & upright("if no communication overlap"), max (T_(f_i) , T_(upright("comm"))) & upright("otherwise"))
+  $
 - The task #strong[latency] is
   $ L = sum_(i = 1)^k T_s^i (f_i) + (k - 1) dot.op T_(upright("comm")) $
   with no communication overlap accounted.

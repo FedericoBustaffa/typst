@@ -1,9 +1,9 @@
-= Function Objects
-<function-objects>
-In C++ we have this concept of a #emph[callable] object that in some
-specific case assumes the name of #strong[function object] or
-#strong[functor];. A function object is an object (like a `struct` or a
-`class`) that has an override for the `call` operator like
+= Function Objects <function-objects>
+
+In C++ we have this concept of a #emph[callable] object that in some specific
+case assumes the name of #strong[function object] or #strong[functor];. A
+function object is an object (like a `struct` or a `class`) that has an override
+for the `call` operator like
 
 ```cpp
 class Printer {
@@ -27,14 +27,14 @@ printer(); // output: "Foo"
 In general a function object can be used where a plain function is
 needed but can also have some state like in the example above.
 
-== Lambdas
-<lambdas>
-Another very useful and powerfull mechanism is given by
-#strong[lambdas];, anonymous functions that have the power to
-#emph[capture] the environment (variables) in a smart way.
+== Lambdas <lambdas>
 
-=== Capture Environment
-<capture-environment>
+Another very useful and powerfull mechanism is given by #strong[lambdas];,
+anonymous functions that have the power to #emph[capture] the environment
+(variables) in a smart way.
+
+=== Capture Environment <capture-environment>
+
 Environment variables can be captured by
 
 - #strong[Value];: copied or moved and by default immutable.
@@ -58,10 +58,10 @@ used in the lambda will be captured by value from the environment. If
 instead, the only argument is `&` all the variables will be captured by
 reference.
 
-==== Mutable
-<mutable>
-As said before, all variables captured by value are immutable or
-constants, so to modify them the `mutable` keyword must be used.
+==== Mutable <mutable>
+
+As said before, all variables captured by value are immutable or constants, so
+to modify them the `mutable` keyword must be used.
 
 ```cpp
 int n = 1024;
@@ -73,11 +73,9 @@ auto f = [=]() mutable {
 };
 ```
 
-Sometimes there will be objects like `std::promise` that are not
-copyable and that cannot be passed by reference so we have to move them
-and to enable changes we have to use the `mutable` keyword.
-
-#horizontalrule
+Sometimes there will be objects like `std::promise` that are not copyable and
+that cannot be passed by reference so we have to move them and to enable changes
+we have to use the `mutable` keyword.
 
 We can also specify the return type of lambda
 
@@ -109,8 +107,12 @@ type of parameters and same return value type to stay in the `vector`.
 In this way we can store them in a vector for various purposes like task
 storing in concurrent programming.
 
-== References
-<references>
-- #link("https://en.cppreference.com/w/cpp/utility/functional")[Function objects]
+== References <references>
+
+- #link(
+    "https://en.cppreference.com/w/cpp/utility/functional",
+  )[Function objects]
 - #link("https://en.cppreference.com/w/cpp/language/lambda")[Lambda]
-- #link("https://en.cppreference.com/w/cpp/utility/functional/function")[std::function]
+- #link(
+    "https://en.cppreference.com/w/cpp/utility/functional/function",
+  )[std::function]

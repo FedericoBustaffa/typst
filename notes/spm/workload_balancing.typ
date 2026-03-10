@@ -1,7 +1,7 @@
 = Workload Balancing
 <workload-balancing>
 One of the main problems with parallel computing is #strong[workload
-balancing];; the way to distribute work and data among workers is not
+  balancing];; the way to distribute work and data among workers is not
 always trivial and can be done in various ways.
 
 First of all, a problem complexity is not always bounded to the input
@@ -29,7 +29,7 @@ will end its work way sooner than the other.
 == Static Distribution
 <static-distribution>
 One of the methods to distribute work among workers is #strong[static
-distribution];, where
+  distribution];, where
 
 - We have to compute the data partition before the start of the program.
 - The partition is fixed in size and once chunks of data are
@@ -45,7 +45,7 @@ distribution];, where
 === Block Distribution
 <block-distribution>
 The most simple way to distribute work statically is the #strong[block
-distribution] method, where a partiton has $⌊ n \/ p ⌋$ where $n$ is the
+  distribution] method, where a partiton has $⌊ n \/ p ⌋$ where $n$ is the
 input size and $p$ the number of workers.
 
 A little problem with this method is that if
@@ -61,13 +61,13 @@ but $3 dot.op 5 = 15$ so an element left behind. A simple way to fix
 this is to account also the carry of the division, so that the processor
 $p_i$ receives a block of size
 
-$ cases(delim: "{", ⌈ n \/ p ⌉ & upright("if ") i < k, ⌊ n \/ p ⌋ & upright("otherwise")) $
+$
+  cases(delim: "{", ⌈ n \/ p ⌉ & upright("if ") i < k, ⌊ n \/ p ⌋ & upright("otherwise"))
+$
 
 where $k = n #h(0em) mod med p$ is the carry of the division.
 
 !\[\[block.png\]\]
-
-#horizontalrule
 
 This method is good for caching because all the elements assigned to a
 worker are adjacent in memory. On the other hand the method is not very
@@ -86,8 +86,6 @@ element of the array) $t_i$ is assigned to the worker
 $p_(i #h(0em) mod med p)$. In this way we can consume all the array
 elements until the last obtaining the best possible partitioning in
 terms of #emph[tasks per worker];.
-
-#horizontalrule
 
 Good for easily partition the problem but suffers from poor cache
 locality and false sharing. The false sharing particular problem could

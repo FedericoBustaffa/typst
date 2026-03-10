@@ -6,18 +6,16 @@ other words it provides a way to implement parallel algorithms and a
 structure composed by three main parts:
 
 - A collection of #strong[processors] with their own #strong[local
-  memories];.
+    memories];.
 - A #strong[communication network] to move data.
 - #strong[Barriers];: a strong synchronization mechanism.
 
 All the $n$ processors are identical and they can communicate through
 the network via message passing, in a uniform amount of time.
 
-#figure(image("/files/bulk_model.png"),
-  caption: [
-    BSP Model|400
-  ]
-)
+#figure(image("images/bulk_model.png"), caption: [
+  BSP Model|400
+])
 
 This differs a little from the PRAM model which use the global memory as
 a space to write messages among processors.

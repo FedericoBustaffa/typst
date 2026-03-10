@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Randomized Neural Networks], doc)
 
-#title("Randomized Neural Networks")
+#title()
 
 A modern constructive approach for neural networks is the so called
 #strong[randomized] approach, that adds a degree of randomness. In particular

@@ -7,10 +7,9 @@ It represents the parallel program as a set of tasks that can be
 dependencies of each other, organized as #strong[DAG] (Directed Acyclic
 Graph).
 
-#figure(image("/files/work_span_dag.png"),
-  caption: [
-    Work-Span DAG|600
-  ]
+#figure(
+  image("images/work_span_dag.png"),
+  caption: [ Work-Span DAG ],
 )
 
 Every task can be executed if and only if all its dependencies were
@@ -40,17 +39,16 @@ The #emph[span] is also called #strong[critical path] because it
 represents the DAG’s #emph[longest] path starting from the first to the
 final level of the graph.
 
-#figure(image("/files/work_span_critical_path.png"),
-  caption: [
-    Work-Span Critical Path|300
-  ]
+#figure(
+  image("images/work_span_critical_path.png"),
+  caption: [ Work-Span Critical Path ],
 )
 
 Note also that the #emph[work] is the sequential version of the
 algorithm, not the parallel version with only one processor.
 
-== Speedup Bounds
-<speedup-bounds>
+== Speedup Bounds <speedup-bounds>
+
 The speedup is computed as usual but we can make say, depending on the
 level of parallelism reached, the speedup respects the following
 inequality
@@ -86,43 +84,47 @@ However $T_oo$ is still an interesting measure to define the very edge
 limits of the algorithm with this model.
 
 #quote(block: true)[
-\[!note\] Brent’s Theorem
+  \[!note\] Brent’s Theorem
 
-Let’s assume
+  Let’s assume
 
-- that every task takes 1 time unit to complete
-- a greedy scheduler
-- to have a machine with enough processors that the algorithm finishes
-  in $T_oo$ time step
+  - that every task takes 1 time unit to complete
+  - a greedy scheduler
+  - to have a machine with enough processors that the algorithm finishes
+    in $T_oo$ time step
 
-A machine with fewer processors (let’s say $p$) has the following
-completion time upper limit
+  A machine with fewer processors (let’s say $p$) has the following
+  completion time upper limit
 
-$ T_p lt.eq frac(T_1 - T_oo, p) + T_oo $
+  $ T_p lt.eq frac(T_1 - T_oo, p) + T_oo $
 
-#quote(block: true)[
-\[!note\]- #emph[Proof] The proof is based on the fact that if the
-#emph[DAG] has $n$ levels, at each level $i$ we have to compute $m_i$
-operations. With $p = 1$ we have that the total time is
+  #quote(block: true)[
+    \[!note\]- #emph[Proof] The proof is based on the fact that if the
+    #emph[DAG] has $n$ levels, at each level $i$ we have to compute $m_i$
+    operations. With $p = 1$ we have that the total time is
 
-$ T_1 = sum_(i = 1)^n m_i $
+    $ T_1 = sum_(i = 1)^n m_i $
 
-and with $p = oo$ we have that
+    and with $p = oo$ we have that
 
-$ T_oo = sum_(i = 1)^n 1 = n $
+    $ T_oo = sum_(i = 1)^n 1 = n $
 
-So now we can say that with $p > 1$ processors we have
+    So now we can say that with $p > 1$ processors we have
 
-$ T_p = sum_(i = 1)^n #scale(x: 240%, y: 240%)[⌈] m_i / p #scale(x: 240%, y: 240%)[⌉] lt.eq sum_(i = 1)^n frac(m_i + p - 1, p) $
+    $
+      T_p = sum_(i = 1)^n #scale(x: 240%, y: 240%)[⌈] m_i / p #scale(x: 240%, y: 240%)[⌉] lt.eq sum_(i = 1)^n frac(m_i + p - 1, p)
+    $
 
-Let’s conclude the proof by some calculations like
+    Let’s conclude the proof by some calculations like
 
-$ sum_(i = 1)^n frac(m_i + p - 1, p) & = sum_(i = 1)^n m_i / p + sum_(i = 1)^n p / p - sum_(i = 1)^n 1 / p\
- & = 1 / p sum_(i = 1)^n m_i + n - n / p\
- & = T_1 / p + T_oo - T_oo / p = frac(T_1 - T_oo, p) + T_oo $
+    $
+      sum_(i = 1)^n frac(m_i + p - 1, p) & = sum_(i = 1)^n m_i / p + sum_(i = 1)^n p / p - sum_(i = 1)^n 1 / p\
+      & = 1 / p sum_(i = 1)^n m_i + n - n / p\
+      & = T_1 / p + T_oo - T_oo / p = frac(T_1 - T_oo, p) + T_oo
+    $
 
-which concludes the proof.
-]
+    which concludes the proof.
+  ]
 ]
 
 The Brent’s theorem of course has some implications relative to
@@ -147,7 +149,9 @@ be on reducing the #emph[span] because it is the fundamental asymptotic
 limit on scalability. We can now deduce a lower bound for the speedup as
 follows
 
-$ S (p) gt.eq frac(T_1, T_1 / p + T_oo) = frac(p dot.op T_1, T_1 + p dot.op T_oo) = frac(p, 1 + p dot.op (T_oo \/ T_1)) $
+$
+  S (p) gt.eq frac(T_1, T_1 / p + T_oo) = frac(p dot.op T_1, T_1 + p dot.op T_oo) = frac(p, 1 + p dot.op (T_oo \/ T_1))
+$
 
 Overall we have the following lower and upper bounds for time
 

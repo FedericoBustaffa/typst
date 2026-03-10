@@ -11,11 +11,9 @@ The PRAM machine is composed by $n$ #emph[identical] processors
 connected to a global shared memory $M$ and any memory location is
 accessible from any processor in #strong[constant time];.
 
-#figure(image("/files/pram_model.png"),
-  caption: [
-    Pram Model|500
-  ]
-)
+#figure(image("images/pram_model.png"), caption: [
+  Pram Model|500
+])
 
 The communication between processors can be implemented by reading and
 writing to the global memory $M$.
@@ -60,7 +58,9 @@ $ circle.stroked.tiny : X times X arrow.r X $
 
 for which is valid the following property
 
-$ (x_i circle.stroked.tiny x_j) circle.stroked.tiny x_k = x_i circle.stroked.tiny (x_j circle.stroked.tiny x_k) $
+$
+  (x_i circle.stroked.tiny x_j) circle.stroked.tiny x_k = x_i circle.stroked.tiny (x_j circle.stroked.tiny x_k)
+$
 
 and it could be addition, multiplication, maximum, minimum and so on.
 Given a set
@@ -73,17 +73,17 @@ $ S = { s_0 , dots.h , s_(n - 1) } $
 
 where
 
-$ s_0 & = x_0\
-s_i & = s_(i - 1) circle.stroked.tiny x_i $
+$
+  s_0 & = x_0 \
+  s_i & = s_(i - 1) circle.stroked.tiny x_i
+$
 
 A possible algorithm is called #strong[recursive doubling algorithm]
 which consider $n = lr(|X|)$ and $p = n$:
 
-#figure(image("/files/prefix1.png"),
-  caption: [
-    Prefix Computation|400
-  ]
-)
+#figure(image("images/prefix1.png"), caption: [
+  Prefix Computation|400
+])
 
 But for the PRAM model it is not cost optimal because we have to
 consider that every processor executes $log (n)$ operations that gives

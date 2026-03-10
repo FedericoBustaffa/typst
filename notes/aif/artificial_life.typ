@@ -6,7 +6,7 @@ simple parts or components that interact, leading to an emergent
 #emph[complex] behavior.
 
 For #emph[artificial life] the aim is to study #strong[adaptive complex
-systems] that evolve their complexity, leading to an #emph[open-ended]
+  systems] that evolve their complexity, leading to an #emph[open-ended]
 evolution system that also #emph[self organize];.
 
 In the field of complex systems we can ask ourselves if they are really
@@ -18,11 +18,9 @@ $ x_(t + 1) = r dot.op x_t dot.op (1 - x_t) $
 that as we can see is pretty simple, but for increasing values of $r$ we
 observe very chaotic behaviors and oscillations:
 
-#figure(image("logistic_map.png"),
-  caption: [
-    Logistic Map|400
-  ]
-)
+#figure(image("images/logistic_map.png"), caption: [
+  Logistic Map
+])
 
 As we can see, from values between $2.4$ and $3.0$ we have a straight
 line, meaning that the system converges into an equilibrium state. For
@@ -59,11 +57,9 @@ the grid boundary don’t have the same number of neighbors as central
 cells. So often a #emph[toroidal] structure is used for the grid that
 wraps cells at boundary together, creating a circular structure.
 
-#figure(image("toroidal_grid.png"),
-  caption: [
-    Toroidal Grid|300
-  ]
-)
+#figure(image("images/toroidal_grid.png"), caption: [
+  Toroidal Grid
+])
 
 The simplest grid we can think about is a $1$-dimensional grid that is
 basically a circular array. Each cell can have $0$ or $1$ value and we
@@ -74,7 +70,9 @@ $ s_(t + 1)^j = f (s_t^(j - 1) , s_t^t , s_t^(j + 1)) $
 
 An example of rule can be
 
-$ frac(1 1 1, 0) quad frac(1 1 0, 1) quad frac(1 0 1, 0) quad frac(1 0 0, 1) quad frac(0 1 1, 1) quad frac(0 1 0, 0) quad frac(0 0 1, 1) quad frac(0 0 0, 0) $
+$
+  frac(1 1 1, 0) quad frac(1 1 0, 1) quad frac(1 0 1, 0) quad frac(1 0 0, 1) quad frac(0 1 1, 1) quad frac(0 1 0, 0) quad frac(0 0 1, 1) quad frac(0 0 0, 0)
+$
 
 that can be expressed as rule $01011010$ (denominators) or as by its
 decimal form: rule $90$.
@@ -86,21 +84,17 @@ regardless direction.
 If the rule is too basic we will obtain only replication and
 reproduction of the initial pattern
 
-#figure(image("simple_ca.png"),
-  caption: [
-    Simple Rule|400
-  ]
-)
+#figure(image("images/simple_ca.png"), caption: [
+  Simple Rule
+])
 
 But for some more complex rule we can gain complexity and observe
 structures like #strong[fractals] and self similarity at different
 scales
 
-#figure(image("complex_ca.png"),
-  caption: [
-    Complex Rule|400
-  ]
-)
+#figure(image("images/complex_ca.png"), caption: [
+  Complex Rule
+])
 
 We can even start from an initial noisy state and observe how the system
 evolve into an ordered system with self organization properties.
@@ -151,7 +145,7 @@ Some of this fields can be challenging even for modern neural networks.
 == Game of Life
 <game-of-life>
 One of the most popular examples of cellular automata is #strong[game of
-life];, which is defined by a $2$-D grid with two values per cell: $0$
+  life];, which is defined by a $2$-D grid with two values per cell: $0$
 for dead, $1$ for alive. Each cell has 8 neighbors (excluding itself)
 and the update rule is $2 , 3 \/ 3$ which encode the life/death policy
 

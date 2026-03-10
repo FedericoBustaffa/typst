@@ -1,9 +1,8 @@
 #import "@preview/cetz:0.4.2"
-
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Neural Networks], doc)
 
-#title("Neural Networks")
+#title()
 
 When we talk about #strong[neural networks] we are entering in the world of
 #strong[deep learning];, and the most simple neural network is the so called

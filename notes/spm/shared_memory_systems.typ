@@ -4,14 +4,12 @@ The basic structure of a #strong[shared memory system] is represented by
 the Von Neumann architecture, where an central processing unit takes an
 input and produce an output, reading and writing from #strong[memory];.
 
-#figure(image("/files/von_neumann.png"),
-  caption: [
-    Von Neumann Architecture|500
-  ]
-)
+#figure(image("images/von_neumann.png"), caption: [
+  Von Neumann Architecture|500
+])
 
 An important aspect of this architecture is the so called #strong[Von
-Neumann bottleneck];, originated by the difference between computation
+  Neumann bottleneck];, originated by the difference between computation
 speed (typically high) of the central processing unit and the main
 memory read and write speed (nowadays high but significantly lower than
 computation speed).
@@ -35,8 +33,6 @@ Depending on the architecture we can have some #strong[private] levels
 of cache for each processor or core (typically L1 and L2), while L3
 level is typically shared.
 
-#horizontalrule
-
 Another common way to optimize code that introduces a form of
 synchronous parallelism, keeping the computation on a single core, is
 through #strong[vector units];.
@@ -45,8 +41,6 @@ We are talking about actual hardware, capable of process multiple data
 in parallel with one clock cycle; they are the basics of SIMD
 parallelization, that works in locksteps with a combination of
 #strong[multiple ALUs] and #strong[vector registers];.
-
-#horizontalrule
 
 The last way of improving performance on shared memory systems is
 through #strong[threading];, exploited by multi-threads and multi-cores
@@ -98,7 +92,9 @@ With this model should be clear if our application’s bottleneck is the
 computation or the memory channels’ bandwidth. Starting from the data
 channels performance, which can be expressed in FLOPS with the factor
 
-$ I dot.op B quad (upright("FLOP") / upright("byte") dot.op upright("byte") / upright("seconds") = upright("FLOPS")) $
+$
+  I dot.op B quad (upright("FLOP") / upright("byte") dot.op upright("byte") / upright("seconds") = upright("FLOPS"))
+$
 
 Both $R_(upright("peak"))$ and $I dot.op B$ are upper limits, therefore,
 the expected performance is
@@ -110,11 +106,9 @@ constant, the only thing the programmer can directly manage is the
 computational intensity $I$, trying to either increase the number of
 operations, or reducing the amount of transferred data.
 
-#figure(image("/files/roofline_model.png"),
-  caption: [
-    Roofline Model|350
-  ]
-)
+#figure(image("images/roofline_model.png"), caption: [
+  Roofline Model|350
+])
 
 If $I$ is low, the performance is limited by the transfer $B$, if
 instead $I$ is high, the performance is limited by the execution units
@@ -123,11 +117,9 @@ $R_(upright("peak"))$.
 The best use of resources is the inflection point, called
 #strong[machine balance];, that can change with different architectures.
 
-#figure(image("/files/roofline_model2.png"),
-  caption: [
-    Roofline Model|350
-  ]
-)
+#figure(image("images/roofline_model2.png"), caption: [
+  Roofline Model|350
+])
 
 The aim of the program is not always to reach peak performances, but to
 stay out of the #emph[poor performance] zone, either performing good or
@@ -137,17 +129,9 @@ To be more precise is also possible to define a #strong[cache-aware]
 roofline model with various levels of cache to have a finer grain
 estimation
 
-#figure(image("/files/roofline_model_cache.png"),
-  caption: [
-    Cache-Aware Roofline Model|350
-  ]
-)
+#figure(image("images/roofline_model_cache.png"), caption: [
+  Cache-Aware Roofline Model|350
+])
 
 having now different levels of bandwidth to evaluate performances.
 
-== References
-<references>
-- \[\[parallel\_architectures\]\]
-- \[\[cache\]\]
-- \[\[simd\]\]
-- \[\[threading\]\]

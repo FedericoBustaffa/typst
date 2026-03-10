@@ -54,7 +54,7 @@ There are many methods for local search, for example
 In a #strong[non-deterministic environment] an action outcome is (or can
 be) non-deterministic too. In this sense we don’t have a next state but
 a #strong[belief state];, that can be seen as a #strong[set of possible
-future states];.
+  future states];.
 
 In this kind of problems we have a #strong[conditional plan] as a
 solution that is basically a #strong[tree] that represents an
@@ -74,11 +74,9 @@ nodes; because given a state, the agent needs to do choose an action.
 That action will lead to a new set of possible states. Keep going this
 way soon or later the agent will reach a goal state.
 
-#figure(image("and_or_search_tree.png"),
-  caption: [
-    AND-OR Search Tree|400
-  ]
-)
+#figure(image("images/and_or_search_tree.png"), caption: [
+  AND-OR Search Tree|400
+])
 
 This tree can be searched for example with a DFS algorithm to find a
 conditional plan.

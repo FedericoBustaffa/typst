@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Self Organizing Maps], doc)
 
-#title("Self Organiniziing Maps")
+#title()
 
 A model based on vector quantization and that can be used for clustering and
 dimensionality reduction is the #strong[self organizing map (SOM)];. This model,

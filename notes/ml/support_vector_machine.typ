@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Support Vector Machine], doc)
 
-#title("Support Vector Machine")
+#title()
 
 The #strong[support vector machine] (#strong[SVM];) is a model whose development
 is driven by the concept of #strong[structural risk minimization] from the

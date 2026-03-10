@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Cascade Correlation], doc)
 
-#title("Cascade Correlation")
+#title()
 
 In the #strong[cascade correlation] method the model starts with few units and
 add them based on the training algorithm, so both weights and topology are

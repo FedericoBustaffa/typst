@@ -1,7 +1,7 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Validation], doc)
 
-#title("Validation")
+#title()
 
 A very important step for the deployment of reliable machine learning models is
 the #strong[validation] phase, in which the model is #emph[tested] on unseen

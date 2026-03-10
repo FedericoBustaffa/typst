@@ -31,13 +31,17 @@ Given a collection of $n$ elements, $k$ workers, one emitter and one
 collector we have that the completion time can be obtained with the
 following formula:
 
-$ T_c^(upright("map")) (n , k) = T_(upright("scatter")) + T_(upright("worker")) + T_(upright("gather")) $
+$
+  T_c^(upright("map")) (n , k) = T_(upright("scatter")) + T_(upright("worker")) + T_(upright("gather"))
+$
 
 where
 
-$ T_(upright("scatter")) = T_(upright("split") (n , k)) + k dot.op T_(upright("comm")) (n / k)\
-T_(upright("worker")) = n / k dot.op T_F + T_(upright("comm")) (n / k)\
-T_(upright("gather")) = T_(upright("gather")) (n / k) $
+$
+  T_(upright("scatter")) = T_(upright("split") (n , k)) + k dot.op T_(upright("comm")) (n / k)\
+  T_(upright("worker")) = n / k dot.op T_F + T_(upright("comm")) (n / k)\
+  T_(upright("gather")) = T_(upright("gather")) (n / k)
+$
 
 Also notice that between the workers stage and the two communication
 stages, there is a partial overlap between computation and
@@ -59,9 +63,11 @@ $ T_(upright("split") (n , k)) = T_(upright("gather")) (n / k) approx 0 $
 
 we have that the completion time can be computed as
 
-$ T_c (n , k) & = k dot.op T_(upright("comm")) (n / k) + n / k dot.op T_F + T_(upright("comm")) (n / k)\
- & = (k + 1) dot.op T_(upright("comm")) (n / k) + n / k dot.op T_F\
- & = (k + 1) dot.op (t_0 + n / k dot.op s) + n / k dot.op T_F $
+$
+  T_c (n , k) & = k dot.op T_(upright("comm")) (n / k) + n / k dot.op T_F + T_(upright("comm")) (n / k)\
+  & = (k + 1) dot.op T_(upright("comm")) (n / k) + n / k dot.op T_F\
+  & = (k + 1) dot.op (t_0 + n / k dot.op s) + n / k dot.op T_F
+$
 
 So from this last equation is possible to compute the derivative and see
 where it is equal to zero.
@@ -77,11 +83,9 @@ In order to reduce the service time of the emitter and the overall
 latency of the map to complete the scatter distribution, a binary tree
 scatter distribution can be employed.
 
-#figure(image("/files/map_tree_scatter.png"),
-  caption: [
-    Map Tree Scatter|400
-  ]
-)
+#figure(image("images/map_tree_scatter.png"), caption: [
+  Map Tree Scatter|400
+])
 
 In this way the emitter service time becomes
 
@@ -89,16 +93,16 @@ $ T_s^e = 2 dot.op T_(upright("comm")) (n / 2) $
 
 and the scatter latency becomes
 
-$ T_(upright("scatter")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i) $
+$
+  T_(upright("scatter")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i)
+$
 
 Similarly, the same patter can be used to reduce the collector’s service
 time and the end-to-end latency.
 
-#figure(image("/files/map_tree_gather.png"),
-  caption: [
-    Map Tree|400
-  ]
-)
+#figure(image("images/map_tree_gather.png"), caption: [
+  Map Tree|400
+])
 
 In this way the collector service time becomes
 
@@ -106,7 +110,9 @@ $ T_s^c = 2 dot.op T_(upright("comm")) (n / 2) $
 
 and the gather latency becomes
 
-$ T_(upright("scatter")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i) $
+$
+  T_(upright("scatter")) = 2 dot.op sum_(i = 1)^(⌈ log_2 k ⌉) T_(upright("comm")) (n / 2^i)
+$
 
 Typically a real skeleton does not provide explicit implementations for
 emitters and collectors, that are usually implemented within the worker.
@@ -115,7 +121,7 @@ emitters and collectors, that are usually implemented within the worker.
 <parallel-filesystems>
 There are cases where we can even avoid the scatter and gather stages,
 or to be more precise, they are logical operations. A #strong[parallel
-filesystem] let the workers to read and write the same file in different
+  filesystem] let the workers to read and write the same file in different
 locations (no race conditions) at the same time.
 
 Advantages of this type of filesystem are that

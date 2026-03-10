@@ -1,9 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: note_template
+#show: doc => note_template([Recurrent Neural Network], doc)
 
-#title("Recurrent Neural Network") <recurrent-neural-network>
+#title()
 
-= References <references>
-
-- Neural Networks
-- Deep Learning
