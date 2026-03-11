@@ -34,7 +34,7 @@ procedure for simulating the time evolution of a chemical reacting system by
 taking proper account of the randomness inherent in such a system.
 
 #figure(
-  image("images/gillespie_sir.png", width: 60%),
+  image("images/gillespie_sir.png", width: 50%),
   caption: [ Gillespie's SSA on SIR ],
 )
 
@@ -60,13 +60,13 @@ $ h_mu = product_(i = 1)^rho binom(X_i, l_i) $
 
 with $1 lt.eq i lt.eq rho$. The propensity $a_mu$ is used in the algorithm as
 the parameter of an *exponential probability distribution* modelling the time
-between subsequent occurrences of reaction $R_mu$. Below the _density_ function
+between subsequent occurrences of reaction $R_mu$. Below the _density_ and
+_cumulative_ functions of the distribution
 
-$ f (x) = cases(delim: "{", lambda e^(- lambda x) & x gt.eq 0, 0 & x < 0) $
-
-and the _cumulative_ function of the distribution
-
-$ F (x) = cases(delim: "{", 1 - e^(- lambda x) & x gt.eq 0, 0 & x < 0) $
+$
+  f (x) = cases(delim: "{", lambda e^(- lambda x) & x gt.eq 0, 0 & x < 0) quad
+  quad F (x) = cases(delim: "{", 1 - e^(- lambda x) & x gt.eq 0, 0 & x < 0)
+$
 
 Remember also that the mean (expected value) of an exponentially distributed
 variable with parameter $lambda$ is $1 / lambda$. Two important properties of
