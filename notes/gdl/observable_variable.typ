@@ -115,9 +115,11 @@ $
       B(alpha, beta)
     ), "Beta"
   ) =
-  frac(
-    theta^(n_H + alpha - 1) (1 - theta)^(n_T + beta - 1),
-    B(alpha + n_H, beta + n_T)
+  underbrace(
+    frac(
+      theta^(n_H + alpha - 1) (1 - theta)^(n_T + beta - 1),
+      B(alpha + n_H, beta + n_T)
+    ), "Beta"
   )
 $
 
@@ -144,3 +146,69 @@ $ theta = (n_H + alpha - 1) / (n_H + alpha - 1 + n_T + beta - 1) $
 similary to the previous case.
 
 = Naive Bayes
+
+One of the simplest probabilistic models is the *Naive Bayes* that is based on a
+*strong independence assumption*: every _effect_ is independent from each other
+given the _cause_.
+
+#figure(
+  image("images/naive_bayes.png", width: 20%),
+  caption: [ Naive Bayes ],
+) <fig-naive-bayes>
+
+This model is typically involved in classification tasks in which features are
+considered effects and the target class is considered the cause. Each input
+sample is defined as a set of attributes:
+
+$ x = chevron.l a_1, dots, a_L chevron.r $
+
+and we have a *target classification function*
+
+$ f : X --> C $
+
+where $X$ is the feature space and $C$ is the class label space. The model wants
+to know the probability of each possible class, given an input pattern
+
+$
+  P(c_j | a_1, dots, a_L) =
+  frac(P(a_1, dots, a_L | c_j) dot P(c_j), P(a_1, dots, a_L))
+$
+
+that under the Naive Bayes assumptions becomes
+
+$
+  P(c_j | a_1, dots, a_L) =
+  frac(P(c_j) dot product_(i=1)^L P(a_i | c_j), P(a_1, dots, a_L))
+$
+
+or in more compact and _proportional_ form
+
+$ P(c_j | a_1, dots, a_L) prop P(c_j) dot product_(i=1)^L P(a_i | c_j) $
+
+where the right term is the joint probability of the training data
+
+$ P(c_j) dot product_(i=1)^L P(a_i | c_j) = P(a_1, dots, a_L, c_j) $
+
+Even though we can know the joint distribution family we have to learn its
+parameters $theta$ in order to make inference, and so we have to solve the
+*parameters estimation problem*:
+
+$ P(theta | c_j, a_1, dots, a_L) prop P(c_j, a_1, dots, a_L | theta) P(theta) $
+
+with one of the three framework for learning.
+
+If we consider a classification problem where both features and targets are
+categorical, we can use a multinomial distribution for the likelihood, that
+considering $K$ the set of classes and $S_l$ the set of possible values for the
+$l$-th feature, results in
+
+$
+  P(d | theta) = product_(k = 1)^K theta_k^(n_k) dot
+  product_(l=1)^L product_(s=1)^(S_l) theta_(l s)^n_(l s)
+$
+
+where $n_k$ is the number of samples classified as $k$ and $n_(l s)$ is the
+number of samples whose $l$-th feature has value $s$.
+
+A useful thing to do (expecially for implementation purposes) is to rewrite the
+formula using *indicator variables*.

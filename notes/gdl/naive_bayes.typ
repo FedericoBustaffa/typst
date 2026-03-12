@@ -113,7 +113,7 @@ there is a node that is the _cause_ and its children the effects:
       edge(I, "->", M)
     },
   ),
-  caption: "Discrete Time Markov Chain",
+  caption: "Naive Bayes",
 ) <fig-dtmc>
 
 So now instead of having one big table we have $3$ tables of $2$ rows and one
