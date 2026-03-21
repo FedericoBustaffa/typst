@@ -313,3 +313,5 @@ interventions is not possible to do better.
   algorithm that identifies the *Markov equivalence class* of the true model is
   *complete*.
 ]
+
+There are some cases in which we can actually do better, for example with ANM.
