@@ -185,9 +185,9 @@ where the right term is the joint probability of the training data
 
 $ P(c_j) dot product_(i=1)^L P(a_i | c_j) = P(a_1, dots, a_L, c_j) $
 
-Even though we can know the joint distribution family we have to learn its
-parameters $theta$ in order to make inference, and so we have to solve the
-*parameters estimation problem*:
+Now this is the classification function used for inference. The way in which we
+can train this model is by learn the parameters $theta$ of the joint
+distribution of the whole dataset.
 
 $ P(theta | c_j, a_1, dots, a_L) prop P(c_j, a_1, dots, a_L | theta) P(theta) $
 
@@ -207,4 +207,9 @@ where $n_k$ is the number of samples classified as $k$ and $n_(l s)$ is the
 number of samples whose $l$-th feature has value $s$.
 
 A useful thing to do (expecially for implementation purposes) is to rewrite the
-formula using *indicator variables*.
+formula using *indicator variables*, defined as
+
+$ z_(i k) = cases(1 "if" c_i = k, 0 "otherwise") $
+
+In this way is possible to model the likelihood distribution as follow
+
