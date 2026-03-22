@@ -193,23 +193,99 @@ $ P(theta | c_j, a_1, dots, a_L) prop P(c_j, a_1, dots, a_L | theta) P(theta) $
 
 with one of the three framework for learning.
 
-If we consider a classification problem where both features and targets are
-categorical, we can use a multinomial distribution for the likelihood that,
-considering $K$ the set of classes and $S_l$ the set of possible values for the
-$l$-th feature, results in
+== Maximum Log-Likelihood Learning
+
+Let's focus on maximum log-likelihood for simplicity and let's also consider the
+case where both class labels and features are categorical.
+
+
+Class labels can have $K$ values, while the $l$-th feature can pick values from
+a set $S_l$ of values. So we basically have a bunch of multinomial distributions
+that model the data, hence the likelihood will be
 
 $
-  P(d | theta) = product_(k = 1)^K theta_k^(n_k) dot
-  product_(l=1)^L product_(s=1)^(S_l) theta_(l s)^n_(l s)
+  P(X, C | theta) & = P(C | theta) dot P(X | C, theta) \
+                  & P(C | theta) dot P(X_1, dots, X_L | C, theta)
 $
 
-where $n_k$ is the number of samples classified as $k$ and $n_(l s)$ is the
-number of samples whose $l$-th feature has value $s$.
+But for the conditional independence assumption the model does, we can write
 
-A useful thing to do (expecially for implementation purposes) is to rewrite the
-formula using *indicator variables*, defined as
+$ P(X, C | theta) = P(C | theta) dot product_(l = 1)^L P(X_l | C, theta) $
 
-$ z_(i k) = cases(1 "if" c_i = k, 0 "otherwise") $
+that for every sample becomes
 
-In this way is possible to model the likelihood distribution as follow
+$
+  P(X, C | theta) = product_(i = 1)^N [ P(c_i | theta)
+    product_(l=1)^L P(x_(i l) | c_i, theta) ]
+$
+
+Now the class labels distribution is a plain multinomial of parameter $pi$, with
+$K$ possible values, and the features distributions are also multinomials, each
+of parameter $phi.alt_l$, we can rewrite the joint distribution like follows
+
+$
+  P(X, C | theta) = product_(k=1)^K pi_k^(N_k) dot
+  product_(k=1)^K product_(l=1)^L product_(s=1)^S_l phi.alt_(k l s)^(N_(k l s))
+$
+
+where $N_k$ is the number of samples with class $k$ and $N_(k l s)$ is the
+number of samples with classified as $k$ with value $s$ for the $l$-th feature.
+
+A useful way of reformulating the problem is by the introduction of *indicator
+variables*, defined as
+
+$
+  z_(i k) = cases(1 "if" c_i = k, 0 "otherwise") quad quad
+  t_(i l s) = cases(1 "if" x_(i l) = s, 0 "otherwise")
+$
+
+In this way is possible to model the *likelihood* distribution as follow
+
+$
+  cal(L) (theta) & =
+  product_(i=1)^N product_(k=1)^K P(c_i = k)^(z_(i k)) (product_(l=1)^L
+    product_(s=1)^S_l (P(x_(i l) = s | c_i = k))^(t_(i l s)))^(z_(i k)) \
+  & = product_(i=1)^N product_(k=1)^K pi_k^(z_(i k))
+  (product_(l=1)^L product_(s=1)^S_l phi.alt_(k l s)^(t_(i l
+    s)))^(z_(i k)) \
+$
+
+Now we can go in log-space and define the *log-likelihood* as follows
+
+$
+  log cal(L)(theta) & =
+                      log(
+                        product_(i=1)^N product_(k=1)^K pi_k^(z_(i k))
+                        (product_(l=1)^L product_(s=1)^S_l
+                          phi.alt_(l s)^(t_(i l s)))^(z_(i k))
+                      ) \
+                    & = sum_(i=1)^N sum_(k=1)^K z_(i k) log pi_k +
+                      sum_(i=1)^N sum_(k=1)^K z_(i k)
+                      (sum_(l=1)^L sum_(s=1)^S_l
+                        t_(i l s) log phi.alt_(k l s))
+$
+
+So now is possible to optimize it by computing its derivative and set it to zero
+
+$ (partial cal(L)) / (partial theta) = 0 $
+
+we will obtain the update formula for $pi_k$ and $phi.alt_(k l s)$ that will
+result in
+
+$ pi_k = N_k / N quad quad phi.alt_(k l s) = N_(k l s) / N_k $
+
+that now we can use to learn the data distribution.
+
+== Sparse Data and Zero-Frequency
+
+Can happen that a feature with value $s$ is never observed with class $k$ and so
+$N_(k l s) = 0$ and the resulting probability will go to zero
+
+$ P(x_l = s | c = k) = 0 $
+
+because in this cases the Naive Bayes model confuses _unobserved_ with
+_impossible_.
+
+A classical remedy is to add *pseudo-counts* through a Dirichlet prior,
+performing MAP learning.
 
