@@ -8,57 +8,6 @@ already defined and all the variables are *observable*. In general there is an
 hypothesis $h_theta$ that better explains the data, and so is more suitable to
 answer a query.
 
-// Depending on the inference method we are using, the problem to solve is
-// different:
-//
-// - *Bayesian learning*: we can directly answer the query by computing the
-//   probability of it over all the possible explainations (hypothesis $h_theta$)
-//
-//   $ P(X | theta) = integral_theta P(X | h_theta) P(h_theta | d) d theta $
-//
-//   In this scenario every the answer is weighted over all possible realizations
-//   of $h_theta$; the most likely will weight more because it better explains data
-//   but the others will _smooth_ the result.
-// - *Maximum Likelihood (ML)*: in this case we have to find first the parameter $theta$
-//   the most likely explains the data, in order to update the posterior (the
-//   second term of the integral above). In order to do that we can maximize the
-//   *likelihood* given by the Bayes rule:
-//
-//   $ P(h_theta | d) = (P(d | h_theta) P(h_theta)) / P(d) $
-//
-//   This can be a good choice if any prior is equally probable, but is completely
-//   *data-driven* and can be prione to over-fitting.
-// - *Maximum a Priori (MAP)*: this is like maximum likelihood but introduce a
-//   preference accross all the possible hypothesis. So it tries to maximize both
-//   term at the numerator of the Bayes rule. Moreover it adds a regularization
-//   effect, particularly useful in low data density situations.
-//
-// The concept of ML and MAP are similar and are usually faced in the same way. For
-// the ML we want to find $theta$ that is more likely to have generated the data,
-// assuming $d$ is independently and identically distributed.
-//
-// $
-//   theta = arg max_(theta in Theta) P(d | theta) =
-//   arg max_(theta in Theta) P(x_1, dots, x_N | theta) =
-//   arg max_(theta in Theta) product_(i=1)^N P(x_i | theta)
-// $
-//
-// from a family of parametrized distributions $P(x | theta)$. This can be seen as
-// an optimization problem that considers the *likelihood function*
-//
-// $ cal(L) (theta | x) = P(x | theta) $
-//
-// that of course can be addressed like any optimization problem by
-//
-// $ (partial cal(L) (theta | x)) / (partial theta) = 0 $
-//
-// For the MAP the reasoning is analogue but the function $cal(L)$ to optimize will
-// be different.
-//
-// Another useful trick is to use logarithms' properties in order to make products
-// become sums, reducing the derivative complexity and also definining the
-// *log-likelihood*.
-
 = Biased Coin
 
 Let's consider a coin toss repeated multiple times; the outcome can be modelled
