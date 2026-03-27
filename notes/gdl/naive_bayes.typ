@@ -1,227 +1,262 @@
 #import "@local/note_template:0.1.0": *
-#show: doc => note_template([Naive Bayes], doc)
+#show: doc => note_template([Learning with Fully Observable Variables], doc)
 
 #title()
 
-The *Naive Bayes* model is maybe the simplest probabilistic model that can be
-used in classical ML tasks like classification or in an _agent-based_
-environment to make the agent _reason under uncertainty_.
+The most simple case of probabilistic inference is when the bayesian network is
+already defined and all the variables are *observable*. In general there is an
+hypothesis $h_theta$ that better explains the data, and so is more suitable to
+answer a query.
 
-Usually in a ML context, the goal is to represent the _joint distribution_ of a
-set of random variables, typically something that can intuitively seen as
+= Biased Coin
 
-$ P ("causes" , "effects") $
+Let's consider a coin toss repeated multiple times; the outcome can be modelled
+as a random variable $C$ that of course is a Bernoulli distribution of parameter
+$theta$:
 
-Let's imagine to be a doctor and have to diagnose influence just by knowing
+$ P(X = i) tilde cal(B)(theta) = theta^i dot (1 - theta)^(1-i) $
 
-- The prior probability of get influence $I$.
-- The conditional probability of having the influence, knowing three possible
-  symptoms: fever $F$, cough $C$ and muscle pain $M$.
+Now by looking at the data we want to know what are the probabilities
 
-Assume also that every variable is observed for every patient. In other words
-the dataset is composed by 3D vectors, with every component that can be $0$ or
-$1$.
+$ P(C = "Head") = theta quad P(C = "Tail") = 1 - theta $
 
-A patient come and presents all three symptoms, so we have to compute
+The ML approach finds the $theta$ that is more likely to have generated the
+observed distribution. As said, the underlying family distribution is a
+Bernoulli and so we can say that
 
-$ P(I | F, C, M) $
+$ P(d | theta) = theta^(n_H) (1 - theta)^(n_T) $
 
-By applying the Bayes rule we obtain
+where $n_H$ and $n_T$ are respectively the number of heads and tails observed.
+That is our *likelihood* function $cal(L)$ to optimize, but of course we can
+optimize the log-likelihood version:
+
+$ cal(L) (theta | d) = n_H theta + n_T (1 - theta) $
+
+which derivative is
+
+$ (partial cal(L)) / (partial theta) = n_H / theta - n_T / (1 - theta) $
+
+and it is zero when
+
+$ quad theta = n_H / (n_H + n_T) $
+
+that basically is the simplest probability rule (sign that what we are doing has
+sense).
+
+The MAP version of this problem can be solved in the exact same way by
+considering also the *prior* in order to maximize the *posterior*
+
+$ P(theta | d) = P(d | theta) P(theta) $
+
+For a Bernoulli distribution the *conjugate distribution* is Beta and so we can
+write
 
 $
-  P(I | F, C, M) = (P(F, C, M | I) dot P(I)) / P(F, C, M) =
-  (P(F, C, M, I)) / P(F, C, M)
+  P(theta | d) = P(d | theta) P(theta) =
+  underbrace(theta^(n_H) (1 - theta)^(n_T), "Bernoulli") dot
+  underbrace(
+    frac(
+      theta^(alpha - 1) (1 - theta)^(beta - 1),
+      B(alpha, beta)
+    ), "Beta"
+  ) =
+  underbrace(
+    frac(
+      theta^(n_H + alpha - 1) (1 - theta)^(n_T + beta - 1),
+      B(alpha + n_H, beta + n_T)
+    ), "Beta"
+  )
 $
 
-Now we can just look at the joint probabilities of numerator and denominator to
-obtain the probability of that patient to have gotten the influence:
+that can be optimized like before and without considering the constant at the
+denominator, since does not affect the optimization problem:
+
+$ cal(L) = theta^(n_H + alpha - 1) (1 - theta)^(n_T + beta - 1) $
+
+and so like before we can use the logarithm in order to transform the formula in
+
+$ cal(L) = (n_H + alpha - 1) theta + (n_T + beta - 1) (1 - theta) $
+
+whose derivative is
 
 $
-  P(I | F, C, M) = (P(F, C, M, I)) / P(F, C, M) =
-  (P(F, C, M, I)) / (P(F, C, M, not I) + P(F, C, M, I))
+  (partial cal(L)) / (partial theta) = (n_H + alpha - 1) / theta -
+  (n_T + beta - 1) / (1 - theta)
 $
 
-This is the pure statistic approach where we basically model the joint
-distribution of every possible outcome of the three variables and the class
-together, assuming a possible dependency between them. The result is a table
-with $2^4 = 16$ rows (since we have binary variables and label).
+which is zero for
 
-= Observed Variables
+$ theta = (n_H + alpha - 1) / (n_H + alpha - 1 + n_T + beta - 1) $
 
-The Naive Bayes model assumes conditional independence among the symptoms, given
-the cause (in this case $I$), so now the conditional probability of
+similary to the previous case.
 
-$
-  P(I | F, C, M) & = (P(F, C, M | I) dot P(I)) / P(F, C, M) \
-                 & = (P(F | I) dot P(C | I) dot P(M | I) dot P(I)) / P(F, C, M)
-$
+= Naive Bayes
 
-so now we need the different conditional probabilities at the numerator that can
-be modelled independently from other effects. This means for example modelling
-$P(F | I)$ like
-
-#align(center, grid(
-  columns: 3,
-  gutter: 0.5cm,
-  {
-    table(
-      columns: 2,
-      align: center,
-      [$F$], [$P(F | I)$],
-      [$0$], [$0.7$],
-      [$1$], [$0.05$],
-    )
-  },
-  {
-    table(
-      columns: 2,
-      align: center,
-      [$C$], [$P(C | I)$],
-      [$0$], [$0.1$],
-      [$1$], [$0.01$],
-    )
-  },
-  {
-    table(
-      columns: 2,
-      align: center,
-      [$M$], [$P(M | I)$],
-      [$0$], [$0.8$],
-      [$1$], [$0.2$],
-    )
-  },
-))
-
-Of course we don't need to represent everything because half of the table is
-easily derivable. Another more compact representation is by a *graph* where
-there is a node that is the _cause_ and its children the effects:
+One of the simplest probabilistic models is the *Naive Bayes* that is based on a
+*strong independence assumption*: every _effect_ is independent from each other
+given the _cause_.
 
 #figure(
-  diagram(
-    node-shape: "circle",
-    node-stroke: 1pt,
-    edge-stroke: 1pt,
-    {
-      let (I, F, C, M) = ((0, 0), (-1, 1), (0, 1), (1, 1))
-      node(I, [$I$])
-      node(F, [$F$])
-      node(C, [$C$])
-      node(M, [$M$])
+  image("images/naive_bayes.png", width: 20%),
+  caption: [ Naive Bayes ],
+) <fig-naive-bayes>
 
-      edge(I, "->", F)
-      edge(I, "->", C)
-      edge(I, "->", M)
-    },
-  ),
-  caption: "Naive Bayes",
-) <fig-dtmc>
+This model is typically involved in classification tasks in which features are
+considered effects and the target class is considered the cause. Each input
+sample is defined as a set of attributes:
 
-So now instead of having one big table we have $3$ tables of $2$ rows and one
-table containing the marginal probability of the cause ($I$) of one row, for a
-total of $7$ rows.
+$ x = chevron.l a_1, dots, a_L chevron.r $
 
-It seems nothing but scaled with many variables can largly reduce the
-computational cost. Just to have an idea, the same problem but with $20$
-possible symptoms, in the first case is modelled by a table of $2^21$ rows
-(greater than $2.000.000$), while the Naive Bayes just uses $20$ tables of $2$
-rows each, for a total of $41$ rows (also considering the prior of $I$).
+and we have a *target classification function*
 
-Of course the conditional independence assumption is an approximation of the
-real world so also the probabilities can change, but typically, for this kind of
-problem Naive Bayes works well.
+$ f : X --> C $
 
-= Hidden Variables
-
-Can also happen that one or more variables are *hidden*, for example a patient
-comes with only two specified symptoms instead of three. So now for example we
-have to compute
-
-$ P(I | F, C) = (P(F, C | I) dot P(I)) / P(F, C) $
-
-that without Naive Bayes assumption is
-
-$ P(I | F, C) = P(F, C, I) / P(F, C) $
-
-but in the model we built before we don't have these joint probabilities, and so
-we need to marginalize the hidden one (in this case $M$).
-
-$ P(F, C, I) = sum_m P(F, C, I, M = m) $
-
-and also for the denominator
-
-$ P(F, C) = sum_i sum_m P(I = i, F, C, M = m) $
-
-Under the Naive Bayes assumptions instead we don't even have to marginalize
+where $X$ is the feature space and $C$ is the class label space. The model wants
+to know the probability of each possible class, given an input pattern
 
 $
-  P(I | F, C) & = (P(F, C | I) dot P(I)) / P(F, C) \
-              & = (P(F | I) dot P(C | I) dot P(I)) / P(F, C)
+  P(c_j | a_1, dots, a_L) =
+  frac(P(a_1, dots, a_L | c_j) dot P(c_j), P(a_1, dots, a_L))
 $
 
-because the marginalization of $M$ simplifies
-
-$ sum_m P(M = m | I) = 1 $
-
-while at the denominator we still have to marginalize but only for values of
-$I$, because now, under the assumptions of conditional independence we have
-
-$ P(F, C) = sum_i sum_m P(I = i, F, C, M = m) $
-
-and expand it, we obtain
+that under the Naive Bayes conditional independence assumptions becomes
 
 $
-  P(F, C) & = sum_i sum_m P(I = i, F, C, M = m) \
-          & = P(I = 0, F, C, M = 0) + P(I = 0, F, C, M = 1) \
-          & P(I = 1, F, C, M = 0) + P(I = 1, F, C, M = 1) \
+  P(c_j | a_1, dots, a_L) =
+  frac(P(c_j) dot product_(i=1)^L P(a_i | c_j), P(a_1, dots, a_L))
 $
 
-but as long as the factored representation of the joint distribution is
+or in more compact and _proportional_ form
 
-$ P(F | I) dot P(C | I) dot P(M | I) dot P(I) $
+$ P(c_j | a_1, dots, a_L) prop P(c_j) dot product_(i=1)^L P(a_i | c_j) $
 
-the actual denominator is just
+where the right term is the joint probability of the training data
 
-$ P(F, C) = sum_i P(I = i, F, C) $
+$ P(c_j) dot product_(i=1)^L P(a_i | c_j) = P(a_1, dots, a_L, c_j) $
 
-for a final conditional probability
+Now this is the classification function used for inference. The way in which we
+can train this model is by learn the parameters $theta$ of the joint
+distribution of the whole dataset.
 
-$ P(I | F, C) = (P(F | I) dot P(C | I) dot P(I)) / (sum_i P(I = i, F, C)) $
+$ P(theta | c_j, a_1, dots, a_L) prop P(c_j, a_1, dots, a_L | theta) P(theta) $
 
-So in practice, the Naive Bayes handles well cases were there are hidden
-variables by marginalization and conditional independence.
+with one of the three framework for learning.
 
-= Joint Distribution Representation
+== Maximum Log-Likelihood Learning
 
-The key concept to understand is the *joint distribution representation*; a
-probabilistic model make assumptions on the joint distribution in order to make
-inference and reduce the amount of computation.
+Let's focus on maximum log-likelihood for simplicity and let's also consider the
+case where both class labels and features are categorical.
 
-In practice for the previous example of influence, without any prior knowledge
-we cannot (at least not easily) assume conditional independence between two
-variables from data.
 
-Let's take the previous problem, without prior knowledge we cannot assume
-conditional independence given the cause. This means that knowing the patient
-has influence does not automatically means that symptoms are independent from
-each other.
+Class labels can have $K$ values, while the $l$-th feature can pick values from
+a set $S_l$ of values. So we basically have a bunch of multinomial distributions
+that model the data, hence the likelihood will be
 
-Without observing anything we only have marginal probabilities, but if we
-observe fever, the probability of influence grows and if it grows, also the
-probability of cough grows. In this case we can say that fever and cough are
-marginally dependent.
+$
+  P(X, C | theta) & = P(C | theta) dot P(X | C, theta) \
+                  & P(C | theta) dot P(X_1, dots, X_L | C, theta)
+$
 
-By looking instead at the cause we can say that if the patient has influence and
-the influence causes fever, what can we say about cough? Maybe the fever can
-directly cause cough or maybe there is an hidden and *unmodeled variable* that
-relates fever to cough. In this case there is no conditional independence among
-effects given the cause.
+But for the conditional independence assumption the model does, we can write
 
-The Naive Bayes assumes there is conditional independence even if in the real
-world there is some form of dependence. In this case, knowing the patient has
-influence explains the fever and the cough independently. So now we only need to
-know if the patient has influence to know the probability for him to have cough
-or fever.
+$ P(X, C | theta) = P(C | theta) dot product_(l = 1)^L P(X_l | C, theta) $
 
-In this sense Naive Bayes makes a mistake on the real joint distribution in
-order to model less possible worlds. Anyway, even if it results more _corse
-grained_ in modelling the world, it often works quite well in many scenarios.
+that for every sample becomes
+
+$
+  P(X, C | theta) = product_(i = 1)^N [ P(c_i | theta)
+    product_(l=1)^L P(x_(i l) | c_i, theta) ]
+$
+
+Now the class labels distribution is a plain multinomial of parameter $pi$, with
+$K$ possible values, and the features distributions are also multinomials, each
+of parameter $phi.alt_l$, we can rewrite the joint distribution like follows
+
+$
+  P(X, C | theta) = product_(k=1)^K pi_k^(N_k) dot
+  product_(k=1)^K product_(l=1)^L product_(s=1)^S_l phi.alt_(k l s)^(N_(k l s))
+$
+
+where $N_k$ is the number of samples with class $k$ and $N_(k l s)$ is the
+number of samples with classified as $k$ with value $s$ for the $l$-th feature.
+
+A useful way of reformulating the problem is by the introduction of *indicator
+variables*, defined as
+
+$
+  z_(i k) = cases(1 "if" c_i = k, 0 "otherwise") quad quad
+  t_(i l s) = cases(1 "if" x_(i l) = s, 0 "otherwise")
+$
+
+In this way is possible to model the *likelihood* distribution as follow
+
+$
+  cal(L) (theta) & =
+  product_(i=1)^N product_(k=1)^K P(c_i = k)^(z_(i k)) (product_(l=1)^L
+    product_(s=1)^S_l (P(x_(i l) = s | c_i = k))^(t_(i l s)))^(z_(i k)) \
+  & = product_(i=1)^N product_(k=1)^K pi_k^(z_(i k))
+  (product_(l=1)^L product_(s=1)^S_l phi.alt_(k l s)^(t_(i l
+    s)))^(z_(i k)) \
+$
+
+Now we can go in log-space and define the *log-likelihood* as follows
+
+$
+  log cal(L)(theta) & =
+                      log(
+                        product_(i=1)^N product_(k=1)^K pi_k^(z_(i k))
+                        (product_(l=1)^L product_(s=1)^S_l
+                          phi.alt_(l s)^(t_(i l s)))^(z_(i k))
+                      ) \
+                    & = sum_(i=1)^N sum_(k=1)^K z_(i k) log pi_k +
+                      sum_(i=1)^N sum_(k=1)^K z_(i k)
+                      (sum_(l=1)^L sum_(s=1)^S_l
+                        t_(i l s) log phi.alt_(k l s))
+$
+
+So now is possible to optimize it by computing its derivative and set it to zero
+
+$ (partial cal(L)) / (partial theta) = 0 $
+
+we will obtain the update formula for $pi_k$ and $phi.alt_(k l s)$ that will
+result in
+
+$ pi_k = N_k / N quad quad phi.alt_(k l s) = N_(k l s) / N_k $
+
+that now we can use to learn the data distribution.
+
+== Inference
+
+Once the model is trained we can perform inference by using the updated
+posterior distribution.
+
+$ P(C | X, theta) & prop P(X | C, theta) dot P(C | theta) $
+
+which becomes
+
+$ P(C = k | X_l = s, theta) = pi_k product_(l=1)^L phi.alt_(k l s) $
+
+and so to classify $X$ we can compute
+
+$ arg max_k pi_k product_(l=1)^L phi.alt_(k l s) $
+
+that returns the most probable class $k$ given the input $X$. But in practice
+also here is possible to use the logarithm:
+
+$ arg max_k ( log pi_k + sum_(l=1)^L log phi.alt_(k l s) ) $
+
+to avoid underflows in practical implementations.
+
+== Sparse Data and Zero-Frequency
+
+Can happen that a feature with value $s$ is never observed with class $k$ and so
+$N_(k l s) = 0$ and the resulting probability will go to zero
+
+$ P(x_l = s | c = k) = 0 $
+
+because in this cases the Naive Bayes model confuses _unobserved_ with
+_impossible_.
+
+A classical remedy is to add *pseudo-counts* through a Dirichlet prior,
+performing MAP learning.
+
