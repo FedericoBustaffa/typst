@@ -8,9 +8,8 @@ basically solves the _inference_ problem of finding the right parameters of a
 distribution, given the data and, if possible, some prior knowledge.
 
 In general, *inference* is a process where, given some _evidence_ (data in our
-case), we want to answer a _query_ on how probable is a fact. To answer there
-are three main ways: *bayesian*, *maximum a-posteriori* and *maximum
-likelihood*, all exploiting in a way or another the Bayes rule:
+case), we want to answer a _query_ on how probable is a fact, exploiting the
+Bayes rule:
 
 $
   P("cause" | "evidence") = (P("evidence" | "cause") dot P("cause")) / P("evidence") \
@@ -21,6 +20,9 @@ or in another formulation
 
 $ "Posterior" prop "Likelihood" dot "Prior" $
 
+The marginal probability of the evidence is often omitted because we are not
+interested in valid and normalized probability but just a _score_.
+
 In the case of machine learning we want to _learn_ distribution parameters, and
 this translate to the inference problem:
 
@@ -29,13 +31,32 @@ $ P(theta | cal(D)) = (P(cal(D) | theta) dot P(theta)) / P(cal(D)) $
 where $theta$ are the set of parameters of the distributions involved and
 $cal(D)$ is the set of data and where
 
-- $P(theta | cal(D))$: probability of $theta$ being the parameters of the generating
-  distribution of data $d$.
-- $P(cal(D) | theta)$: how probable is to seed the data $cal(D)$, given that
-  $theta$ are the parameters of the generating distribution.
-- $P(theta)$: the prior probability of parameters $theta$ (encode beliefs or
+- *Posterior* $P(theta | cal(D))$: probability of $theta$ being the true set of
+  parameters that have generated $cal(D)$.
+- *Likelihood* $P(cal(D) | theta)$: if $theta$ is the true set of parameters,
+  how likely is to see $cal(D)$.
+- *Prior* $P(theta)$: probability of parameters $theta$ (encode beliefs or
   experts knowledge).
-- $P(cal(D))$ the marginal probability of data (the empirical distribution).
+
+Now, supposing we have a trained model and a fact $X$ on the world we are
+modelling, we want to ask our model how probable is the fact $X$, or out of
+multiple possible choices, we want to know which is the most probable.
+
+But of course we have to first train the model and we have three possible ways
+of doing it:
+
+- *Bayesian*:
+- *Maximize the likelihood (ML)*: in case we don't have prior knowledge we can
+  consider every prior $P(theta)$ equiprobable and so by finding $theta$ the
+  maximizes the likelihood
+  $ arg max_theta P(cal(D) | theta) $
+  we can increase the posterior probability.
+- *Maximize the posterior (MAP)*: in case we have prior knowledge we can
+  maximize the whole numerator
+  $ arg max_theta P(cal(D) | theta) dot P(theta) $
+  This also adds a *regularization effect* because, in low density of data
+  scenarios, the prior drives the learning process to not overfit the few samples
+  we have.
 
 The *bayesian learning* does not really find the best parameters, but compute a
 weighted average over all possible $theta$ and returns the most probable answer
@@ -50,18 +71,6 @@ can be very expensive.
 But looking at the Bayes rule formula is clear that we can maximize the
 posterior probability by manipulating the numerator of the right side. To do
 that we can
-
-- *Maximize the likelihood (ML)*: in case we don't have prior knowledge we can
-  consider every prior $P(theta)$ equiprobable and so by finding $theta$ the
-  maximizes the likelihood
-  $ arg max_theta P(cal(D) | theta) $
-  we can increase the posterior probability.
-- *Maximize the posterior (MAP)*: in case we have prior knowledge we can
-  maximize the whole numerator
-  $ arg max_theta P(cal(D) | theta) dot P(theta) $
-  This also adds a *regularization effect* because, in low density of data
-  scenarios, the prior drives the learning process to not overfit the few samples
-  we have.
 
 Once we have $theta$ we have the parameters of distributions that most likely
 model our data and so it's possible to answer queries by just plug the sample

@@ -1,6 +1,7 @@
 #import "@preview/cetz:0.4.2"
 #import "@preview/lilaq:0.5.0" as lq
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node, shapes
+#import "@preview/physica:0.9.8": *
 
 #let note_template(doc_title, body) = {
   set text(font: "New Computer Modern", size: 12pt)

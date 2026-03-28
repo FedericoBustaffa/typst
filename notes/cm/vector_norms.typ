@@ -3,60 +3,68 @@
 
 #title()
 
-In order to measure vectors #emph[length] there are some metrics that can be
-used, called #strong[norms];, functions
+The *norm of a vector* is a function that assigns a vector its _length_ in terms
+of distance from the origin.
 
-$ parallel dot.op parallel : bb(R)^n arrow.r bb(R) $
+$ norm(dot) : RR^n -> RR $
 
-but to be a #emph[norm] a function must respect these three properties:
+but to be a _norm_ a function must respect these three properties:
 
-+ $parallel v parallel gt.eq 0$ for all $v$ and
-  $parallel v parallel = 0 arrow.l.r.double v = 0$.
-+ $parallel alpha dot.op v parallel = lr(|alpha|) dot.op parallel v parallel$
++ $norm(v) gt.eq 0$ for all $v$ and
+  $norm(v) = 0 arrow.l.r.double v = 0$.
++ $norm(alpha dot.op v) = lr(|alpha|) dot.op norm(v)$
   for all $alpha in bb(R)$ and for all vectors $v$.
-+ #strong[Triangular inequality];:
-  $parallel v + w parallel lt.eq parallel v parallel + parallel w parallel$
++ *Triangular inequality*:
+  $norm(v + w) lt.eq norm(v) + norm(w)$
   for all $v , w$.
 
 There are several norms, used for different purposes, here some of the most
 popular:
 
-- #strong[Euclidean];: if we think about it in two or three dimensional space
-  it’s the direct distance between a point and the origin
-  $ parallel v parallel_2 = sqrt(sum_(i = 1)^n v_i^2) $
+- *Euclidean*: if we think about it in two or three dimensional space it’s the
+  direct distance between a point and the origin
+  $ norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) $
   where $v_i$ is the $i$-th component of the vector $v$. It can also be written as
   the square root of product between the vector $v$ transposed and $v$ itself
-  $ parallel v parallel_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^tack.b v) $
+  $ norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^tack.b v) $
   that is the definition of the square root of the scalar product between $v$ and
   itself.
   $
-    parallel v parallel_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^tack.b v) =
+    norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^tack.b v) =
     sqrt(chevron.l v \, v chevron.r)
   $
   all these equalities can be useful for calculations.
-- #strong[Manhattan];: this represents the Manhattan distance between the point
-  and the origin and it is basically the sum of the absolute values of each
-  component of the vector:
-  $ parallel v parallel_1 = sum_(i = 1)^n lr(|v_i|) $
-- #strong[Infinite];: this norm will take only the maximum among each
-  component’s absolute value:
-  $ parallel v parallel_oo = max_(i = 1 , dots.h , n) lr(|v_i|) $
+- *Manhattan*: this represents the Manhattan distance between the point and the
+  origin and it is basically the sum of the absolute values of each component of
+  the vector:
+  $ norm(v)_1 = sum_(i = 1)^n lr(|v_i|) $
+- *Infinite*: this norm will take only the maximum among each component’s
+  absolute value:
+  $ norm(v)_oo = max_(i = 1 , dots.h , n) lr(|v_i|) $
 
 Generally the euclidean norm is nice because there are many matrices that
-preserve it, for example #strong[orthogonal] matrices.
+preserve it, for example *orthogonal* matrices.
 
-A useful fact that is indipendent of the norm used is that for any vector
-$v eq.not 0$ we can write
+A nice thing to keep in mind is that, for any vector $v != 0$ we can write
 
-$ v = alpha dot.op w $
+$ v / (norm(v)) $
 
-where $alpha = parallel v parallel$ and $w = v \/ parallel v parallel$ is the
+is the *unit vector* which basically gives us the _direction_ of the vector and
+so we can write, hence
+
+$ norm(v / (norm(v))) = 1 $
+
+This is also implies that
+
+$ v = alpha dot w $
+
+where $alpha = norm(v)$ and $w = v / norm(v)$ is the
 unit vector.
 
 A particular vector norm, useful for some numerical approach like _conjugate
 gradient method_, is the *A-norm*, defined with a SPD matrix $A$ as
 
-$ || v ||_A = sqrt(v^tack.b A v) $
+$ norm(v)_A = sqrt(v^TT A v) $
 
 that for $A = I$ is equivalent to the euclidean norm.
 
