@@ -45,7 +45,12 @@ multiple possible choices, we want to know which is the most probable.
 But of course we have to first train the model and we have three possible ways
 of doing it:
 
-- *Bayesian*:
+- *Bayesian*: the bayesian learning doesn't really find the best parameters
+  $theta$, it makes a weighted average of all of them and returns the most
+  probable answer:
+  $ P(X | cal(D)) = integral_theta P(X | theta) dot P(theta | cal(D)) d theta $
+  but it has clear tractability issues due to the integral and the fact that the
+  posterior could be intractable.
 - *Maximize the likelihood (ML)*: in case we don't have prior knowledge we can
   consider every prior $P(theta)$ equiprobable and so by finding $theta$ the
   maximizes the likelihood
@@ -57,20 +62,6 @@ of doing it:
   This also adds a *regularization effect* because, in low density of data
   scenarios, the prior drives the learning process to not overfit the few samples
   we have.
-
-The *bayesian learning* does not really find the best parameters, but compute a
-weighted average over all possible $theta$ and returns the most probable answer
-to the given query
-
-$ P(X | cal(D)) = integral_theta P(X | theta) dot P(theta | cal(D)) d theta $
-
-this is the most accurate but with clear tractability issues due to the fact
-that integrals could not be computable in closed form and numerical solutions
-can be very expensive.
-
-But looking at the Bayes rule formula is clear that we can maximize the
-posterior probability by manipulating the numerator of the right side. To do
-that we can
 
 Once we have $theta$ we have the parameters of distributions that most likely
 model our data and so it's possible to answer queries by just plug the sample
