@@ -31,19 +31,26 @@ $ P(theta | cal(D)) = (P(cal(D) | theta) dot P(theta)) / P(cal(D)) $
 where $theta$ are the set of parameters of the distributions involved and
 $cal(D)$ is the set of data and where
 
-- *Posterior* $P(theta | cal(D))$: probability of $theta$ being the true set of
-  parameters that have generated $cal(D)$.
-- *Likelihood* $P(cal(D) | theta)$: if $theta$ is the true set of parameters,
-  how likely is to see $cal(D)$.
-- *Prior* $P(theta)$: probability of parameters $theta$ (encode beliefs or
+- $P(theta | cal(D))$ is the *posterior* probability of $theta$ being the true
+  set of parameters that have generated $cal(D)$.
+- $P(cal(D) | theta)$ is the *likelihood* and tells us, if $theta$ is the true
+  set of parameters, how likely is to see $cal(D)$.
+- $P(theta)$ is the *prior* probability of parameters $theta$ (encode beliefs or
   experts knowledge).
+
+Let's also consider that $cal(D)$ is basically always something complex or at
+least a _package_ of data. Just thinking about tabular data where we have
+multiple features; a probabilistic model aims to represent the *joint
+distribution* of all the random variables involved (features, targets and
+parameters) by making some useful assumption in order to model relations between
+them in a convenient way.
 
 Now, supposing we have a trained model and a fact $X$ on the world we are
 modelling, we want to ask our model how probable is the fact $X$, or out of
 multiple possible choices, we want to know which is the most probable.
 
 But of course we have to first train the model and we have three possible ways
-of doing it:
+of doing it, all exploiting the above formula of the Bayes rule:
 
 - *Bayesian*: the bayesian learning doesn't really find the best parameters
   $theta$, it makes a weighted average of all of them and returns the most
@@ -63,13 +70,19 @@ of doing it:
   scenarios, the prior drives the learning process to not overfit the few samples
   we have.
 
+While the bayesian learning is a _special_ case, ML and MAP are like point-wise
+estimations of bayesian learning, since they provide the post probable
+hypothesis (according to the posterior computation).
+
 Once we have $theta$ we have the parameters of distributions that most likely
 model our data and so it's possible to answer queries by just plug the sample
-$X$ in the probability or density function found and seed how probable is.
+$X$ in the probability or density function found and see how probable it is.
 
-Similarly to classical discriminative models, where we have to guess the family
-of the function we are trying to fit, in probabilistic learning we have to
-assign to each feature a distribution, _aligned_ to its domain.
+In general, for every probabilistic model we have to consider its *generative*
+process, given by the posterior. This is equal to ask the model, given the
+parameters $theta$, how it would generate $cal(D)$. The generative process tells
+a lot on the flexibility of the model and it's crucial to determine the right
+learning algorithm.
 
 Also, given a distribution, its parameters are modelled by its *conjugate prior*
 distribution, that is very useful for the MAP framework. The resulting

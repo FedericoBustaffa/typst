@@ -3,9 +3,9 @@
 
 #title()
 
-Bayesian networks are used to model *asymmetric dependencies*, and in order to
-model also *symmetric dependencies*, like bidirectional effects we need
-*undirected models*.
+Bayesian networks are used to model *asymmetric dependencies*, but in order to
+model *symmetric dependencies*, like bidirectional effects we need *undirected
+models*.
 
 In fact directed models cannot represent some (bidirectional) dependencies in
 the distributions.
@@ -36,8 +36,8 @@ by a bayesian network.
 
 This can be done instead by *undirected models*, like *random Markov fields*,
 that are simpler and have an equivalent definition of $d$-separation, which is
-only based on condition nodes to block a path, if a node is not conditioned the
-path is unblocked.
+only based on conditioning nodes to block a path, if a node is not conditioned
+the path is unblocked.
 
 #figure(
   image("images/markov_random_field.png", width: 50%),
@@ -49,15 +49,16 @@ In this case the _Markov blanket_ of a node include all and only its neighbors.
 = Joint Probability Factorization
 
 For the *joint probability* of undirected models we can exploit the fact that
-the Markov blanket is composed by the neighbors and so every node that is not a
-neighbor is conditionally independent given the Markov blanket.
+the Markov blanket of a node is composed by its neighbors therefore, given a
+node's neighborhood, it is conditionally independent from every other node in
+the graph (Markov property):
 
 $
-  P(X_v, X_i | X_(cal(V) - {v, i})) =
-  P(X_v | X_(cal(V) - {v,i}) P(X_i | X_(cal(V) - {v, i})))
+  P(X_i, X_j | X_(cal(V) - {i, j})) =
+  P(X_i | X_(cal(V) - {i, j})) P(X_j | X_(cal(V) - {i, j}))
 $
 
-The factorization should be chosen in a way that nodes $X_v$ and $X_i$ are not
+The factorization should be chosen in a way that nodes $X_i$ and $X_j$ are not
 in the same factor. One possible graph structure that includes only nodes that
 are pairwise connected is the *clique*.
 
@@ -81,7 +82,7 @@ In this sense is possible to perform a *maximal clique factorization* by
 defining $X = X_1, dots, X_N$ as the random variables associated to the $N$
 nodes in the undirected graph $cal(G)$
 
-$ P(X) = 1 / Z product_C psi (X_c) $
+$ P(X) = 1 / Z product_C psi (X_C) $
 
 where
 
