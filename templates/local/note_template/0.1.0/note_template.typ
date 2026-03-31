@@ -3,6 +3,7 @@
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node, shapes
 #import "@preview/physica:0.9.8": *
 
+
 #let note_template(doc_title, body) = {
   set text(font: "New Computer Modern", size: 12pt)
   set page(paper: "a4", numbering: "1")
@@ -19,6 +20,8 @@
     inset: 10pt,
     width: 100%,
   )
+
+  show: super-T-as-transpose
 
   body
 }
