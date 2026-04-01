@@ -21,16 +21,14 @@ line):
 
 #figure(
   lq.diagram(
-    let b = ((1, 1),),
-    let P = nt.dot(b, nt.transpose(b)),
-
-    lq.line((0, 0), (1, 1)),
-    lq.line((0.4, 0.2), (0.3, 0.3), stroke: red),
+    aspect-ratio: 1,
+    lq.line((0.1, 0.1), (0.9, 0.9)),
+    lq.line((0.5, 0.1), (0.3, 0.3), stroke: red),
     lq.line((0.8, 0.6), (0.7, 0.7), stroke: red),
     lq.line((0.4, 0.6), (0.5, 0.5), stroke: red),
 
-    lq.scatter((0.4, 0.4, 0.8), (0.2, 0.6, 0.6)),
-    lq.scatter((0.3, 0.7, 0.5), (0.3, 0.7, 0.5)),
+    lq.scatter((0.5, 0.8, 0.4), (0.1, 0.6, 0.6)),
+    lq.scatter((0.3, 0.7, 0.5), (0.3, 0.7, 0.5), color: red),
   ),
   caption: [ 2-D Vectors Projected onto 1-D Space ],
 ) <fig-2d-to-1d>
