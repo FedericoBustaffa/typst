@@ -1,4 +1,3 @@
-#import "@preview/tiptoe:0.4.0": *
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Orthogonal Projections], doc)
 
@@ -22,6 +21,9 @@ line):
 
 #figure(
   lq.diagram(
+    let b = ((1, 1),),
+    let P = nt.dot(b, nt.transpose(b)),
+
     lq.line((0, 0), (1, 1)),
     lq.line((0.4, 0.2), (0.3, 0.3), stroke: red),
     lq.line((0.8, 0.6), (0.7, 0.7), stroke: red),
@@ -49,6 +51,8 @@ the *projection matrix* $P_pi$ for which it holds
 
 $ P_pi^2 = P_pi $
 
+that can be applied as any other transformation matrix.
+
 = Projections on 1-D Spaces
 
 The most simple case of projection can be achieved by map high-dimensional
@@ -73,19 +77,58 @@ scalar product above is zero. The point $pi_U (x)$ must be an element of $U$
 
 $ pi_U (x) = lambda b $
 
-Let's define a three step algorithm to project a vector onto a 1-D subspace:
+Let's define a three step algorithm to project a vector onto a 1-D subspace.
 
-First let's find $lambda$: orthogonality condition holds, so
++ *Find scaling factor $lambda$ of $b$*: orthogonality condition holds, so
 
-$ iprod(x - pi_U (x), b) = 0 <==> iprod(x - lambda b, b) = 0 $
+  $ iprod(x - pi_U (x), b) = 0 <==> iprod(x - lambda b, b) = 0 $
 
-so by applying the bilinearity of the inner product we obtain
+  so by applying the bilinearity of the inner product we obtain
 
-$
-  iprod(x, b) - lambda iprod(b, b) = 0 <==>
-  lambda = iprod(x, b) / iprod(b, b) = iprod(x, b) / norm(b)^2
-$
+  $
+    iprod(x, b) - lambda iprod(b, b) = 0 <==>
+    lambda = iprod(x, b) / iprod(b, b) = iprod(x, b) / norm(b)^2
+  $
 
-that for inner products symmetry becomes
+  that for inner products symmetry becomes
 
-$ iprod(x, b) / norm(b)^2 = iprod(b, x) / norm(b)^2 = (b^T x) / norm(b)^2 $
+  $
+    lambda = iprod(x, b) / norm(b)^2 = iprod(b, x) / norm(b)^2
+    = (b^T x) / norm(b)^2
+  $
+
+  So this i
++ *Find the projection point $pi_U (x)$*: since $pi_U (x) = lambda b$ it holds that
+
+  $ pi_U (x) = lambda b = (b^T x) / norm(b)^2 b $
+
+  and we can also compute the length of $pi_U (x)$, simply by the norm
+
+  $ norm(pi_U (x)) = norm(lambda b) = |lambda| dot norm(b) $
+
+  that if we use the dot product as inner product is
+
+  $
+    norm(pi_U (x)) = (|b^T x|) / norm(b)^2 norm(b)
+    = |cos(omega)| norm(x) norm(b) norm(b) / norm(b)^2
+    = |cos(omega)| norm(x)
+  $
+
+  with $omega$ that is the angle between $x$ and $b$.
++ *Find the projection matrix $P_pi$*: the projection is a linear mapping,
+  therefore exists a projection matrix $P_pi$ such that
+
+  $ pi_U (x) = P_pi dot x $
+
+  that is immediate to find because we already know that
+
+  $
+    pi_U (x) = lambda b = b lambda = (b^T x) / norm(b)^2 = (b b^T) / norm(b)^2 x
+  $
+
+  that means that we already have our matrix
+
+  $ P_pi = (b b^T) / norm(b)^2 $
+
+  that is symmetric and has rank $1$.
+

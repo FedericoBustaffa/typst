@@ -3,21 +3,19 @@
 
 #title()
 
-A model, mostly used for classification, is the #strong[$k$-nearest neighbors];,
-where there is no real #emph[learning phase];; the model is a
-#strong[#emph[lazy];] type because it just stores all the data and, when it is
-called to classify new data perform a sort #emph[similarty] comparison between
-the new data and the stored data.
+A model, mostly used for classification, is the *$k$-nearest neighbors*, where
+there is no real _learning phase_; the model is a *_lazy_* type because it just
+stores all the data and, when it is called to classify new data perform a sort
+_similarty_ comparison between the new data and the stored data.
 
-There are various #strong[distance metrics] and variants but, generally
-speaking, the new data will be classified similarly to its neighbors.
+There are various *distance metrics* and variants but, generally speaking, the
+new data will be classified similarly to its neighbors.
 
 = 1-Nearest Neighbor <nearest-neighbor>
 
-The simplest version of the $k$-nn is the #strong[$1$-nn];, where we consider
-only #emph[the] nearest neighbor of the new given data, according to some
-#strong[distance] metric (lets take for example the #strong[euclidean
-  distance];).
+The simplest version of the $k$-nn is the *$1$-nn*;, where we consider only the
+nearest neighbor of the new given data, according to some *distance* metric
+(lets take for example the *euclidean distance*).
 
 So given a dataset composed of $n$-dimensional data and $x$, a new
 $n$-dimensional data, the distance between $x$ and $x_i$ can be computed as
@@ -32,24 +30,23 @@ stored data, the classification will be the same as the closest pattern in the
 dataset.
 
 In this particular case of the $k$-nn we don’t have any error on the training
-set because we simply store the patterns and their #emph[answers] as they are.
+set because we simply store the patterns and their _answers_ as they are.
 
-In the end we obtain a very #strong[flexible] and #strong[sensible] model that
-may have some problems to generalize. That’s because if we an area full of
-patterns classified with a certain label and only one classified in another way,
-a new data that is closer to it will be classified the same. But maybe that
-pattern was an outlier and the actual correct classification was the one of the
-other patterns around.
+In the end we obtain a very *flexible* and *sensible* model that may have some
+problems to generalize. That’s because if we an area full of patterns classified
+with a certain label and only one classified in another way, a new data that is
+closer to it will be classified the same. But maybe that pattern was an outlier
+and the actual correct classification was the one of the other patterns around.
 
 = Mulitple Neighbors <mulitple-neighbors>
 
-So the $1$-nn is kind of a special case of $k$-nn where the model just
-#emph[copy] from the nearest neighbor to give an answer. When instead we
-consider more than one neighbor, things change a bit.
+So the $1$-nn is kind of a special case of $k$-nn where the model just _copy_
+from the nearest neighbor to give an answer. When instead we consider more than
+one neighbor, things change a bit.
 
 Now we $k$ nearest neighbors that can have different labels, to choose which
-class assign to the new data, we can performa a #strong[majority vote];,
-assigning the same class the majority of the neighbors have.
+class assign to the new data, we can performa a *majority vote*, assigning the
+same class the majority of the neighbors have.
 
 $ h (x) = arg max_v sum_(x_i in N_k (x)) I_(v , y_i) $
 

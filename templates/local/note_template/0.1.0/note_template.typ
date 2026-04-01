@@ -1,7 +1,8 @@
 #import "@preview/cetz:0.4.2"
-#import "@preview/lilaq:0.5.0" as lq
+#import "@preview/lilaq:0.6.0" as lq
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node, shapes
 #import "@preview/physica:0.9.8": *
+#import "@preview/numty:0.1.0" as nt
 
 
 #let note_template(doc_title, body) = {
