@@ -12,7 +12,7 @@ which results in a scalar which, we'll see later, is a measure of how similar
 $x$ and $y$ are, mostly in terms of directions and angles.
 
 #important(title: [ Definition ])[
-  Lert $V$ be a vectore space and $Omega : V times V -> RR$ a _bilinear
+  Let $V$ be a vectore space and $Omega : V times V -> RR$ a _bilinear
   mapping_, then $Omega$ is
 
   - *Symmetric* if $Omega(x, y) = Omega(y, x)$ for all $x, y in V$.
