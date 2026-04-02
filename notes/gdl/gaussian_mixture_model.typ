@@ -4,16 +4,43 @@
 #title()
 
 The *gaussian mixture model (GMM)* is one of the simplest cases of probabilistic
-model where there are variable completely *hidden*.
+model where there are variable completely *hidden*. This is similar to the Naive
+Bayes model, except that we don't have observations for class labels and this
+results in a clustering algorithm.
 
-The GMM is basically a *soft clustering* algorithm used to cluster continuous
-data, assuming there is a finite number of clusters (gaussians) that have
-generated it.
+In particular the GMM is a *soft clustering* algorithm used to cluster
+continuous data, assuming there is a finite number of clusters (gaussians) that
+have generated it.
 
-The _soft clustering_ is referred to the fact that, unlike algorithms like
-$k$-means, in a GMM every sample is assigned to every cluster, just with
-different probabilities and of course if we consider only the most probable one,
-we go back to the hard clustering framework.
+#figure(
+  diagram(
+    node-shape: "circle",
+    node-stroke: 1pt,
+    edge-stroke: 1pt,
+    {
+      let (p_pi, z, x, p_mu, p_sigma) = (
+        (0, 0),
+        (0, 0.75),
+        (0, 1.5),
+        (-0.75, 1.75),
+        (0.75, 1.75),
+      )
+
+      node(p_pi, [$pi$])
+      node(z, [$z$])
+      node(x, [$x$], fill: aqua)
+      node(p_mu, [$mu$])
+      node(p_sigma, [$sigma$])
+
+      edge(p_pi, "-|>", z)
+      edge(z, "-|>", x)
+      edge(p_mu, "-|>", x)
+      edge(p_sigma, "-|>", x)
+    },
+  ),
+  caption: [ Gaussian Mixture Model ],
+) <fig-gmm>
+
 
 To be fair, even in that case we still have the uncertainty given by the
 bayesian framework for learning and so we can assign a sample to the most
@@ -36,4 +63,193 @@ $ theta = (pi, mu, sigma) $
 
 estimated by the EM algorithm.
 
+= Generative Process
 
+First of all let's consider the *generative process* of this model: if the model
+had generated the data, it would have followed this procedure:
+
++ Given the parameter $pi$ of the multinomial, let's draw a cluster $m$ from the
+  multinomial and assign it to $z$.
++ By looking at @fig-gmm it's clear that there is a collider where $x$ is
+  observed and so $z$, $mu$ and $sigma$ are dependent one another. This leads us
+  to choose the $m$-th Gaussian in order to finally generate $x$.
+
+Now we can try to write the *joint distribution* of this model by thinking about
+the described generative process
+
+$ P(X, Z | theta) = P(Z | pi) dot P(X | Z, mu, sigma) $
+
+Which makes sense if we think it from a generative perspective in which first we
+draw a cluster from the multinomial and then, using that index, we use the
+$m$-th Gaussian to generate a sample.
+
+= Learning
+
+The next step is to learn the right parameters $theta$ of all the distribution
+involved by solving the *learning inference problem*:
+
+$ P(theta | X, Z) = frac(P(X, Z | theta) dot P(theta), P(X, Z)) $
+
+by ML or MAP. Let's solve it by maximum likelihood so that we can consider the
+*complete likelihood*:
+
+$ P(X, Z | theta) = P(Z | pi) dot P(X | Z, mu, sigma) $
+
+factorized as before. The problem with this formulation is that we don't have
+$Z$, instead we have the *incomplete likelihood* $P(X | theta)$, that depends on
+$Z$ which we can introduce by marginalization:
+
+$
+  P(X | theta) = sum_(m=1)^M P(X, Z = m | theta)
+  = sum_(m=1)^M P(Z = m | theta) dot P(X | Z = m, theta)
+$
+
+and since each sample is i.i.d. we can write
+
+$
+  P(X | theta) & = product_(i=1)^N sum_(m=1)^M
+                 P(z_i = m | pi) dot P(x_i | z_i = m, mu, sigma) \
+               & = product_(i=1)^N sum_(m=1)^M
+                 pi_m dot cal(N) (x_i | mu_m, sigma_m)
+$
+
+We kind of reconstruct the complete likelihood in a marginalized form. So we can
+now maximize it in order to find $theta$ and since we prefer to work in
+log-space we have to optimize
+
+$
+  log P(X | theta) = log(
+    product_(i=1)^N sum_(m=1)^M
+    pi_m dot cal(N) (x_i | mu_m, sigma_m)
+  )
+$
+
+that is not nice to optimize directly by computing the derivative and setting it
+to zero. So we can pretend to know the true values of $z_i$ and introduce
+indicator variables:
+
+$
+  z_(i m) = cases(
+    1 & "if " z_i = m,
+    0 & "otherwise"
+  )
+$
+
+so we can now rewrite the likelihood like follows
+
+$
+  log P(X | theta) & = log(
+                       product_(i=1)^N sum_(m=1)^M
+                       z_(i m) dot pi_m dot cal(N) (x_i | mu_m, sigma_m)
+                     ) \
+                   & = log(
+                       product_(i=1)^N product_(m=1)^M
+                       (pi_m dot cal(N) (x_i | mu_m, sigma_m))^(z_(i m))
+                     ) \
+                   & = sum_(i=1)^N sum_(m=1)^M
+                     z_(i m) log(pi_m dot cal(N) (x_i | mu_m, sigma_m))
+$
+
+That is in a much nicer form than before but now we introduced a new problem: in
+practice we don't know $z_(i m)$ values so we still cannot directly optimize
+this directly.
+
+== Expectation Maximization
+
+What we can do is use the *expectation maximization* algorithm, that iteratively
+updates the parameters, starting from an initial guess. The idea is to
+
++ *E-step*: make the model predict every sample, generating the missing $z_(i m)$, based
+  on some initial parameters.
++ *M-step*: update the parameters by maximizing the log-likelihood.
+
+To make the model predict we need a posterior that, given an observation,
+returns the most probable cluster based on the current parameters $theta^((k))$:
+
+$ P(Z | X, theta^((k))) $
+
+then we just need the likelihood to define a function that put together the two:
+
+$
+  Q(theta | theta^((k))) =
+  sum_(m=1)^M P(Z = m | X, theta^((k))) log P(X | theta)
+$
+
+By maximization of this function is now possible to find the parameters that are
+most likely the right generators of data, since we put together a posterior and
+a likelihood.
+
+Since the function $Q$ is an expectation, we can write:
+
+$
+  Q(theta | theta^((k))) & =
+  EE_(P(Z = m | X, theta^((k)))) [ log P(X | theta) ] \
+  & = EE_(P(Z = m | X, theta^((k))))
+  [ sum_(i=1)^N sum_(m=1)^M z_(i m) log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) ]
+$
+
+and since the expectation is a linear operator, it can go inside the logarithm:
+
+$
+  & EE_(P(Z = m | X, theta^((k))))
+  [ sum_(i=1)^N sum_(m=1)^M z_(i m) log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) ] \
+  = &
+  sum_(i=1)^N sum_(m=1)^M EE_(P(Z = m | X, theta^((k)))) [ z_(i m) ]
+  log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) \
+$
+
+and since $z_(i m)$ are all zeros and ones we remain just with the posterior
+
+$
+  Q(theta | theta^((k))) =
+  sum_(i=1)^N sum_(m=1)^M P(z_i = m | x_i, theta^((k))) dot
+  log(pi_m dot cal(N) (x_i | mu_m, sigma_m))
+$
+
+so the last step is to compute this posterior by the Bayes rule:
+
+$
+  P(z_i = m | x_i) & = frac(P(x_i | z_i = m) dot P(z_i = m), P(x_i)) \
+                   & = frac(
+                       pi_m dot cal(N) (x_i | mu_m, sigma_m),
+                       sum_m'^M pi_m' dot cal(N) (x_i | mu_m', sigma_m')
+                     )
+$
+
+that gives us the *responsibilities* for each Gaussian to have generated a sample:
+
+$
+  r_(i m) = frac(
+    pi_m dot cal(N) (x_i | mu_m, sigma_m),
+    sum_m'^M pi_m' dot cal(N) (x_i | mu_m', sigma_m')
+  )
+$
+
+and so we can finally define the full function $Q$ as
+
+
+$
+  Q(theta | theta^((k))) & = sum_(i=1)^N sum_(m=1)^M r_(i m) dot
+  log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) \
+  & = sum_(i=1)^N sum_(m=1)^M r_(i m) dot log pi_m
+  + sum_(i=1)^N sum_(m=1)^M r_(i m) dot log cal(N) (x_i | mu_m, sigma_m)
+$
+
+that we can now optimize by computing its derivative w.r.t. each parameter
+
+$ pdv(Q, theta) = 0 $
+
+#note[
+  For $pi$, since it is a discrete random variable we need to put also a sum to
+  one constraint to get valid probabilities:
+  $ sum_(m=1)^M pi_m = 1 $
+  using Lagrangian multipliers.
+]
+
+At each iteration we can update the parameters like follows:
+
+$
+  pi_m = N_m / N quad
+  mu_m = 1 / N_m sum_(i=1)^N r_(i m) x_i quad
+  Sigma_m = 1 / N_m sum_(i=1)^N r_(i m) (x_i - mu_m) (x_i - mu_m)^T
+$
