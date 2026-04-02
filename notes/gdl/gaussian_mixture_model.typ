@@ -172,7 +172,7 @@ then we just need the likelihood to define a function that put together the two:
 
 $
   Q(theta | theta^((k))) =
-  sum_(m=1)^M P(Z = m | X, theta^((k))) log P(X | theta)
+  sum_(m=1)^M P(Z = m | X, theta^((k))) log P(X, Z = m | theta)
 $
 
 By maximization of this function is now possible to find the parameters that are
