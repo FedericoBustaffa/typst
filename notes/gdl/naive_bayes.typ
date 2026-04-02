@@ -1,5 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: doc => note_template([Learning with Fully Observable Variables], doc)
+#show: doc => note_template([Naive Bayes], doc)
 
 #title()
 

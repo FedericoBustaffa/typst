@@ -51,7 +51,7 @@ $ P_pi^2 = P_pi $
 
 that can be applied as any other transformation matrix.
 
-= Projections on 1-D Spaces
+= Projections on 1-D Subspaces
 
 The most simple case of projection can be achieved by map high-dimensional
 vectors onto a 1-D space like before and this also can be nicely represent
@@ -129,4 +129,70 @@ Let's define a three step algorithm to project a vector onto a 1-D subspace.
   $ P_pi = (b b^T) / norm(b)^2 $
 
   that is symmetric and has rank $1$.
+
+= Projections on General Subspaces
+
+The process to _project_ a vector to a general subspace $U$ such that $dim(U) =
+m >= 1$ is not really different from the base case. Now the subspace is spanned
+by a set of vector or, more precisely, by a basis $B = {b_1, dots, b_m}$;
+therefore the vector $pi_U (x)$ is represented as linear combination of that
+basis:
+
+$ pi_U (x) = sum_(i=1)^m lambda_i b_i $
+
+and the three step algorithm is basically the same:
+
++ *Find the scaling factors $lambda_1, dots, lambda_m$*: we can represent the
+  above sum as a matrix-vector product
+
+  $ pi_U (x) = sum_(i=1)^m lambda_i b_i = B lambda $
+
+  and since we want the vector $x$ to be mapped to the closest point on $U$, we
+  need to find orthogonal directions. The multiplication above is clearly a
+  linear system, defining the arrival point. The idea is that the point $pi_U
+  (x)$ must be orthogonal to $x$ in every of its components, so
+
+  $
+    cases(
+      iprod(x - B lambda, b_1) & = 0,
+      dots.v & dots.v,
+      iprod(x - B lambda, b_m) & = 0
+    ) ==>
+    cases(
+      b_1^T (x - B lambda) & = 0,
+      dots.v & dots.v,
+      b_m^T (x - B lambda) & = 0
+    ) ==>
+    B^T (x - B lambda) = 0
+  $
+
+  Now we can easily find the $lambda$ vector:
+
+  $ B^T (x - B lambda) = 0 <==> lambda = (B^T B)^(-1) B^T x $
+
+  notice also that $(B^T B)^(-1) B^T$ is the _pseudoinverse_ of $B$, also
+  denoted with $B^+$.
++ *Find the projection point $pi_U (x)$*: since we know that
+
+  $ lambda = (B^T B)^(-1) B^T x $
+
+  the projection point is easily found:
+
+  $ pi_U (x) = B lambda ==> pi_U (x) = B (B^T B)^(-1) B^T x $
++ *Find the projection matrix $P_pi$*: this step is also already done since we
+  want a matrix such that
+
+  $ P_pi x = pi_U (x) $
+
+  and we know what is $pi_U (x)$, we can write
+
+  $ P_pi x = B (B^T B)^(-1) B^T x $
+
+  therefore
+
+  $ P_pi = B (B^T B)^(-1) B^T $
+
+= Gram-Schmidt Orthogonalization
+
+// to do
 
