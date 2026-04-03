@@ -66,13 +66,12 @@ estimated by the EM algorithm.
 = Generative Process
 
 First of all let's consider the *generative process* of this model: if the model
-had generated the data, it would have followed this procedure:
+has generated the data, it would have followed this procedure:
 
 + Given the parameter $pi$ of the multinomial, let's draw a cluster $m$ from the
   multinomial and assign it to $z$.
-+ By looking at @fig-gmm it's clear that there is a collider where $x$ is
-  observed and so $z$, $mu$ and $sigma$ are dependent one another. This leads us
-  to choose the $m$-th Gaussian in order to finally generate $x$.
++ The value drawn from the previous step gives us the index of which Gaussian we
+  need to use to generate observations $x$.
 
 Now we can try to write the *joint distribution* of this model by thinking about
 the described generative process
@@ -86,18 +85,14 @@ $m$-th Gaussian to generate a sample.
 = Learning
 
 The next step is to learn the right parameters $theta$ of all the distribution
-involved by solving the *learning inference problem*:
+involved by solving the *learning inference problem* by Bayesian learning, ML or
+MAP. Let's solve it by maximum likelihood, considering the *likelihood* we have
+on observed data:
 
-$ P(theta | X, Z) = frac(P(X, Z | theta) dot P(theta), P(X, Z)) $
+$ P(X | theta) $
 
-by ML or MAP. Let's solve it by maximum likelihood so that we can consider the
-*complete likelihood*:
-
-$ P(X, Z | theta) = P(Z | pi) dot P(X | Z, mu, sigma) $
-
-factorized as before. The problem with this formulation is that we don't have
-$Z$, instead we have the *incomplete likelihood* $P(X | theta)$, that depends on
-$Z$ which we can introduce by marginalization:
+but as @fig-gmm shows, $X$ is dependent on $Z$ and so we need to introduce it by
+marginalization:
 
 $
   P(X | theta) = sum_(m=1)^M P(X, Z = m | theta)
@@ -113,20 +108,25 @@ $
                  pi_m dot cal(N) (x_i | mu_m, sigma_m)
 $
 
-We kind of reconstruct the complete likelihood in a marginalized form. So we can
-now maximize it in order to find $theta$ and since we prefer to work in
-log-space we have to optimize
+Now to avoid underflows we generally work in log-space and so we can obtain the
+*log-likelihood*
 
 $
-  log P(X | theta) = log(
-    product_(i=1)^N sum_(m=1)^M
-    pi_m dot cal(N) (x_i | mu_m, sigma_m)
-  )
+  log P(X | theta) & = log(
+                       product_(i=1)^N sum_(m=1)^M
+                       pi_m dot cal(N) (x_i | mu_m, sigma_m)
+                     ) \
+                   & = sum_(i=1)^N log (sum_(m=1)^M
+                       pi_m dot cal(N) (x_i | mu_m, sigma_m))
 $
 
 that is not nice to optimize directly by computing the derivative and setting it
-to zero. So we can pretend to know the true values of $z_i$ and introduce
-indicator variables:
+to zero. What we can do instead is pretend to know $Z$ and use the *complete
+likelihood*:
+
+$ P(X, Z | theta) = P(Z | pi) dot P(X | Z, mu, sigma) $
+
+Now a useful thing to do is to define *indicator variables*:
 
 $
   z_(i m) = cases(
@@ -135,19 +135,18 @@ $
   )
 $
 
-so we can now rewrite the likelihood like follows
+so we can now rewrite the complete likelihood like follows
 
 $
-  log P(X | theta) & = log(
-                       product_(i=1)^N sum_(m=1)^M
-                       z_(i m) dot pi_m dot cal(N) (x_i | mu_m, sigma_m)
-                     ) \
-                   & = log(
-                       product_(i=1)^N product_(m=1)^M
-                       (pi_m dot cal(N) (x_i | mu_m, sigma_m))^(z_(i m))
-                     ) \
-                   & = sum_(i=1)^N sum_(m=1)^M
-                     z_(i m) log(pi_m dot cal(N) (x_i | mu_m, sigma_m))
+  P(X, Z | theta) & = product_(i=1)^N product_(m=1)^M (
+                      pi_m dot cal(N) (x_i | mu_m, sigma_m))^(z_(i m))
+$
+
+and so the complete log-likelihood becomes
+
+$
+  log P(X, Z | theta) = sum_(i=1)^N sum_(m=1)^M
+  z_(i m) [ log pi_m + log cal(N) (x_i | mu_m, sigma_m) ]
 $
 
 That is in a much nicer form than before but now we introduced a new problem: in
@@ -168,11 +167,12 @@ returns the most probable cluster based on the current parameters $theta^((k))$:
 
 $ P(Z | X, theta^((k))) $
 
-then we just need the likelihood to define a function that put together the two:
+then we just need the likelihood to define a function that gathers the two:
 
 $
-  Q(theta | theta^((k))) =
-  sum_(m=1)^M P(Z = m | X, theta^((k))) log P(X, Z = m | theta)
+  Q(theta | theta^((k))) & =
+  sum_(m=1)^M P(Z = m | X, theta^((k))) log P(X, Z = m | theta) \
+  & = EE_(m tilde P(Z | X, theta^((k)))) [ log P(X, Z = m | theta^((k))) ] \
 $
 
 By maximization of this function is now possible to find the parameters that are
@@ -182,20 +182,17 @@ a likelihood.
 Since the function $Q$ is an expectation, we can write:
 
 $
-  Q(theta | theta^((k))) & =
-  EE_(P(Z = m | X, theta^((k)))) [ log P(X | theta) ] \
-  & = EE_(P(Z = m | X, theta^((k))))
-  [ sum_(i=1)^N sum_(m=1)^M z_(i m) log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) ]
+  Q(theta | theta^((k))) = EE_(P(Z = m | X, theta^((k))))
+  [ sum_(i=1)^N sum_(m=1)^M z_(i m) [ log pi_m + log cal(N) (x_i | mu_m,
+        sigma_m) ]]
 $
 
-and since the expectation is a linear operator, it can go inside the logarithm:
+and since the expectation is a linear operator, it can go inside the sum:
 
 $
-  & EE_(P(Z = m | X, theta^((k))))
-  [ sum_(i=1)^N sum_(m=1)^M z_(i m) log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) ] \
-  = &
+  Q(theta | theta^((k))) =
   sum_(i=1)^N sum_(m=1)^M EE_(P(Z = m | X, theta^((k)))) [ z_(i m) ]
-  log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) \
+  log(pi_m dot cal(N) (x_i | mu_m, sigma_m))
 $
 
 and since $z_(i m)$ are all zeros and ones we remain just with the posterior
@@ -239,17 +236,17 @@ that we can now optimize by computing its derivative w.r.t. each parameter
 
 $ pdv(Q, theta) = 0 $
 
-#note[
-  For $pi$, since it is a discrete random variable we need to put also a sum to
-  one constraint to get valid probabilities:
-  $ sum_(m=1)^M pi_m = 1 $
-  using Lagrangian multipliers.
-]
-
 At each iteration we can update the parameters like follows:
 
 $
-  pi_m = N_m / N quad
-  mu_m = 1 / N_m sum_(i=1)^N r_(i m) x_i quad
-  Sigma_m = 1 / N_m sum_(i=1)^N r_(i m) (x_i - mu_m) (x_i - mu_m)^T
+     pi_m & = N_m / N \
+     mu_m & = 1 / N_m sum_(i=1)^N r_(i m) x_i \
+  Sigma_m & = 1 / N_m sum_(i=1)^N r_(i m) (x_i - mu_m) (x_i - mu_m)^T
 $
+
+Keep in mind that since $pi$ is the parameter of a discrete random variable we
+need to put also a sum to one constraint to get valid probabilities:
+
+$ sum_(m=1)^M pi_m = 1 $
+
+using Lagrangian multipliers.
