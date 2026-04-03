@@ -20,7 +20,7 @@ to $A$ with respect to Frobenius (or spectral) norm.
   Given $A in RR^(m times n)$ with rank $r$, the best approximation of rank $k$
   is given by the _truncated_ SVD of $A$
 
-  $ A_k = sigma_1 u_1 v_1^tack.b + dots.c + sigma_k u_k v_k^tack.b $
+  $ A_k = sigma_1 u_1 v_1^T + dots.c + sigma_k u_k v_k^T $
 
   with $k <= r$.
 ]
@@ -28,8 +28,8 @@ to $A$ with respect to Frobenius (or spectral) norm.
 In other words if
 
 $
-  A = U Sigma V^tack.b =
-  sigma_1 u_1 v_1^tack.b + dots.h.c + sigma_r u_r v_r^tack.b
+  A = U Sigma V^T =
+  sigma_1 u_1 v_1^T + dots.h.c + sigma_r u_r v_r^T
 $
 
 then a minimizer of
@@ -39,7 +39,7 @@ $ min_("rank"(B) <= k) || A - B ||_F $
 is given by
 
 $
-  A = U Sigma V^tack.b =
-  sigma_1 u_1 v_1^tack.b + dots.h.c + sigma_k u_k v_k^tack.b
+  A = U Sigma V^T =
+  sigma_1 u_1 v_1^T + dots.h.c + sigma_k u_k v_k^T
 $
 

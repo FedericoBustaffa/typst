@@ -18,7 +18,7 @@ exact rank.
 
 #important[
   The column rank is equal to the row rank. This also means that
-  $ "rank"(A) = "rank"(A^tack.b) $
+  $ "rank"(A) = "rank"(A^T) $
 ]
 
 The rank, as we were saying before has a lot of interesting properties:
@@ -60,7 +60,7 @@ column rank if $ker (A) = { 0 }$. In other words there is no vectore $v eq.not
 0$ such that $A v = 0$.
 
 #important(title: "Theorem")[
-  A matrix $A in bb(R)^(m times n)$ has full column rank if and only if
-  $A^tack.b A$ is SPD.
+  A matrix $A in bb(R)^(m times n)$ has full column rank if and only if $A^T A$
+  is SPD.
 ]
 

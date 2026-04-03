@@ -9,14 +9,14 @@ knowledge in fields like numerical analysis and optimization.
 The course will cover numerical algorithms with particular attention on
 performance and minimization of approximation error.
 
-Generally speaking, the #strong[linear algebra] defines rules to manipulate
-#strong[vectors] by adding them together and multiply them by a scalar.
+Generally speaking, the *linear algebra* defines rules to manipulate *vectors*
+by adding them together and multiply them by a scalar.
 
 A vector can be many things, the most known type of vector is denoted as
 $arrow(v)$ and it is used typically in physics; it can be seen as
-$n$-dimensional point such that there is an #emph[arrow] starting from the
-origin and pointing in that exact point. Also polynomials are vectors, but in
-machine learning they are seen as elements of $bb(R)^n$.
+$n$-dimensional point such that there is an _arrow_ starting from the origin and
+pointing in that exact point. Also polynomials are vectors, but in machine
+learning they are seen as elements of $bb(R)^n$.
 
 = Index <index>
 

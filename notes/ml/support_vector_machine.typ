@@ -16,13 +16,13 @@ hyper-planes also for classification problems that are not linearly separable.
 In the classical #strong[binary classification problem] we want to find an
 hyper-plane of equation
 
-$ g (x) = w^tack.b x + b = 0 $
+$ g (x) = w^T x + b = 0 $
 
 that separates the examples in this way
 
 $
-  w^tack.b x + b & gt.eq 0 & upright("for ") y = + 1 \
-  w^tack.b x + b & < 0     & upright("for ") y = - 1
+  w^T x + b & gt.eq 0 & upright("for ") y = + 1 \
+  w^T x + b & < 0     & upright("for ") y = - 1
 $
 
 The equation of the hyper-plane $g (x)$ is just a #emph[discrimant] function,
@@ -43,23 +43,23 @@ have a larger confidence on unseen points.
 In order to maximize the margin we want to rescale $w$ and $b$ so that the
 closest points to the hyper-plane satisfy
 
-$ lr(|g (x_p)|) = lr(|w^tack.b x_p + b|) = 1 $
+$ lr(|g (x_p)|) = lr(|w^T x_p + b|) = 1 $
 
 and so we can write
 
 $
-  w^tack.b x_p + b & gt.eq 0 & upright("for ") y_p = + 1 \
-  w^tack.b x_p + b & lt.eq 0 & upright("for ") y_p = - 1
+  w^T x_p + b & gt.eq 0 & upright("for ") y_p = + 1 \
+  w^T x_p + b & lt.eq 0 & upright("for ") y_p = - 1
 $
 
 that in a compact form becomes
 
-$ y_p dot.op (w^tack.b x_p + b) gt.eq 1 $
+$ y_p dot.op (w^T x_p + b) gt.eq 1 $
 
 #note(title: "Support Vector")[
   A #strong[support vector] $x^((s))$ satisfies the previous equation exactly:
 
-  $ y^((s)) dot.op (w^tack.b x^((s)) + b) = 1 $
+  $ y^((s)) dot.op (w^T x^((s)) + b) = 1 $
 ]
 
 
@@ -72,47 +72,40 @@ So we can rethink $x$ as a sort of translation of $hat(x)$ in the direction
 defined by $w$ (that is orthogonal to the hyper-plane) by the distance $r$ we
 are looking for:
 
-$ x = hat(x) + r frac(w, parallel w parallel) $
+$ x = hat(x) + r frac(w, norm(w)) $
 
-Let’s also remember that $g (x) = w^tack.b x + b$ and so we can write
+Let’s also remember that $g (x) = w^T x + b$ and so we can write
 
 $
-  g (x) & = w^tack.b (hat(x) + r frac(w, parallel w parallel)) + b & \
-  & = w^tack.b
-  hat(x) + w^tack.b r frac(w, parallel w parallel) + b & \
-  & = r frac(
-    parallel w
-    parallel^2, parallel w parallel
-  ) &= r parallel w parallel
+  g (x) & = w^T (hat(x) + r frac(w, norm(w))) + b &             \
+        & = w^T
+          hat(x) + w^T r frac(w, norm(w)) + b     &             \
+        & = r frac(norm(w)^2, norm(w))            & = r norm(w)
 $
 
 thus, the distance can be computed as
 
 $
-  r = frac(g (x), parallel w parallel) = frac(
-    w^tack.b x + b, parallel w
-    parallel
-  )
+  r = frac(g (x), norm(w)) = frac(w^T x + b, norm(w))
 $
 
 So, assuming an already optimal hyper-plane, the distance from the hyper-plane
 and a support vector is $x^((s))$
 
 $
-  frac(w^tack.b x^((s)) + b, parallel w parallel) = frac(1, parallel w parallel)
+  frac(w^T x^((s)) + b, norm(w)) = frac(1, norm(w))
   = rho / 2
 $
 
 Computing also the distance from the hyper-plane to a negative support vector,
-that will be $- frac(1, parallel w parallel)$, the total margin will be
+that will be $- frac(1, norm(w))$, the total margin will be
 
 $
-  rho = lr(|- frac(1, parallel w parallel) - frac(1, parallel w parallel)|) =
-  frac(2, parallel w parallel)
+  rho = lr(|- frac(1, norm(w)) - frac(1, norm(w))|) =
+  frac(2, norm(w))
 $
 
-The #strong[optimal] hyper-plane maximizes $rho$ by minimizing $parallel w
-parallel$.
+The #strong[optimal] hyper-plane maximizes $rho$ by minimizing $norm(w)$.
 
 == Hard Margin <hard-margin>
 
@@ -122,11 +115,11 @@ possible if and only if the problem is linearly separable.
 
 In its #strong[primal form] the problem is formulated as the minimization of
 
-$ Psi (w) = 1 / 2 w^tack.b w = 1 / 2 parallel w parallel^2 $
+$ Psi (w) = 1 / 2 w^T w = 1 / 2 norm(w)^2 $
 
 satisfying the constraint that
 
-$ y_p dot.op (w^tack.b x_p + b) gt.eq 1 $
+$ y_p dot.op (w^T x_p + b) gt.eq 1 $
 
 for each pattern in the training set. But the objective function is quadratic
 and convex in $w$ and the constraints are linear in $w$; solving this problem
@@ -136,8 +129,8 @@ Typically, when working with SVMs, we are interested in solving the #strong[dual
   form];, that in this case is defined with the #strong[lagrangian equation];.
 
 $
-  J (w , b , alpha) = 1 / 2 parallel w parallel^2 - sum_(p = 1)^N alpha_p (y_p
-    (w^tack.b x_p + b) - 1)
+  J (w , b , alpha) = 1 / 2 norm(w)^2 - sum_(p = 1)^N alpha_p (y_p
+    (w^T x_p + b) - 1)
 $
 
 with $alpha_p gt.eq 0$ for every $p = 1 , dots.h , N$ that are the
@@ -147,11 +140,11 @@ This gives us an optimization problem were we have to optimize only one function
 in which the constraints are included and handled by the multipliers, in fact
 the constraints were defined for each point as
 
-$ y_p dot.op (w^tack.b x + b) gt.eq 1 $
+$ y_p dot.op (w^T x + b) gt.eq 1 $
 
 So to achieve the dual form we need to impose
 
-$ y_p dot.op (w^tack.b x + b) - 1 gt.eq 0 $
+$ y_p dot.op (w^T x + b) - 1 gt.eq 0 $
 
 And so now each term of the sum corresponds to a constraint of the primal
 problem.
@@ -171,7 +164,7 @@ So now we can substitute this two terms in $J$ and obtain
 
 $
   J (alpha) = sum_p alpha_p - 1 / 2 sum_p sum_t alpha_p alpha_t dot.op y_p y_t
-  dot.op x_p^tack.b x_t
+  dot.op x_p^T x_t
 $
 
 that we can maximize with a quadratic programming solver in order to find the
@@ -179,16 +172,16 @@ optimal $alpha$ vector. Once we have it we can substitute the actual $alpha$
 values in the formulation for optimal $w$ previously defined, to find the
 #strong[optimal hyper-plane];:
 
-$ sum_(p = 1)^N alpha_p y_p (x_p^tack.b x) + b = 0 $
+$ sum_(p = 1)^N alpha_p y_p (x_p^T x) + b = 0 $
 
 and also find the optimal $b$ corresponding to a positive support vector
 $x^((s))$:
 
-$ b = 1 - sum_(p = 1)^N alpha_p y_p x_p^tack.b x^((s)) $
+$ b = 1 - sum_(p = 1)^N alpha_p y_p x_p^T x^((s)) $
 
 and from #strong[Kuhn-Tucker conditions] it follows that
 
-- If $alpha_p > 0$, then the $y_p (w^tack.b x_p + b) = 1$ and $x_p$ is a support
+- If $alpha_p > 0$, then the $y_p (w^T x_p + b) = 1$ and $x_p$ is a support
   vector.
 - If $x_p$ is not a support vector then $alpha_p = 0$.
 
@@ -196,17 +189,17 @@ Note now that there is no need to know the optimal $w$ explicitly, because it’
 defined in terms of lagrangian multipliers and so, given an input pattern $x$ we
 can compute
 
-$ g (x) = sum_(p = 1)^N alpha_p y_p x_p^tack.b x + b $
+$ g (x) = sum_(p = 1)^N alpha_p y_p x_p^T x + b $
 
 and classify $x$ as the sign of $g (x)$, but we can restrict the sum to the
 support vectors $N_s$
 
-$ g (x) = sum_(p = 1)^(N_s) alpha_p y_p x_p^tack.b x + b $
+$ g (x) = sum_(p = 1)^(N_s) alpha_p y_p x_p^T x + b $
 
 #important(title: "Vapnik Theorem")[
   Let $D$ be diameter of the
   smallest ball around the data points $x_1 , dots.h , x_n$. For the class of
-  separating hyper-planes described by the equation $ w^tack.b x + b = 0 $ the
+  separating hyper-planes described by the equation $ w^T x + b = 0 $ the
   upper bound to the VC-dimension is
 
   $ V C lt.eq min (⌈D^2 / rho^2⌉ , m) + 1 $
@@ -239,7 +232,7 @@ So now also the definition of support vectors changes.
   A support vector in the soft margin SVM is a
   point $x_p$ that satisfies exactly the constraint
 
-  $ y_p (w^tack.b x_p + b) = 1 - xi_p $
+  $ y_p (w^T x_p + b) = 1 - xi_p $
 ]
 
 So now the Vapnik theorem does not hold anymore because is defined only for hard
@@ -247,11 +240,11 @@ margin SVMs.
 
 Now the #strong[primal form] of the problem is to find $w$ and $b$ that minimize
 
-$ Psi (w , xi) = 1 / 2 w^tack.b w + C sum_(p = 1)^N xi_p $
+$ Psi (w , xi) = 1 / 2 w^T w + C sum_(p = 1)^N xi_p $
 
 under the constraints:
 
-$ y_p (w^tack.b x_p) gt.eq 1 - xi_p quad quad xi_p gt.eq 0 $
+$ y_p (w^T x_p) gt.eq 1 - xi_p quad quad xi_p gt.eq 0 $
 
 where $C$ is a #strong[regularization hyper-parameter] to be set in order to
 find a trade off between empirical risk minimization and capacity term
@@ -267,8 +260,8 @@ we have two kinds of constraints: the one on the classification and the one on
 the non negativity of slack variables
 
 $
-  J (w , b , xi , alpha , mu) = 1 / 2 parallel w parallel^2 + C sum_(p = 1)^N
-  xi_p - sum_(p = 1)^N alpha_p (y_p (w^tack.b x_p + b) - 1) - sum_(p = 1)^N mu_p
+  J (w , b , xi , alpha , mu) = 1 / 2 norm(w)^2 + C sum_(p = 1)^N
+  xi_p - sum_(p = 1)^N alpha_p (y_p (w^T x_p + b) - 1) - sum_(p = 1)^N mu_p
   xi_p
 $
 
@@ -314,7 +307,7 @@ $ phi.alt (x) = mat(delim: "[", x_1; x_2; x_1 dot.op x_2) $
 
 So now the formula in due dual problem for the optimal hyper-plane becomes
 
-$ sum_(p = 1)^N alpha_p y_p phi.alt^tack.b (x_i) phi.alt (x) = 0 $
+$ sum_(p = 1)^N alpha_p y_p phi.alt^T (x_i) phi.alt (x) = 0 $
 
 The problem here is that for arbitrarly complex $phi.alt$ and for high dimension
 input space, the computation of $phi.alt$ and the inner products can become
@@ -328,7 +321,7 @@ $ k : bb(R)^m times bb(R)^m arrow.r bb(R) $
 
 called #strong[inner product kernel] function
 
-$ k (x_i , x) = phi.alt^tack.b (x_i) dot.op phi.alt (x) $
+$ k (x_i , x) = phi.alt^T (x_i) dot.op phi.alt (x) $
 
 that is symmetric: $k (x_i , x) = k (x , x_i)$. The dot product in feature space
 is evaluated without considering the feature mapping and the feature space
@@ -337,16 +330,16 @@ itself.
 #example[
   Given a certain $phi.alt$ such that
   $
-    phi.alt (x) = phi.alt ((x_1 , x_2)^tack.b) = (x_1^2 , sqrt(2) x_1 x_2 ,
-      x_2^2)^tack.b
+    phi.alt (x) = phi.alt ((x_1 , x_2)^T) = (x_1^2 , sqrt(2) x_1 x_2 ,
+      x_2^2)^T
   $
-  Given $x = (x_1 , x_2)^tack.b$ and $y = (y_1 , y_2)^tack.b$ in $bb(R)^2$, we
-  compute $ phi.alt^tack.b (x) phi.alt (y) $ in this way:
+  Given $x = (x_1 , x_2)^T$ and $y = (y_1 , y_2)^T$ in $bb(R)^2$, we
+  compute $ phi.alt^T (x) phi.alt (y) $ in this way:
 
   $
-    (x_1^2 , sqrt(2) x_1 x_2 , x_2^2) (y_1^2 , sqrt(2) y_1 y_2 , y_2^2)^tack.b &
+    (x_1^2 , sqrt(2) x_1 x_2 , x_2^2) (y_1^2 , sqrt(2) y_1 y_2 , y_2^2)^T &
     = x_1^2 y_1^2 + 2 x_1 x_2 y_1 y_2 + x_2^2 y_2^2\ & = (x_1 y_1 + x_2 y_2)^2\ &
-    = ((x_1 , x_2) (y_1 , y_2)^tack.b)^2\ & = (x^tack.b y)^2 = k (x , y)
+    = ((x_1 , x_2) (y_1 , y_2)^T)^2\ & = (x^T y)^2 = k (x , y)
   $
 
   That is out kernel function.
@@ -368,11 +361,11 @@ for kernels gaining #emph[positive semidefinite] kernel matrices.
 
 So now the #strong[primal form] of the problem is defined as before
 
-$ Psi (w , xi) = 1 / 2 w^tack.b w + C sum_(p = 1)^N xi_p $
+$ Psi (w , xi) = 1 / 2 w^T w + C sum_(p = 1)^N xi_p $
 
 but with the constraints defined as
 
-$ y_p (w^tack.b phi.alt (x_p)) gt.eq 1 - xi_p quad quad xi_p gt.eq 0 $
+$ y_p (w^T phi.alt (x_p)) gt.eq 1 - xi_p quad quad xi_p gt.eq 0 $
 
 and so the #strong[dual form] can be expressed as
 
@@ -391,13 +384,13 @@ There are some popular valid kernels that are often used without the need to
 build a kernel from scratch:
 
 - #strong[Polynomial];: given a degree of freedom $d$ is defined as
-  $ k (x , x_p) = (x^tack.b x_p + 1)^d $
+  $ k (x , x_p) = (x^T x_p + 1)^d $
 - #strong[Radial Basis Function];: also called #strong[gaussian kernel] that,
   given $sigma$ is defined as
-  $ k (x , x_p) = e^(- frac(1, 2 sigma^2) parallel x - x_i parallel^2) $
+  $ k (x , x_p) = e^(- frac(1, 2 sigma^2) norm(x - x_i)^2) $
   and leads to a infinite dimensional space.
 - #strong[Sigmoidal];: that given $beta_0 > 0$ and $beta_1 < 0$ is defined as
-  $ k (x , x_p) = tanh (beta_0 w^tack.b x_i + beta_1) $
+  $ k (x , x_p) = tanh (beta_0 w^T x_i + beta_1) $
 
 For the first two and for every choice of their hyper-parameters, a valid kernel
 is produced, while for the third only some values of $beta_0$ and $beta_1$
@@ -419,7 +412,7 @@ neural networks.
 More formally, the model again tries to estimate targets using a linear
 expansion of (possibly) non linear functions
 
-$ y approx h (x) = w^tack.b phi.alt (x) $
+$ y approx h (x) = w^T phi.alt (x) $
 
 In order to perform regression a loss function is needed and in case of SVMs we
 have $epsilon.alt$-insensitive loss:
@@ -443,24 +436,24 @@ also here there are #strong[slack variables] $xi_i$ and $xi_i'$ that hold the
 following property:
 
 $
-  - xi_i' - epsilon.alt lt.eq y_i - w^tack.b phi.alt (x_i) lt.eq epsilon.alt +
+  - xi_i' - epsilon.alt lt.eq y_i - w^T phi.alt (x_i) lt.eq epsilon.alt +
   xi_i
 $
 
 for all $i$ from $1$ to $N$. This leads to the following constraints
 
 $
-  y_i - w^tack.b phi.alt (x_i) & lt.eq epsilon.alt + xi_i \
-  w^tack.b phi.alt (x_i) - y_i & lt.eq epsilon.alt + xi_i' \
-                          xi_i & gt.eq 0 \
-                         xi_i' & gt.eq 0 \
+  y_i - w^T phi.alt (x_i) & lt.eq epsilon.alt + xi_i \
+  w^T phi.alt (x_i) - y_i & lt.eq epsilon.alt + xi_i' \
+                     xi_i & gt.eq 0 \
+                    xi_i' & gt.eq 0 \
 $
 
 The formulation for the #strong[primal problem] is similar to the classification
 task formulation. Given the training set, find the optimal values of $w$ such
 that the following objective function is minimized
 
-$ psi (w , xi , xi ') = 1 / 2 w^tack.b w + C sum_(i = 1)^N (xi + xi ') $
+$ psi (w , xi , xi ') = 1 / 2 w^T w + C sum_(i = 1)^N (xi + xi ') $
 
 under the constraints defined before. The formulation for the dual problem again
 needs the lagrangian multipliers. Given the training set, find the optimal
@@ -493,16 +486,10 @@ and in this case support vectors correspond to non zero values of $gamma_i$. The
 estimated function using the linear expansion is defined as
 
 $
-  h (x) = sum_(i = 1)^N gamma_i phi.alt^tack.b (x_i) phi.alt (x) = sum_(i = 1)^N
+  h (x) = sum_(i = 1)^N gamma_i phi.alt^T (x_i) phi.alt (x) = sum_(i = 1)^N
   gamma_i k (x_i , x)
 $
 
 Like for classification, only support vectors matter and so as long as they are
 in the tube, points that are not support vectors can be disposed in every
 possible configuration.
-
-= References <references>
-
-- Supervised Learning
-- Statistical Learning Theory
-- Eigen Values and Eigen Vectors

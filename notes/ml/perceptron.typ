@@ -42,7 +42,7 @@ practice) the number of misclassified patterns with a line found through a
 + Pick a learning rate $0 < eta < 1$.
 + For each training pattern $(upright(bold(x)) , y)$:
   - Compute the output activation
-    $ o u t = upright("sign") (w^tack.b x) $
+    $ o u t = upright("sign") (w^T x) $
   - If $o u t = y$, don’t change weights.
   - If $o u t eq.not y$, update the weights by the following learning
     rule: $ w_(upright("new")) = w + eta dot.op y dot.op x $ or in a
@@ -66,10 +66,10 @@ before:
 - The problem is linearly separable: $exists w^(\*)$ (the solution) such
   that
   $
-    y_i ((w^(\*))^tack.b x_i) gt.eq alpha arrow.l.r.double (w^(\*))^tack.b (y_i
+    y_i ((w^(\*))^T x_i) gt.eq alpha arrow.l.r.double (w^(\*))^T (y_i
       x_i) gt.eq alpha
   $
-  with $alpha = min_i y_i ((w^(\*))^tack.b x_i) > 0$.
+  with $alpha = min_i y_i ((w^(\*))^T x_i) > 0$.
 - Define $x_i' = (y_i x_i)$, then $w^(\*)$ is a solution if and only if is a
   solution of $(x_i ' , + 1)$.
 - The learning rate is $eta = 1$.
@@ -91,15 +91,15 @@ Let’s find the #strong[lower bound] first by recalling that $w^(\*)$ is the
 solution and $alpha$ is the ideal separation hyperplane. Then
 
 $
-  (w^(\*))^tack.b w (q) = (w^(\*))^tack.b sum_(j = 1)^q x_((i_j)) gt.eq q alpha
+  (w^(\*))^T w (q) = (w^(\*))^T sum_(j = 1)^q x_((i_j)) gt.eq q alpha
 $
 
 that can be written by exploiting the definition of linearly separable problem.
 Now we can use the Cauchy-Swartz theorem:
 
 $
-  parallel w^(\*) parallel^2 parallel w (q) parallel^2 gt.eq ((w^(\*))^tack.b w
-    (q))^2 gt.eq (q alpha)^tack.b
+  parallel w^(\*) parallel^2 parallel w (q) parallel^2 gt.eq ((w^(\*))^T w
+    (q))^2 gt.eq (q alpha)^T
 $
 
 from which we derive
@@ -166,14 +166,14 @@ If we for example take as activation function the logistic function
 
 $ f_sigma (x) = frac(1, 1 + e^(- a x)) $
 
-The activation output, from $o (x) = x^tack.b w$ becomes
+The activation output, from $o (x) = x^T w$ becomes
 
-$ o (x) = f_sigma (x^tack.b w) $
+$ o (x) = f_sigma (x^T w) $
 
 and consequently the problem is not minimizing the misclassified patterns
 anymore, but it is to reduce the residual sum of squares:
 
-$ E (w) = sum_p (y_p - o (x_p))^2 = sum_p (y_p - f_sigma (x_p^tack.b w))^2 $
+$ E (w) = sum_p (y_p - o (x_p))^2 = sum_p (y_p - f_sigma (x_p^T w))^2 $
 
 that of course brings to define a new #strong[delta rule] for a gradient descent
 algorithm for one pattern $p$:

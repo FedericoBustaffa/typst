@@ -1,5 +1,8 @@
-= Planning
-<planning>
+#import "@local/note_template:0.1.0": *
+#show: doc => note_template([Planning], doc)
+
+#title()
+
 In the classical way of #strong[planning] the aim is to find a
 #strong[sequence of actions] to accomplish a goal in a discrete,
 deterministic, static and fully observable environment.
@@ -186,7 +189,7 @@ This approach is common in real world manufacturing and logistical
 settings.
 
 In order to solve the scheduling problem we can define a #strong[partial
-order] plan that is a path in a directed graph that allows multiple
+  order] plan that is a path in a directed graph that allows multiple
 actions to be taken in parallel from initial to goal state.
 
 The #strong[critical path] is the the one with the longest total
@@ -196,10 +199,3 @@ Actions that are off the critical path typically have a #emph[window] of
 time, called #strong[slack];, in which they can be executed. For this
 type of scheduling greedy heuristics like #emph[minimum slack heuristic]
 work quite well.
-
-== References
-<references>
-- \[\[artificial\_intelligence\_fundamentals\]\]
-- \[\[logical\_agents\]\]
-- \[\[first\_order\_logical\_agents\]\]
-- \[\[work\_span\_model\]\]

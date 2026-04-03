@@ -50,7 +50,7 @@ And this is interesting because in the SVD we have the left and right matrices
 that are orthogonal like $Q_1$ and $Q_2$ and so
 
 $
-  || A || = || U Sigma V^tack.b || =
+  || A || = || U Sigma V^T || =
   || Sigma || = sigma_1
 $
 
@@ -70,7 +70,7 @@ $ || Q_1 A Q_2 ||_F = || A ||_F $
 and this implies that
 
 $
-  || A ||_F = || U Sigma V^tack.b ||_F =
+  || A ||_F = || U Sigma V^T ||_F =
   || Sigma ||_F = sqrt(sigma_1^2 + dots.h.c + sigma_n^2)
 $
 

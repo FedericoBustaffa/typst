@@ -23,13 +23,13 @@ function, that can be minimized with methods based on *gradient*. But for now
 what we are interested in is what we can do starting from that formula:
 
 $
-  || A x - y ||^2 & = (A x - y)^tack.b (A x - y)\
-  & = ((A x)^tack.b - y^tack.b) (A x - y)\
-  & = (x^tack.b A^tack.b - y^tack.b) (A x - y)\
-  & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - y^tack.b A x + y^tack.b y\
-  & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - (A x)^tack.b y + y^tack.b y\
-  & = x^tack.b A^tack.b A x - x^tack.b A^tack.b y - x^tack.b A^tack.b y + y^tack.b y\
-  & = x^tack.b A^tack.b A x - 2 x^tack.b A^tack.b y + y^tack.b y
+  || A x - y ||^2 & = (A x - y)^T (A x - y) \
+                  & = ((A x)^T - y^T) (A x - y) \
+                  & = (x^T A^T - y^T) (A x - y) \
+                  & = x^T A^T A x - x^T A^T y - y^T A x + y^T y \
+                  & = x^T A^T A x - x^T A^T y - (A x)^T y + y^T y \
+                  & = x^T A^T A x - x^T A^T y - x^T A^T y + y^T y \
+                  & = x^T A^T A x - 2 x^T A^T y + y^T y
 $
 
 So minimize $|| A x - y ||^2$ is equivalent to minimize that equation. Let’s
@@ -37,48 +37,48 @@ make one more step that will make sense in a while and let’s divide everything
 by $2$, so that the problem becomes
 
 $
-  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^tack.b A^tack.b A x -
-    x^tack.b A^tack.b y + 1 / 2 y^tack.b y)
+  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^T A^T A x -
+    x^T A^T y + 1 / 2 y^T y)
 $
 
-Let now $Q = A^tack.b A$ and $q = - A^tack.b y$, the problem can be rewritten as
+Let now $Q = A^T A$ and $q = - A^T y$, the problem can be rewritten as
 
 $
-  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^tack.b Q x +
-    x^tack.b q + 1 / 2 y^tack.b y)
+  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^T Q x +
+    x^T q + 1 / 2 y^T y)
 $
 
 This problem *has a unique solution* when $Q$ is SPD or has full column rank
 and, in order to find its solution, it's necessary to compute the *gradient*
 
-$ Q x + q = A^tack.b A x - A^tack.b y $
+$ Q x + q = A^T A x - A^T y $
 
 that we need to set to zero in order to minimize the objective function
 
-$ A^tack.b A x - A^tack.b y = 0 $
+$ A^T A x - A^T y = 0 $
 
 So now we have a strategy to solve the *least squares* problem made of three key
 points:
 
-+ Compute $A^tack.b A$: we can just compute half of the matrix.
-+ Compute $A^tack.b y$: Cholesky factorization.
-+ Solve the so called *normal equations* $(A^tack.b A) x = A^tack.b y$
++ Compute $A^T A$: we can just compute half of the matrix.
++ Compute $A^T y$: Cholesky factorization.
++ Solve the so called *normal equations* $(A^T A) x = A^T y$
 
 In the first two points everything is known so, aside from computational
 optimization, we don't need anything. Instead to solve the _normal equations_ we
-need the *pseudoinverse* of $A$, that is defined as $(A^tack.b A)^(- 1)
-A^tack.b$, and that let us generalize the concept of inverse for rectangular
+need the *pseudoinverse* of $A$, that is defined as $(A^T A)^(- 1)
+A^T$, and that let us generalize the concept of inverse for rectangular
 (overdetermined) linear systems.
 
 In this way is possible to solve the system by computing
 
-$ x = (A^tack.b A)^(- 1) A^tack.b y $
+$ x = (A^T A)^(- 1) A^T y $
 
 or, a more compact form
 
 $ x = A^(+) y $
 
-where $A^(+) = (A^tack.b A)^(- 1) A^tack.b$ is the pseudoinverse of $A$.
+where $A^(+) = (A^T A)^(- 1) A^T$ is the pseudoinverse of $A$.
 
 = Uniqueness of Solution
 

@@ -120,17 +120,17 @@ every $x$ vector in order to pair it with $w_0$, we can now use the more compact
 form
 
 $
-  h_(upright(bold(w))) (upright(bold(x))) = upright(bold(w))^tack.b
-  upright(bold(x)) = upright(bold(x))^tack.b upright(bold(w)) = chevron.l
+  h_(upright(bold(w))) (upright(bold(x))) = upright(bold(w))^T
+  upright(bold(x)) = upright(bold(x))^T upright(bold(w)) = chevron.l
   upright(bold(w)) , upright(bold(x)) chevron.r = sum_(i = 1)^n w_i x_i
 $
 
-with $w^tack.b = mat(delim: "[", w_0, w_1, dots.h, w_n)$ and $x^tack.b =
+with $w^T = mat(delim: "[", w_0, w_1, dots.h, w_n)$ and $x^T =
 mat(delim: "[", 1, x_1, dots.h, x_n)$. And of course the the result given from
 out model for a given input $x_p$ is
 
 $
-  h_(upright(bold(w))) (upright(bold(x))_p) = upright(bold(w))^tack.b
+  h_(upright(bold(w))) (upright(bold(x))_p) = upright(bold(w))^T
   upright(bold(x))_p = sum_(i = 1)^n w_i x_(p , i)
 $
 
@@ -162,7 +162,7 @@ So in this case our #emph[loss] function (the one we want to minimize) remains
 the same, while the hypothesis function become something like
 
 $
-  h (x) = upright("sign") (upright(bold(w))^tack.b upright(bold(x))) quad
+  h (x) = upright("sign") (upright(bold(w))^T upright(bold(x))) quad
   upright("output: -1/+1")
 $
 
@@ -210,22 +210,22 @@ resulting in bad fitting, even though the math is correct.
 The direct method differentiates $E (upright(bold(w)))$, obtaining
 
 $
-  frac(partial E (w), partial w_j) - 2 sum_(p = 1)^l (y_p - x_p^tack.b w)
+  frac(partial E (w), partial w_j) - 2 sum_(p = 1)^l (y_p - x_p^T w)
   x_(p, j)
 $
 
 and the try to solve the #emph[normal equations] given by the system
 
-$ (X^tack.b X) w = X^tack.b y $
+$ (X^T X) w = X^T y $
 
-but if the matrix $X^tack.b X$ is not singular the unique solution is given by
+but if the matrix $X^T X$ is not singular the unique solution is given by
 
-$ w = (X^tack.b X)^(- 1) X^tack.b y = x^(+) y $
+$ w = (X^T X)^(- 1) X^T y = x^(+) y $
 
 where $X^(+)$ is the pseudoinverse if $X$, that can be computed using the
 singular value decomposition
 
-$ X = U Sigma V^tack.b arrow.r.double.long X^(+) = V Sigma^(+) U^tack.b $
+$ X = U Sigma V^T arrow.r.double.long X^(+) = V Sigma^(+) U^T $
 
 in this way we can directly apply the SVD to compute
 

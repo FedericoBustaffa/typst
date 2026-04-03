@@ -26,11 +26,11 @@ popular:
   $ norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) $
   where $v_i$ is the $i$-th component of the vector $v$. It can also be written as
   the square root of product between the vector $v$ transposed and $v$ itself
-  $ norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^tack.b v) $
+  $ norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^T v) $
   that is the definition of the square root of the scalar product between $v$ and
   itself.
   $
-    norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^tack.b v) =
+    norm(v)_2 = sqrt(sum_(i = 1)^n v_i^2) = sqrt(v^T v) =
     sqrt(chevron.l v \, v chevron.r)
   $
   all these equalities can be useful for calculations.

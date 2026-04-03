@@ -110,26 +110,26 @@ defined for every matrix square and rectangular matrix (so also for vectors).
   Given a matrix $A in bb(R)^(m times n)$, the matrix $B in bb(R)^(n times m)$
   whose elements are
   $ b_(i j) = a_(j i) $
-  is called the transpose of $A$ and is denoted as $A^tack.b$.
+  is called the transpose of $A$ and is denoted as $A^T$.
 ]
 
 Let’s see some properties of these two matrices
 
 - $A A^(- 1) = A^(- 1) A = I$
-- $(A^tack.b)^tack.b = A$
+- $(A^T)^T = A$
 - $(A B)^(- 1) = B^(- 1) A^(- 1)$ and similarly
-  $(A B)^tack.b = B^tack.b A^tack.b$
+  $(A B)^T = B^T A^T$
 - $(A + B)^(- 1) eq.not A^(- 1) + B^(- 1)$ instead
-  $(A + B)^tack.b = A^tack.b + B^tack.b$
+  $(A + B)^T = A^T + B^T$
 
-Let’s also say that if $A$ is invertible, also $A^tack.b$ is invertible and this
+Let’s also say that if $A$ is invertible, also $A^T$ is invertible and this
 is true because
 
-$ (A^(- 1))^tack.b = (A^tack.b)^(- 1) = A^(- tack.b) $
+$ (A^(- 1))^T = (A^T)^(- 1) = A^(- T) $
 
 #note(title: "Symmetric Matrix")[
   Given a matrix $A$ such that
-  $ A = A^tack.b $
+  $ A = A^T $
   then is called *symmetric*.
 ]
 
@@ -141,7 +141,7 @@ $lambda , psi in bb(R)$ it holds:
 
 - $(lambda psi) C = lambda (psi C)$
 - $lambda (B C) = (lambda B) C = B (lambda C) = (B C) lambda$
-- $(lambda C)^tack.b = lambda C^tack.b$
+- $(lambda C)^T = lambda C^T$
 - $(lambda + psi) C = lambda C + psi C$
 - $lambda (B + C) = lambda B + lambda C$
 
