@@ -75,4 +75,21 @@ and the fact that for triangular (lower and upper) matrices can be computed as
 $ det(A) = product_(i=1)^N A_(i i) $
 
 where $A_(i i)$ are the diagonal elements of $A$ and this useful in combination
-with the Cholesky factorization.
+with the *Cholesky factorization*, that splits a matrix in two triangular matrices.
+
+
+#important(title: [ Laplace Expansion ])[
+  Consider a square matrix $A$, then for all $j = 1, dots, n$
+
+  - Expansion along column $j$:
+    $ det(A) = sum_(k=1)^n (-1)^(k + j) a_(k j) det(A_(k, j)) $
+  - Expansion along row $j$:
+    $ det(A) = sum_(k=1)^n (-1)^(k + j) a_(j k) det(A_(j, k)) $
+
+  where $A_(k, j) in RR^((n-1) times (n-1))$ is the submatrix of $A$ obtained by
+  deleting row $k$ and column $j$.
+]
+
+For the general computation of the determinant we can exploit the *Laplace
+expansion theorem*, which induces a recursive algorithm for the determinant
+computation.
