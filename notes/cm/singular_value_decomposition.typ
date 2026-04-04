@@ -12,7 +12,7 @@ where $U in bb(R)^(m times m)$ and $V in bb(R)^(n times n)$ orthogonal and
 $Sigma in bb(R)^(m times n)$ is diagonal, where, on the diagonal we have the so
 called *singular values* $sigma_1 , dots.h , sigma_min(m, n)$, such that
 
-$ sigma_1 gt.eq sigma_2 gt.eq dots.h gt.eq sigma_(min (m , n)) gt.eq 0 $
+$ sigma_1 >= sigma_2 >= dots.h >= sigma_(min (m , n)) >= 0 $
 
 Singular values are unique, while $U$ and $V$, in general, are not; in other
 words, the singular values depend only on the matrix $A$, while there are
@@ -30,9 +30,9 @@ the eigen decomposition. Let's for example take a matrix $A in bb(R)^(m times
 n)$ such that $A = U Sigma V^T$, then
 
 $
-  A^T A & = (U Sigma V^T)^T (U Sigma V^T)       &                 \
-        & = V Sigma^T U^T U Sigma V^T           &       U^T U = I \
-        & = V Sigma^T Sigma V^T = V Sigma^2 V^T & Sigma = Sigma^T
+  A^T A & = (U Sigma V^T)^T (U Sigma V^T) \
+        & = V Sigma^T U^T U Sigma V^T \
+        & = V Sigma^T Sigma V^T = V Sigma^2 V^T
 $
 
 That is the *spectral decomposition* of $A^T A$ from which we can deduce
@@ -52,10 +52,7 @@ $
 
 and so we can substitute $U$ in the first equation
 
-$
-  A & = A V D^(-1/2) D^(1/2) V^T \
-    & = A V V^T = A
-$
+$ A & = A V D^(-1/2) D^(1/2) V^T & = A V V^T = A $
 
 so indeed this is a decomposition of $A$; to be sure that is a SVD we have to
 check that $U$ and $V^T$ are orthogonal and $Sigma$ is diagonal with all
