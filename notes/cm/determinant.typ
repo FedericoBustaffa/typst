@@ -42,11 +42,57 @@ $ matrixdet(a, b; c, d) = a d - b c $
 
 that is the classic _width by height_ formula.
 
+#note[
+  Matrices represent transformations of vectors and the determinant is the
+  volume of the subspace spanned by the column vectors.
+
+  This entails the fact that a matrix $A$ whose determinant is zero maps a
+  vector to a lower dimensional vector space.
+]
+
 #important(title: [ Theorem ])[
   Any square matrix is *invertible* if and only if
 
   $ det (A) != 0 $
 ]
+
+This theorem reconnects us with the note above because if a linear
+transformation $A$ maps for example a 2-D vector onto a 1-D subspace, there is
+no way to bring it back to its original space and coordinates by applying an
+inverse operation.
+
+Let's consider the matrix
+
+$ A = mat(-1, 1; 1, -1) $
+
+and the canonical basis
+
+$ B = mat(1, 0; 0, 1) $
+
+By applying $A$ to the canonical basis we obtain
+
+$ A B = mat(-1, 1; 1, -1) mat(1, 0; 0, 1) = mat(-1, 1; 1, -1) $
+
+that can be graphically represented as
+
+#figure(
+  cetz.canvas({
+    import cetz.draw: *
+
+    rect((0, 0), (1, 1), fill: luma(230))
+    line((0, 0), (1, 0), stroke: 1.5pt, mark: (end: ">", fill: black))
+    line((0, 0), (0, 1), stroke: 1.5pt, mark: (end: ">", fill: black))
+
+    line((1.5, 0.5), (2.5, 0.5), stroke: 1.5pt, mark: (end: ">", fill: black))
+
+    line((4, 0.5), (3, 1.5), stroke: 1.5pt, mark: (end: ">", fill: black))
+    line((4, 0.5), (5, -0.5), stroke: 1.5pt, mark: (end: ">", fill: black))
+    circle((4, 0.5), fill: black, radius: 0.05)
+  }),
+)
+
+clearly showing that a matrix with determinant equal to zero squishes vectors
+onto a lower dimensional space.
 
 Let's analyze better this connection of the determinant with the invertibilty of
 a matrix. A matrix with determinant equal to zero means that it has vectors that

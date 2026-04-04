@@ -8,9 +8,9 @@ that
 
 $ A v = lambda v $
 
-$lambda$ and $v$ are respectively an *eigenvalue* and an *eigenvector* of $A$.
-To compute eigenvalues and eigenvectors we need to *diagonalize* the matrix $A$,
-that of course has to be *diagonalizable* in the first place.
+where $lambda$ and $v$ are respectively an *eigenvalue* and an *eigenvector* of
+$A$. To compute eigenvalues and eigenvectors we need to *diagonalize* the matrix
+$A$, that of course has to be *diagonalizable* in the first place.
 
 #important(title: "Diagonalizable Matrix")[
   A matrix $A in bb(R)^(n times n)$ is *diagonalizable* if exists a matrix $V in
@@ -236,4 +236,3 @@ $
 $
 
 so they are both SPSD.
-
