@@ -1,5 +1,5 @@
 #import "@local/note_template:0.1.0": *
-#show: doc => note_template([Vector Space Basis], doc)
+#show: doc => note_template([Basis], doc)
 
 #title()
 
@@ -57,38 +57,42 @@ finite dimensional space, is the number of basis vectors of $V$.
 
 We can see a basis as a reference systems that gives us coordinates about
 vectors living in the vector space we are considering. If we consider for
-example the basis
+example the basis $B$ and the vector $v$:
 
-$ B = { vec(1, 0) vec(0, 1) } $
+$
+  B = mat(1, 0; 0, 1) quad
+  v = vec(2, 1)
+$
 
-and the vector
+the coordinates of $v$ in the vector space spanned by $B$ can be found by solving
+this linear system
 
-$ v = vec(2, 1) $
+$ mat(1, 0; 0, 1) vec(x_1, x_2) = vec(2, 1) quad --> quad x = vec(2, 1) $
 
-its coordinates can be found by solving this linear system
-
-$ mat(1, 0; 0, 1) vec(x_1, x_2) = vec(2, 1) $
-
-that is equal to
-
-$ cases(x_1 = 2, x_2 = 1) $
-
-that gives to use exactly the $v$ vector we started from because in this case we
-used the *canonical basis*.
+that gives to us exactly the $v$ vector we started from because in this case we
+used the *canonical basis* that is equivalent to applying the identity.
 
 If now we are interested in changing coordinates system (and so change basis)
 and use for example
 
-$ vec(1, 1) vec(1, -1) $
+$ tilde(B) = mat(1, 1; 1, -1) $
 
 we just need to solve same linear system as before but now using the new basis
 
-$ mat(1, 1; 1, -1) vec(x_1, x_2) = vec(2, 1) $
+$ mat(1, 1; 1, -1) vec(x_1, x_2) = vec(2, 1) quad --> quad x = vec(0.5, 1.5) $
 
-that is equal to
+Bringing further this concept to linear mappings shows some interesting facts.
+Let's consider for example the two bases $B$ and $tilde(B)$ of before that span
+a vector space $V$, and let's consider two generic basis $C$ and $tilde(C)$,
+both spanning $W$. Let's also consider a linear mapping $Phi : V -> W$,
+represented by the matrix $A$.
 
-$ cases(x_1 + x_2 = 2, x_1 - x_2 = 1) ==> cases(x_1 = 0.5, x_2 = 1.5) $
+Under these conditions is possible to do something like mapping vectors of $V$
+in the new coordinate system (from $B$ to $tilde(B)$), do the same with vectors
+of $W$ ($C$ to $tilde(C)$) and then find a new transformation matrix $tilde(A)$
+that preserves the same mappings of $A$ but in the new coordinates system:
 
-This of course is a geometric view that can be useful for example for modeling
-symple dynamics.
+$ tilde(A) = T^(-1) A S $
 
+where $S$ and $T^(-1)$ are transformation matrices (typically) of the identity
+of $V$ and $W$ respectively.

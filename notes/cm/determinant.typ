@@ -91,8 +91,8 @@ that can be graphically represented as
   }),
 )
 
-clearly showing that a matrix with determinant equal to zero squishes vectors
-onto a lower dimensional space.
+clearly showing that a matrix (and so its associated linear mapping) with
+determinant equal to zero squishes vectors onto a lower dimensional space.
 
 Let's analyze better this connection of the determinant with the invertibilty of
 a matrix. A matrix with determinant equal to zero means that it has vectors that
