@@ -48,3 +48,51 @@ From these definitions can be defined special cases of linear mappings:
 
 This theorem implies that vector spaces with same dimension are very similar and
 so we can map a vector from $V$ to $W$ without any information loss.
+
+= Kernel and Image
+
+The two main subspaces for a linear mappings are the *kernel* and the *image*,
+which give us information about the transformation we are dealing with.
+
+#important(title: [ Kernel ])[
+  For $Phi : V -> W$ we define the *kernel* as
+
+  $ ker(Phi) := Phi^(-1) (0_W) = { v in V : Phi(v) = 0_W } $
+
+  the set of vectors that the linear mapping $Phi$ maps into the $0$ vector.
+]
+
+#important(title: [ Image ])[
+  For $Phi : V -> W$ we define the *image* as
+
+  $ Im(Phi) := Phi(v) = { w in W | exists v in V : Phi(v) = w } $
+
+  the set of vectors in $W$ that are reachable from $V$ through the linear
+  mapping $Phi$.
+]
+
+These two subspaces have some interesting properties like:
+
+- $Phi(0_V) = 0_W$ is always true, therefore $ker(Phi)$ is never empty (it
+  contains at least the $0$ vector).
+- $Im(Phi) subset.eq W$ and $ker(Phi) subset.eq V$.
+- $Phi$ is injective if and only if $ker(Phi) = { 0 }$.
+- For $A = [a_1, dots, a_n]$ where $a_i$ are the columns of $A$, it holds
+
+  $
+    Im(Phi) = { A x : x in RR^n }
+    = { sum_(i=1)^n x_i a_i : x_1, dots, x_n in RR }
+    = "span" [a_1, dots, a_n] subset.eq RR^m
+  $
+
+  so the image of $Phi$ is called *column space* of $A$ and is a subset of
+  $RR^m$ where $m$ is the _height_ of the matrix.
+- $rank(A) = dim(Im(Phi))$.
+- The kernel is the general solution the homogeneous system $A x = 0$ and is a
+  subspace of $RR^n$ where $n$ is the _width_ of the matrix.
+
+#important(title: [ Rank-Nullity Theorem ])[
+  Given $V$, $W$ and $Phi : V -> W$, it holds that
+
+  $ dim(V) = dim(ker(Phi)) + dim(Im(Phi)) $
+]
