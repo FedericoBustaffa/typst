@@ -91,6 +91,8 @@ Two interesting properties, derived by the fact that $U$ is orthogonal are that
 - All the eigenvalues are real.
 - We have $n$ eigenvectors that are an orthonormal basis of $bb(R)^n$.
 
+which can result useful in many cases.
+
 #important(title: "Theorem")[
   If $A in bb(R)^(n times n)$ is symmetric, then
 
