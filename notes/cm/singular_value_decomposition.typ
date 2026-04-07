@@ -104,5 +104,5 @@ $
   sigma_r u_r v_r^T v_(r + 1) = 0
 $
 
-because every $v_i^T dot.op v_(r + 1) = 0$.
+because every $v_i^T v_(r + 1) = 0$.
 

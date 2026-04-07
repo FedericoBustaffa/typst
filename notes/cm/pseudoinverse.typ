@@ -12,7 +12,7 @@ overdetermined systems like a regression problem.
 One definition for the pseudoinverse of a matrix is given by the *least squares*
 problem, where we want to solve
 
-$ min_x parallel A x - y parallel^2 $
+$ min_x norm(A x - y)^2 $
 
 Expand the formula gives us a quadratic form for the problem, of which we can
 calculate the *gradient*, that is
