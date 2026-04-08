@@ -9,17 +9,17 @@ decompose a matrix in three different matrices, containing the so called
 *eigenvalues* and *eigenvectors*.
 
 #important(title: [ Eigenvalues and Eigenvectors ])[
-  Given a matrix $A in bb(R)^(n times n)$, a scalar $lambda$ and a vector $v$
-  such that
+  Given a matrix $A in RR^(n times n)$, a scalar $lambda$ and a vector $v$ such
+  that
 
   $ A v = lambda v $
 
   $lambda$ and $v$ are respectively an *eigenvalue* and an *eigenvector* of $A$.
 ]
 
-From this we can immediately notice that what we are looking for are directions
-in which the transformation $A$ has the only effect of scaling a vector from a
-factor equal to the corresponding eigenvalue.
+From this we can immediately notice that we are looking for directions in which
+the transformation $A$ has the only effect of scaling a vector from a factor
+equal to the corresponding eigenvalue.
 
 To compute eigenvalues and eigenvectors we need to *diagonalize* the matrix $A$,
 that of course has to be *diagonalizable* in the first place.
