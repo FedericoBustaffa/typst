@@ -16,14 +16,14 @@ A way to find the best possible $x$ is by solving the *least squares* problem,
 that aims to minimize the quadratic distance between our solution and the
 desired one.
 
-$ min_x || A x - y ||^2 $
+$ min_x norm(A x - y)^2 $
 
 The quadratic distance (or error) is a common choice to get a *differentiable*
 function, that can be minimized with methods based on *gradient*. But for now
 what we are interested in is what we can do starting from that formula:
 
 $
-  || A x - y ||^2 & = (A x - y)^T (A x - y) \
+  norm(A x - y)^2 & = (A x - y)^T (A x - y) \
                   & = ((A x)^T - y^T) (A x - y) \
                   & = (x^T A^T - y^T) (A x - y) \
                   & = x^T A^T A x - x^T A^T y - y^T A x + y^T y \
@@ -32,20 +32,20 @@ $
                   & = x^T A^T A x - 2 x^T A^T y + y^T y
 $
 
-So minimize $|| A x - y ||^2$ is equivalent to minimize that equation. Let’s
+So minimize $norm(A x - y)^2$ is equivalent to minimize that equation. Let’s
 make one more step that will make sense in a while and let’s divide everything
 by $2$, so that the problem becomes
 
 $
-  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^T A^T A x -
-    x^T A^T y + 1 / 2 y^T y)
+  min_x 1 / 2 norm(A x - y)^2 =
+  min_x (1 / 2 x^T A^T A x - x^T A^T y + 1 / 2 y^T y)
 $
 
 Let now $Q = A^T A$ and $q = - A^T y$, the problem can be rewritten as
 
 $
-  min_x 1 / 2 || A x - y ||^2 = min_x (1 / 2 x^T Q x +
-    x^T q + 1 / 2 y^T y)
+  min_x 1 / 2 norm(A x - y)^2 =
+  min_x (1 / 2 x^T Q x + x^T q + 1 / 2 y^T y)
 $
 
 This problem *has a unique solution* when $Q$ is SPD or has full column rank
@@ -79,8 +79,6 @@ or, a more compact form
 $ x = A^(+) y $
 
 where $A^(+) = (A^T A)^(- 1) A^T$ is the pseudoinverse of $A$.
-
-= Uniqueness of Solution
 
 #important(title: "Theorem")[
   A matrix $A in RR^(m times n)$ has full column rank if and only if is SPD.
