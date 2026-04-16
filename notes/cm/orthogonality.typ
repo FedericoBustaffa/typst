@@ -48,8 +48,48 @@ If two vectors are orthogonal and have both length $1$ (euclidean norm),
 than they are called *orthonormal*.
 
 #figure(
-  image("images/orthogonal_orthonormal.jpg", width: 50%),
-  caption: "Orthogonal and Orthonormal",
+  cetz.canvas({
+    import cetz.draw: *
+
+    // axes
+    line((-1.5, 0), (1.5, 0), stroke: gray + 0.5pt, name: "asse-x")
+    line((0, -1.5), (0, 1.5), stroke: gray + 0.5pt, name: "asse-y")
+
+    // unitary circle
+    circle((0, 0), radius: 1, stroke: gray + 0.5pt)
+
+    // orthonormal vectors
+    line((0, 0), (1, 0), stroke: blue + 1.5pt, mark: (end: ">", fill: blue))
+    content((1.25, 0.25), [ $hat(v)_1$ ])
+
+    line((0, 0), (0, 1), stroke: blue + 1.5pt, mark: (end: ">", fill: blue))
+    content((0.25, 1.2), [ $hat(v)_2$ ])
+
+    // orthogonal vectors
+    line((0, 0), (0, -1.5), stroke: red + 1.5pt, mark: (end: ">", fill: red))
+    content((0.4, -1.25), [ $hat(u)_1$ ])
+
+    line((0, 0), (-0.75, 0), stroke: red + 1.5pt, mark: (end: ">", fill: red))
+    content((-0.4, 0.35), [ $hat(u)_2$ ])
+
+    rect((0, 0), (0.3, 0.3), stroke: 0.5pt)
+    rect((0, 0), (-0.3, -0.3), stroke: 0.5pt)
+
+    circle((0, 0), radius: 0.05, fill: black)
+
+    line((2, 1), (2.5, 1), stroke: red + 1.5pt, mark: (
+      end: ">",
+      fill: red,
+    ))
+    content((3.8, 1), [ Orthogonal ])
+
+    line((2, 0.5), (2.5, 0.5), stroke: blue + 1.5pt, mark: (
+      end: ">",
+      fill: blue,
+    ))
+    content((4, 0.5), [ Orthonormal ])
+  }),
+  caption: [ Orthogonal and Orthonormal ],
 )
 
 We can extend this to $n$-dimensional vectors, and we can also extend the

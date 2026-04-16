@@ -14,15 +14,34 @@ decompose a matrix in three different matrices, containing the so called
 
   $ A v = lambda v $
 
-  $lambda$ and $v$ are respectively an *eigenvalue* and an *eigenvector* of $A$.
+  $lambda$ is an *eigenvalue* and $v$ the corresponding *eigenvector* of $A$.
 ]
 
 From this we can immediately notice that we are looking for directions in which
 the transformation $A$ has the only effect of scaling a vector from a factor
 equal to the corresponding eigenvalue.
 
-To compute eigenvalues and eigenvectors we need to *diagonalize* the matrix $A$,
-that of course has to be *diagonalizable* in the first place.
+The way to obtain eigenvalues and eigenvectors is called *diagonalization*, that
+is exactly the process that let us obtain the eigen decomposition.
+
+Since we want to find $lambda$ values and $v$ vectors that satisfy the equation
+above
+
+$ A v = lambda v quad <==> quad A v - lambda v = 0 $
+
+and since $A$ is a matrix and $lambda$ is a scalar we actually use this form
+
+$ A v - (lambda I) v = 0 quad <==> quad (A - lambda I) v = 0 $
+
+since the matrix $A$ represents an $n$-dimensional transformation, there are $n$
+possible directions in which the condition holds (hence $n$ possible eigenvalues
+and eigenvectors). So now $lambda$ becomes a vector
+
+$ vb(lambda) = vec(lambda_1, dots.v, lambda_n) $
+
+To be diagonalized the matrix has to be *diagonalizable* in the first place and
+as we can see later this is something we actually discover trying to diagonalize
+the matrix.
 
 #important(title: "Diagonalizable Matrix")[
   A matrix $A in bb(R)^(n times n)$ is *diagonalizable* if exists a matrix $V in
@@ -46,25 +65,58 @@ that of course has to be *diagonalizable* in the first place.
       -, vb(w)_n^T, -
     )
   $
-
-  This is also called *eigen-decomposition*.
 ]
 
-where $(lambda_i , v_i)$ are *eigenpairs* of $A$, formed by the eigenvalue
-$lambda_i$ and the eigenvector $v_i$.
+This is in fact called *eigen decomposition* and if it exists then the matrix is
+diagonalizable. In order to obtain it we have to set
+
+$ det(A - lambda I) = 0 $
+
+obtaining the *characteristic polynomial*, whose roots are the eigenvalues of
+$A$. If we think about it we are looking for directions (eigenvectors) in which
+the condition
+
+$ (A - lambda I) v = 0 $
+
+is true. So we want a transformation $(A - lambda I)$ that only scales vectors
+of some factor on the same direction they're already pointing. This
+transformation matrix has of course determinant equal to zero because it
+collapses vectors on a lower dimensional space.
+
+Once solved the characteristic polynomial, we have eigenvalues that we can plug
+into the diagonal matrix $D$ (in fact it only scales vectors) and by solving the
+linear system we obtain the corresponding eigenvectors.
 
 #note[
-  The set ${ v_1 , dots , v_n }$ is a basis of $bb(R)^n$ made of eigenvectors of
-  $A$.
+  Let's notice that $V$ is a basis of eigenvectors, that in fact spans the so
+  called *eigenspace*.
 ]
+
+If the diagonalization process does not return a basis of eigenvectors then the
+matrix is not diagonalizable. The idea behind this decomposition is that we want
+to
+
++ Find a basis of eigenvectors such that we can map every vector in a
+  coordinates system with nice properties.
++ Apply a transformation $D$ that is equivalent to $A$ but in the new reference
+  system that now only scales vectors of some factor.
++ Bring the resulting vector back to the original reference system.
 
 Some interesting property of eigenvectors are
 
 - If $v$ is an eigenvector of $A$, then also $alpha v$ is an eigenvector of $A$
   $ A (alpha v) = alpha (A v) = alpha lambda v $
-- If $v$ and $w$ are eigenvectors of $A$, then $v + w$ is also an eigenvector of
-  $A$
+- If $v$ and $w$ are eigenvectors of $A$ with the same corresponding eigenvalue
+  $lambda$, then $v + w$ is also an eigenvector of $A$
   $ A (v + w) = A v + A w = lambda v + lambda w = lambda (v + w) $
+
+Also, the number of times an eigenvalue is root of the characteristic polynomial
+is called *algebraic multiplicity*, while the number of linearly independent
+vectors associated with a specific eigenvalue is called *geometric
+multiplicity*.
+
+To obtain a basis of the vector space we are working in we need a maximal
+geometric multiplicity.
 
 = Spectral Theorem <spectral-theorem>
 

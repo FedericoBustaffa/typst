@@ -55,9 +55,10 @@ finite dimensional space, is the number of basis vectors of $V$.
 
 = Change of Basis <change-of-basis>
 
-We can see a basis as a reference systems that gives us coordinates about
-vectors living in the vector space we are considering. If we consider for
-example the basis $B$ and the vector $v$:
+A nice way to think about bases is coordinates system which give a sort of
+reference to know where vectors of a certain vector space are. Intuitively the
+canonical basis is the most simple to think about: it basically says how far a
+vector is from the origin.
 
 $
   B = mat(1, 0; 0, 1) quad
@@ -67,7 +68,7 @@ $
 the coordinates of $v$ in the vector space spanned by $B$ can be found by solving
 this linear system
 
-$ mat(1, 0; 0, 1) vec(x_1, x_2) = vec(2, 1) quad --> quad x = vec(2, 1) $
+$ mat(1, 0; 0, 1) vec(v_1, v_2) = vec(2, 1) quad --> quad v = vec(2, 1) $
 
 that gives to us exactly the $v$ vector we started from because in this case we
 used the *canonical basis* that is equivalent to applying the identity.
@@ -79,20 +80,48 @@ $ tilde(B) = mat(1, 1; 1, -1) $
 
 we just need to solve same linear system as before but now using the new basis
 
-$ mat(1, 1; 1, -1) vec(x_1, x_2) = vec(2, 1) quad --> quad x = vec(0.5, 1.5) $
+$ mat(1, 1; 1, -1) vec(v_1, v_2) = vec(2, 1) quad --> quad v = vec(0.5, 1.5) $
 
-Bringing further this concept to linear mappings shows some interesting facts.
-Let's consider for example the two bases $B$ and $tilde(B)$ of before that span
-a vector space $V$, and let's consider two generic basis $C$ and $tilde(C)$,
-both spanning $W$. Let's also consider a linear mapping $Phi : V -> W$,
-represented by the matrix $A$.
+to get the new coordinates of vector $v$.
 
-Under these conditions is possible to do something like mapping vectors of $V$
-in the new coordinate system (from $B$ to $tilde(B)$), do the same with vectors
-of $W$ ($C$ to $tilde(C)$) and then find a new transformation matrix $tilde(A)$
-that preserves the same mappings of $A$ but in the new coordinates system:
+== Change of Basis Transformation Matrix
+
+We can bring farther this concept to transformation matrices when a change of
+basis is performed.
+
+If we work with vector fields $V$ and $W$ and consider their canonical basis for
+example, we can define a linear mapping $Phi : V -> W$ and its corresponding
+transformation matrix $A$. A change of basis changes the coordinates system of
+vectors in $V$ and $W$ and so we need a new linear mapping that is consistent
+with $Phi$; in other words we need to find a new transformation matrix
+$tilde(A)$ that ma
+
+Let's consider two bases $B$ and $tilde(B)$ of $V$ and two bases $C$ and
+$tilde(C)$ of $W$. Let's also consider a linear mapping $Phi : V -> W$,
+represented by the matrix $A$ with respect to $B$ and $C$.
+
+If we change bases to $tilde(B)$ and $tilde(C)$ vectors in $V$ and $W$ are now
+mapped with respect to a different coordinates system. Since we have already
+have $A$, a nice way to think at the new matrix we are looking for is a matrix
+that, applied to a vector in $V$
+
++ Change basis from $tilde(B)$ to $B$ so that we go back to the coordinates
+  system in which $A$ is defined.
++ Apply the original $A$ that gives us a vector $W$ but with respect to the
+  original basis $C$.
++ Change basis from $C$ to $tilde(C)$ so that we obtain the result vector in the
+  right coordinates system.
+
+In general we need to find two matrices $S$ that does the basis change in $V$
+(from $tilde(B)$ to $B$) and $T$ that does to basis change in $W$ (from
+$tilde(C)$ to $C$). Since we want the last change of basis from $C$ to
+$tilde(C)$ we actually need to use $T^(-1)$ to construct the new $tilde(A)$:
 
 $ tilde(A) = T^(-1) A S $
 
-where $S$ and $T^(-1)$ are transformation matrices (typically) of the identity
-of $V$ and $W$ respectively.
+Since we have the two couples $B$, $tilde(B)$ and $C$, $tilde(C)$ we can express
+for example vectors of $tilde(B)$ as linear combinations of vectors of $B$, take
+the coefficients and build $S$.
+
+Analogue reasoning for $C$ and $tilde(C)$ to build $T$ except that this time we
+also need to invert it in order to have the final result in terms of $tilde(C)$.
