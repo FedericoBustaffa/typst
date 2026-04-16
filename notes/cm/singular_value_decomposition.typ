@@ -25,7 +25,7 @@ in a similar way, the rows of $V^T$ (or the columns of $V$) are called the
 
 = SVD and Eigenvalues <svd-and-eigenvalues>
 
-By taking a look at the SVD formula it seems something with the same flavour of
+By taking a look at the SVD formula it seems something of the same flavour of
 the eigen decomposition. Let's for example take a matrix $A in bb(R)^(m times
 n)$ such that $A = U Sigma V^T$, then
 

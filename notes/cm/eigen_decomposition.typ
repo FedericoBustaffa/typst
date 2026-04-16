@@ -120,7 +120,7 @@ geometric multiplicity.
 
 = Spectral Theorem <spectral-theorem>
 
-One of the most important theorems for diagonalization is the *spectral
+One of the most important theorems for eigen decomposition is the *spectral
 theorem*.
 
 #important(title: "Spectral Theorem")[
@@ -133,6 +133,11 @@ theorem*.
 
 This theorem implies a lot of interesting properties like the fact that if a
 matrix is symmetric then is *always diagonalizable*.
+
+Since $U$ is orthogonal, the eigenvectors of $A$ are orthonormal that is a much
+stronger characterization about the decomposition. In this scenario each
+eigenvector is unitary and so the corresponding eigenvalue gives us an exact
+idea of how much the transformation in that direction scales vectors.
 
 Another interesting fact is that the matrix $U$, containing the eigenvectors, is
 orthogonal and so the diagonalization is simplified due to the fact that we
