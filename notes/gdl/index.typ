@@ -16,10 +16,11 @@
     - Naive Bayes
   - Hidden Variables
     - Gaussian Mixture Model
-  - Series
+  - Sequential Data
     - Hidden Markov Model
   - Variational Inference
     - Latent Dirichlet Allocation
   - Sampling
+  - Markov Random Fields
     - Boltzmann Machines
 

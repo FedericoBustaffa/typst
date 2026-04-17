@@ -7,7 +7,7 @@ The concept of #strong[pseudoinverse] of a matri is a generalization of the
 inverse for square matrices. The pseudoinverse is used for example to solve
 overdetermined systems like a regression problem.
 
-= Least Squares <least-squares>
+= Normal Equations <normal-equations>
 
 One definition for the pseudoinverse of a matrix is given by the *least squares*
 problem, where we want to solve
@@ -30,22 +30,22 @@ $
 If we notice, this form is very similar to the canonical form used to solve
 square systems:
 
-$ A x = y arrow.l.r.double x = A^(- 1) y $
+$ A x = y <==> x = A^(- 1) y $
 
 For rectangular matrices we can instead define the concept of _pseudoinverse_,
 denoted as $A^(+)$
 
-$ A^(+) = (A^T A)^(- 1) A^T $
+$ A^+ = (A^T A)^(- 1) A^T $
 
 that let us solve the rectangular system by computing
 
-$ x = A^(+) y $
+$ x = A^+ y $
 
 In fact if we have a matrix $A in bb(R)^(n times n)$ that is invertible, its
 pseudoinverse is equal to its inverse:
 
 $
-  A^(+) = (A^T A)^(- 1) A^T = A^(- 1) A^(- T) A^T = A^(- 1)
+  A^+ = (A^T A)^(- 1) A^T = A^(- 1) A^(- T) A^T = A^(- 1)
 $
 
 It’s important to notice that the multiplication for the pseudoinverse it’s, in
@@ -72,13 +72,13 @@ rank.
 Given a matrix $A = U Sigma V^T$ with rank $r$ and that is _thin_, then its
 pseudoinverse is defined as
 
-$ A^(+) = V Sigma^(+) U^T $
+$ A^+ = V Sigma^(+) U^T $
 
 where
 
 $
   Sigma^(+) = mat(
-    delim: "[", 1 \/ sigma_1, , , ;
+    1 \/ sigma_1, , , ;
     #none, dots.down, , ;
     #none, , 1 \/ sigma_r, ;
     #none, , , 0
@@ -88,11 +88,11 @@ $
 A special case, is when $A$ has full column rank, then, like we saw
 before, it holds
 
-$ A^(+) = (A^T A)^(- 1) A^T $
+$ A^+ = (A^T A)^(- 1) A^T $
 
 so in this case is also possible to write
 
-$ A^(+) = V Sigma^(+) U^T = V Sigma^(- 1) U^T $
+$ A^+ = (A^T A)^(- 1) A^T = V Sigma^+ U^T = V Sigma^(- 1) U^T $
 
 because $Sigma$ is invertible if and only if $A$ has full column rank,
 in fact we can obtain the formula by noticing that
