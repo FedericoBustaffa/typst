@@ -14,7 +14,7 @@ called *singular values* $sigma_1 , dots.h , sigma_min(m, n)$, such that
 
 $ sigma_1 >= sigma_2 >= dots.h >= sigma_(min (m , n)) >= 0 $
 
-Singular values are unique, while $U$ and $V$, in general, are not; in other
+Singular values are unique, while in general $U$ and $V$ are not; in other
 words, the singular values depend only on the matrix $A$, while there are
 multiple choices of $U$ and $V$ that keep the decomposition valid.
 
@@ -23,11 +23,40 @@ $A$, while the columns of $U$ are called the *left singular vectors* of $A$ and
 in a similar way, the rows of $V^T$ (or the columns of $V$) are called the
 *right singular vectors* of $A$.
 
-= SVD and Eigenvalues <svd-and-eigenvalues>
+The intuition behind the SVD is again the change of basis pattern and it is
+quite similar to the one for eigen decomposition. In fact we will see later that
+SVD and eigen decomposition are closely related.
 
-By taking a look at the SVD formula it seems something of the same flavour of
-the eigen decomposition. Let's for example take a matrix $A in bb(R)^(m times
-n)$ such that $A = U Sigma V^T$, then
+One of the most important things about SVD is that $U$ and $V^T$ are orthogonal
+and so they perform a change of basis without scaling the space. They just
+rotate the point of view in a way that every direction is independent one
+another and so the singular values are an effective measure of how much the
+transformation modifies such directions.
+
+#note[
+  This is basically the same as a spectral decomposition but generalized to
+  rectangular matrices that can augment or reduce the space dimensionality.
+]
+
+Similary to the eigen decomposition we have a patter in which
+
++ $V^T$ performs a basis change to an orthonormal basis of $RR^n$ since $V^T$ is
+  orthogonal.
++ $Sigma$ performs a dimensionality augmentation or reduction and scales
+  components.
++ $U$ performs another basis change to come map the result vector in a
+  coordinate system consistent with the one of the initial vector space.
+
+The main difference between SVD and eigen decomposition is that SVD performs a
+basis change in both the domain and codomain, while the eigen decomposition
+operates in the same vector space, by performing a basis change and then undone
+it.
+
+= SVD and Eigen Decomposition
+
+Let's now try to better visualize and formalize the connection between SVD and
+eigen decomposition. Let's consider a generic matrix $A in RR^(m times n)$ and
+its SVD $U Sigma V^T$, then it's reasonable to write
 
 $
   A^T A & = (U Sigma V^T)^T (U Sigma V^T) \
@@ -69,40 +98,4 @@ $
 $
 
 that proves $U$ being an orthogonal matrix.
-
-== Rank
-
-If we take a look at the rank of $A$, we can see that it is equal to the number
-of strictly positive singular values. In fact is possible to write $A$ as the
-sum of $r = "rank"(A)$ terms of rank equal to $1$.
-
-$ A = sigma_1 u_1 v_1^T + dots.c + sigma_r u_r v_r^T $
-
-where $u_i$ is a column of $U$ and $v_i^T$ is a row of $V^T$. In other
-words, to write $A$ we only need the first $r = "rank"(A)$ singular
-values, left and right singular vectors.
-
-This leads to a more compact representation of $A$ and the SVD in general that
-takes the name of *thin* (or *economy*) SVD of a rectangular _tall_ matrix $A in
-RR^(m times n)$ ($m > n$). In this form the columns of $U$ are orthonormal.
-
-The SVD gives also some information on the $4$ fundamental subspaces of $A$
-
-- $im(A) = "span"(u_1 , dots.h , u_r)$
-- $ker(A) = "span"(v_(r + 1) , dots.h , v_n)$
-- $im(A^T) = "span"(v_1 , dots.h , v_r)$
-- $ker(A^T) = "span"(u_(r + 1) , dots.h , u_m)$
-
-In fact we can for example test it like this
-
-$ A = sigma_1 u_1 v_1^T + dots.h + sigma_r u_r v_r^T $
-
-and so
-
-$
-  A v_(r + 1) = sigma_1 u_1 v_1^T v_(r + 1) + dots.h +
-  sigma_r u_r v_r^T v_(r + 1) = 0
-$
-
-because every $v_i^T v_(r + 1) = 0$.
 
