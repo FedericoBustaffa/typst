@@ -192,7 +192,48 @@ and the three step algorithm is basically the same:
 
   $ P_pi = B (B^T B)^(-1) B^T $
 
+  is the projection matrix we are looking for.
+
 = Gram-Schmidt Orthogonalization
 
-// to do
+A very useful algorithm to transform a generic basis $B = [b_1, dots, b_n]$ into
+an orthogonal or orthonormal basis of the same vector space is the *Gram-Schmidt
+orthogonalization* process.
 
+It iteratively constructs an orthogonal basis from any basis of $V$ as follows:
+
+$
+  u_1 & = b_1 \
+  u_k & = b_k - pi_("span"[u_1, dots, u_(k-1)]) (b_k)
+$
+
+with $pi_("span"[u_1, dots, u_(k-1)])$ the projection that maps each basis
+component onto the subspace spanned by the $k-1$ constructed orthogonal vectors.
+Repeating this process for all the basis vectors gives us an orthogonal basis of
+$V$, which can be normalized to obtain an orthonormal basis of $V$.
+
+#figure(
+  cetz.canvas({
+    import cetz.draw: *
+
+    line((0, 0), (2, 0), stroke: black, mark: (end: ">", fill: black))
+    line((0, 0), (1, 1), stroke: black, mark: (end: ">", fill: black))
+
+    line((3, 0), (5, 0), stroke: blue, mark: (end: ">", fill: blue))
+    line((3, 0), (4, 1), stroke: black, mark: (end: ">", fill: black))
+    line((4, 1), (4, 0), stroke: (paint: red, dash: "dashed"))
+    line((3, 0), (4, 0), stroke: red, mark: (end: ">", fill: red))
+
+    line((6, 0), (8, 0), stroke: blue, mark: (end: ">", fill: blue))
+    line((6, 0), (7, 1), stroke: black, mark: (end: ">", fill: black))
+    line((7, 1), (7, 0), stroke: (paint: red, dash: "dashed"))
+    line((6, 0), (7, 0), stroke: red, mark: (end: ">", fill: red))
+    line((6, 0), (6, 1), stroke: blue, mark: (end: ">", fill: blue))
+    line((7, 1), (6, 1), stroke: red, mark: (end: ">", fill: red))
+  }),
+  caption: [ Gram-Schmidt Orthogonalization ],
+) <fig-orthogonalization>
+
+In @fig-orthogonalization we can see that from the initial basis (black
+vectors), the orthogonalization process gives us two orthogonal basis (blue
+vectors).

@@ -57,19 +57,29 @@ we stop the sum up to $k < r$ we obtain an *approximation* of $A$
 
 $ A_k = sum_(i=1)^k sigma_i u_i v_i^T $
 
+Since we want to compress $A$ as much as possible while keeping the core
+informations, we are basically trying to minimize $norm(A - B)$ for some matrix
+norm $norm(dot)$, by searching a matrix $B$ in the space of matrices of the same
+size as $A$ but with rank $k <= r$.
+
 Given $A in RR^(m times n)$ and an integer $k < "rank"(A)$, the *low-rank
 approximation* of $A$ of rank $k$ is a matrix $tilde(A)$ such that
 
 $ tilde(A) = arg min_("rank"(B) = k) || A - B ||_F $
 
-that is, we’re searching the, among all the matrices with rank $k$, the closest
-to $A$ with respect to Frobenius (or spectral) norm.
+
+that is, we're searching among all the matrices with rank $k$, the closest to
+$A$ with respect to Frobenius (or spectral) norm. We can perform this task with
+some iterative approach but with SVD comes also a crucial result.
 
 #important(title: "Eckart-Young Theorem")[
   Given $A in RR^(m times n)$ with rank $r$, the best approximation of rank $k$
   is given by the _truncated_ SVD of $A$
 
-  $ A_k = sigma_1 u_1 v_1^T + dots.c + sigma_k u_k v_k^T $
+  $
+    A_k = sigma_1 u_1 v_1^T + dots.c + sigma_k u_k v_k^T
+    = sum_(i=1)^k sigma_i u_i v_i^T
+  $
 
   with $k <= r$.
 ]
@@ -92,3 +102,30 @@ $
   sigma_1 u_1 v_1^T + dots.h.c + sigma_k u_k v_k^T
 $
 
+This low rank approximation is the basis for many algorithms but one of the most
+visual application is given by image compression; let's consider this image
+
+#figure(image("images/dog.jpg", width: 45%))
+
+in grey scale that corresponds to a rank 430 matrix and let's see how different
+low rank approximations via SVD are capable of reconstruct the original image:
+
+#figure(
+  grid(
+    rows: 4,
+    columns: 2,
+    row-gutter: 4pt,
+    "Rank 1", "Rank 5",
+    image("images/dog_1.jpg", width: 100%),
+    image("images/dog_5.jpg", width: 100%),
+
+    "Rank 25", "Rank 125",
+    image("images/dog_25.jpg", width: 100%),
+    image("images/dog_125.jpg", width: 100%),
+  ),
+  caption: [ Image Low Rank Approximation ],
+)
+
+As we can see the rank 25 approximation already gives us a nice image in which
+the dog is easily recognizable, while with rank 125 becomes hard to tell the
+difference from the original picture.

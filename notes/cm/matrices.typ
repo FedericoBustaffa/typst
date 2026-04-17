@@ -148,3 +148,43 @@ $lambda , psi in bb(R)$ it holds:
 These are general properties and useful matrices to start doing things with
 linear algebra.
 
+= Symmetric Positive (Semi)Definite Matrices <spsd>
+
+Some interesting matrices are the *symmetric positive definite (SPD)*, that are
+defined as symmetric matrices whose eigenvalue are all *strictly* positive
+
+$ A succ 0 $
+
+It's easy to imagine that *symmetric positive semidefinite (SPSD)*
+are symmetric matrices with all eigenvalues greater or equal than $0$
+
+$ A succ.eq 0 $
+
+Let’s also notice that
+
+- $A$ is SPD if and only if $x^T A x > 0$ for all $x eq.not 0$.
+- $A$ is SPSD if and only if $x^T A x gt.eq 0$ for all $x$.
+
+For rectangular matrices we have that, given $A in bb(R)^(m times n)$ the
+matrices $A^T A$ and $A A^T$ are SPSD. They’re both symmetric:
+
+$
+  A^T A & = (A^T A)^T = A^T A \
+  A A^T & = (A A^T)^T = A A^T
+$
+
+and their eigenvalues are greater or equal than $0$
+
+$
+  x^T A^T A x & = (A x)^T (A x) = norm(A x)^2 >= 0 \
+  x^T A A^T x & = (A^T x)^T (A^T x)
+                = norm(A^T x)^2 >= 0
+$
+
+so they are both SPSD. Another way to see this is by noticing that an SPD matrix
+must satisfy the following condition
+
+$ x^T A x > 0 $
+
+for every $x in RR^n backslash {0}$. If it also holds $A^T A = A A^T$ the matrix
+is called *normal*.
