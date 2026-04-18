@@ -16,6 +16,10 @@ sequence
 $ x_0, x_1, dots, x_n $
 
 the should converge towards an optimal solution. The aim of this algorithm is to
-have a monotonic sequence in which $x_(i+1)$ is better than $x_i$ and in order
-to do that we
+have a monotonic sequence in which $x_(i+1)$ is better than $x_i$.
+
+In general given a solution $x_i$ we can see if the gradient in that point is
+zero to stop the algorithm but in general this is not achievable because
+numerical errors and the fact the is very difficult to get exactly zero; what is
+typically done is to a see if the gradient is smaller than a chosen $epsilon$.
 
