@@ -130,17 +130,28 @@ is defined as
 
 $ vb(J) = mat(-2, 1; 1, 1) $
 
-giving us a transformation matrix of which we can compute determinant, decompose
-it by SVD and all sort of analyses we can think of.
-
 If instead the functions $f_i$ are not linear we do not obtain a matrix with
 only coefficients, but a collection of functions which can be used to locally
 approximate the original one (Taylor series).
 
-== Gradients of Matrices
+= Gradients of Matrices
 
 There are also cases in which we need to take gradients of matrices w.r.t.
-vectors or other matrices. Let's consider for example the simple case
+scalars, vectors or other matrices. Let's think about probabilisti models in
+which there is the need to optimize a covariance matrix.
+
+== Gradients of Matrices w.r.t. a Scalar
+
+Let's consider for example the simple case in which we have a function $f : R^(m
+times n) -> RR$ that takes a matrix in input and returns a scalar in output;
+this is not much different from a function that takes in a vector and returns a
+scalar, in fact it can be treated as such.
+
+$ f : RR^(m times n) -> RR = f : RR^(m n) -> RR $
+
+and so its gradient will be a row vector with $m times n$ entries.
+
+== Gradients of Matrices w.r.t. a Vector
 
 $ f = A x $
 
@@ -172,6 +183,8 @@ gradient of $f_i$ w.r.t. $A$ is given by
 $ pdv(f_i, A) = vec(0^T, dots.v, 0^T, x^T, 0^T, dots.v, 0^T) $
 
 where $x_t$ appears in the $i$-th row.
+
+== Gradients of Matrices w.r.t. a Matrix
 
 There is also the case in which we need to take the gradient of a matrix w.r.t.
 another matrix, that needs particular care to handle dimensionality of the
