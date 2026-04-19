@@ -112,7 +112,77 @@ hence the Jacobian is defined as
 $
   vb(J) = jmat(
     delim: "[",
+    f_1, f_2; vb(x),
+  ) = jmat(
+    delim: "[",
     f_1, f_2; x_1, x_2
   )
 $
 
+that if $f_1$ and $f_2$ are linear, for example
+
+$
+  f_1(x_1, x_2) & = -2 x_1 + x_2 \
+  f_2(x_1, x_2) & = x_1 + x_2
+$
+
+is defined as
+
+$ vb(J) = mat(-2, 1; 1, 1) $
+
+giving us a transformation matrix of which we can compute determinant, decompose
+it by SVD and all sort of analyses we can think of.
+
+If instead the functions $f_i$ are not linear we do not obtain a matrix with
+only coefficients, but a collection of functions which can be used to locally
+approximate the original one (Taylor series).
+
+== Gradients of Matrices
+
+There are also cases in which we need to take gradients of matrices w.r.t.
+vectors or other matrices. Let's consider for example the simple case
+
+$ f = A x $
+
+with $f in RR^M$, $A in RR^(M times N)$ and $x in RR^N$. If we need to take the
+gradient $dv(f, A) in RR^(M times (M times N))$ and as usual is defined as
+
+$ dv(f, A) = vec(pdv(f_1, A), dots.v, pdv(f_M, A)) $
+
+with $pdv(f_i, A) in RR^(1 times (M times N))$. Now to compute the partial
+derivatives it's usually helpful to write down the matrix vector multiplication:
+
+$ f_i = sum_(j=1)^N A_(i j) x_j $
+
+and the partial derivatives are then given as
+
+$ pdv(f_i, A_(i q)) = x_q $
+
+which results in a more general partial derivative of $f_i$ w.r.t. a row of $A$,
+which is given as
+
+$
+       pdv(f_i, A_(i, :)) & = x^T in RR^(1 times 1 times N) \
+  pdv(f_i, A_(k != i, :)) & = 0^T in RR^(1 times 1 times N)
+$
+
+and by consider all the dimensions involved we can deduce that the general
+gradient of $f_i$ w.r.t. $A$ is given by
+
+$ pdv(f_i, A) = vec(0^T, dots.v, 0^T, x^T, 0^T, dots.v, 0^T) $
+
+where $x_t$ appears in the $i$-th row.
+
+There is also the case in which we need to take the gradient of a matrix w.r.t.
+another matrix, that needs particular care to handle dimensionality of the
+introduced objects.
+
+For example if we compute the gradient of $A in RR^(m times n)$ w.r.t. $B in
+RR^(p times q)$ the resulting Jacobian would be $(m times n) times (p times q)$
+that is a four-dimensional tensor.
+
+Since matrices represent linear mappings, we can exploit the fact that there is
+a vector space linear invertible mapping between $RR^(m times n)$ and $RR^(m
+n)$. Therefore, we can reshape our matrices into vectors of lengths $m n$ and $p
+q$ respectively so that the chain rule can be performed as a simple matrix
+multiplication.
