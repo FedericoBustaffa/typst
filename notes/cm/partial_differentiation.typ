@@ -182,7 +182,7 @@ gradient of $f_i$ w.r.t. $A$ is given by
 
 $ pdv(f_i, A) = vec(0^T, dots.v, 0^T, x^T, 0^T, dots.v, 0^T) $
 
-where $x_t$ appears in the $i$-th row.
+where $x^T$ appears in the $i$-th row.
 
 == Gradients of Matrices w.r.t. a Matrix
 
@@ -199,3 +199,42 @@ a vector space linear invertible mapping between $RR^(m times n)$ and $RR^(m
 n)$. Therefore, we can reshape our matrices into vectors of lengths $m n$ and $p
 q$ respectively so that the chain rule can be performed as a simple matrix
 multiplication.
+
+Let's consider a matrix $X in RR^(M times N)$ and a function $f : RR^(M
+times N) -> RR^(N times N)$ with
+
+$ f(X) = X^T X $
+
+and of course we seek the gradient
+
+$ dv(f, X) in RR^((N times N) times (M times N)) $
+
+Moreover
+
+$ dv(f_(p q), X) in RR^(1 times M times N) $
+
+where $K_(p q)$ is the $(p, q)$ entry of $f(X)$. If we now denote the $i$-th
+column of $X$ with $x_i$, every entry of $f(X)$ is given by the dot product of
+two columns of $X$:
+
+$ X_(p q) = x_p^T x_q = sum_(m=1)^M X_(m p) X_(m q) $
+
+so that when we can compute the partial derivative
+
+$
+  pdv(f_(p q), X_(i j)) = sum_(m=1)^M pdv(X_(m p) X_(m q), X_(i j))
+  = partial_(p q i j) =
+  cases(
+    X_(i q) & " if " j = p and p != q,
+    X_(i p) & " if " j = q and p != q,
+    2 X_(i q) & " if " j = p and p = q,
+    0 & " otherwise"
+  )
+$
+
+Let's for example take the following matrix
+
+$ X = mat(x_(1 1), x_(1 2); x_(2 1), x_(2 2)) $
+
+the derivative of $f(X) = X^T X$ in this case is done w.r.t. each component
+
