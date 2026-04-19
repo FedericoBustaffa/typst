@@ -117,14 +117,17 @@ sum of $k$ terms that are the first $k$-th order derivatives in a point $x_0$.
 If the function is a polynomial soon or later we will match the degree $n$ of
 the original $f$ obtaining a perfect approximation.
 
-Let's take for example $f(x) = x^3$ evaluated in $x = 1$, the taylor polynomial
-up to degree $2$ is
+Let's take $f(x) = x^3$ evaluated in $x = 1$, its taylor polynomial up to degree
+$2$ is
 
-$ T_2 (x) = 1 + 3 (x - 1) + 6 / 2 (x - 1)^2 = 3x^2 - 3x + 1 $
+$
+  T_2 (x) =
+  underbrace(underbrace(1, T_0) + 3 (x - 1), T_1) + 6 / 2 (x
+    - 1)^2
+  ) = 3x^2 - 3x + 1
+$
 
-and if we evaluate the Taylor up to the third degree we obtain exactly $x^3$:
-
-$ T_3 (x) = 1 + 3 (x - 1) + 6 / 2 (x - 1)^2 + 6 / 6 (x - 1)^3 = x^3 $
+and if we evaluate the Taylor up to the third degree we obtain exactly $x^3$.
 
 #figure(
   lq.diagram(
@@ -178,3 +181,17 @@ have to be a polynomial.
 For $x_0 = 0$ we obtain the *Maclaurin series* as a special case of the Taylor
 series and if $f(x) = T_oo (x)$ then $f$ is called *analytic*.
 
+= Differentiation Rules
+
+There are basic differentiation rules that can be applied to obtain much more
+complex identities:
+
+$
+       "Sum Rule" && (f(x) + g(x))' & = f'(x) + g'(x) \
+   "Product Rule" &&   (f(x) g(x))' & = f'(x) g(x) + f(x) g'(x) \
+  "Quotient Rule" && (f(x) / g(x))' & = (f'(x) g(x) - f(x) g'(x)) / (g(x)^2) \
+     "Chain Rule" &&     (g(f(x)))' & = g'(f(x)) f'(x)
+$
+
+These rules can be composed and generalized to multivariate differentiation with
+some catch.
