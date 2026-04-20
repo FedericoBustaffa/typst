@@ -41,15 +41,25 @@ inference problem:
 
   $ P(y | x) = frac(P(x | y) dot P(y), P(x)) $
 
-  where $x$ is the observed data we gave to the model and $y$ is the most
-  probable answer given the observation $x$.
+  where $x$ is the observed data we gave to the model and $y$ is one possible answer
+  answer to a query. To get the most probable answer the model typically computes
+
+  $ arg max_y P(y | x) $
 - *Learning*: also the learning process is defined as a specific inference
   problem and since we want to learn parameters $theta$ of a distribution, this
   is formalized by
 
-  $ P(theta | X) = frac(P(X | theta) dot P(theta), P(X)) $
+  $ P(theta | X) prop P(X | theta) dot P(theta) $
 
   where $X$ is a set of observations.
+
+A key aspect to take into account is that we always need to write the *joint
+probability* given by the model structure (if defined). This is because the
+model is typically a bayesian network and, as such, it brings some useful
+assumptions on conditional independence that help simplify the computation.
+
+Modelling the joint probability is something that we always have to do in order
+to train the model for some task.
 
 = Learning
 
@@ -125,6 +135,15 @@ conjugate priors to optimize the posterior in closed form.
 The first case of probabilistic model we can think of is the one that want to
 learn distribution parameters of random variables for which we have *complete
 observable data*.
+
+Let's assume we have some features ${X_1, dots, X_n}$ and some variable $Z$ on
+which we want to make inference. The model typically tries to be able to
+
+$ P(X_1, dots, X_n, Z) = P(Z | X_1, dots, X_n) dot P(X_1, dots, X_n) $
+
+which can be rearranged as
+
+$ P(Z | X_1, dots, X_n) = frac(P(X_1, dots, X_n, Z), P(X_1, dots, X_n)) $
 
 == Latent Variables
 
