@@ -140,51 +140,71 @@ There are also cases in which we need to take gradients of matrices w.r.t.
 scalars, vectors or other matrices. Let's think about probabilisti models in
 which there is the need to optimize a covariance matrix.
 
-== Gradients of Matrices w.r.t. a Scalar
+== Scalar Function of a Matrix
 
-Let's consider for example the simple case in which we have a function $f : R^(m
-times n) -> RR$ that takes a matrix in input and returns a scalar in output;
-this is not much different from a function that takes in a vector and returns a
-scalar, in fact it can be treated as such.
+The first case is for *scalar functions* that take matrices in input and return
+a scalar
 
-$ f : RR^(m times n) -> RR = f : RR^(m n) -> RR $
+$ f : RR^(m times n) -> RR $
 
-and so its gradient will be a row vector with $m times n$ entries.
+This is not much different from a function that takes in a vector and returns a
+scalar, in fact it can be treated as such and reshape the input matrix to be a
+vector in $RR^(m n)$ and so the function becomes
 
-== Gradients of Matrices w.r.t. a Vector
+$ f : RR^(m n) -> RR $
 
-$ f = A x $
+and so its gradient will be a row vector with $m dot n$ entries.
 
-with $f in RR^M$, $A in RR^(M times N)$ and $x in RR^N$. If we need to take the
-gradient $dv(f, A) in RR^(M times (M times N))$ and as usual is defined as
+== Vector-Valued Function of a Matrix
 
-$ dv(f, A) = vec(pdv(f_1, A), dots.v, pdv(f_M, A)) $
+The second relevant case is for *vector-valued functions*
 
-with $pdv(f_i, A) in RR^(1 times (M times N))$. Now to compute the partial
+$ f : RR^(m times n) -> RR^k $
+
+In this case we have we have $k$ scalar functions and the derivative is the
+Jacobian we saw before, with dimension $J in RR^(k times (m n))$.
+
+Let's consider the function
+
+$
+  f(X) = X a = mat(
+    x_(1 1), dots.c, x_(1 N);
+    dots.v, dots.down, dots.v;
+    x_(M 1), dots.c, x_(M N)
+  )
+  vec(a_1, dots.v, a_N)
+$
+
+with $f in RR^M$, $X in RR^(M times N)$ and $a in RR^N$. If we need to take the
+gradient $dv(f, X) in RR^(M times (M times N))$ and as usual is defined as
+
+$ dv(f, X) = vec(pdv(f_1, X), dots.v, pdv(f_M, X)) $
+
+with $pdv(f_i, X) in RR^(1 times (M times N))$. Now to compute the partial
 derivatives it's usually helpful to write down the matrix vector multiplication:
 
-$ f_i = sum_(j=1)^N A_(i j) x_j $
+$ f_i = sum_(j=1)^N X_(i j) a_j $
 
 and the partial derivatives are then given as
 
-$ pdv(f_i, A_(i q)) = x_q $
+$ pdv(f_i, X_(i q)) = a_q $
 
-which results in a more general partial derivative of $f_i$ w.r.t. a row of $A$,
+which results in a more general partial derivative of $f_i$ w.r.t. a row of $X$,
 which is given as
 
 $
-       pdv(f_i, A_(i, :)) & = x^T in RR^(1 times 1 times N) \
-  pdv(f_i, A_(k != i, :)) & = 0^T in RR^(1 times 1 times N)
+       pdv(f_i, X_(i, :)) & = a^T in RR^(1 times 1 times N) \
+  pdv(f_i, X_(k != i, :)) & = 0^T in RR^(1 times 1 times N)
 $
 
 and by consider all the dimensions involved we can deduce that the general
-gradient of $f_i$ w.r.t. $A$ is given by
+gradient of $f_i$ w.r.t. $X$ is given by
 
-$ pdv(f_i, A) = vec(0^T, dots.v, 0^T, x^T, 0^T, dots.v, 0^T) $
+$ pdv(f_i, X) = vec(0^T, dots.v, 0^T, a^T, 0^T, dots.v, 0^T) $
 
-where $x^T$ appears in the $i$-th row.
+where $a^T$ appears in the $i$-th row.
 
-== Gradients of Matrices w.r.t. a Matrix
+== Matrix Function of a Matrix
 
 There is also the case in which we need to take the gradient of a matrix w.r.t.
 another matrix, that needs particular care to handle dimensionality of the
