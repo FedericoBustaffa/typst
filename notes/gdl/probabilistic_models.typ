@@ -6,11 +6,11 @@
 In contrast with _discriminative models_ like neural networks or SVMs, a
 relevant field of machine learning is occupied by *probabilistic models*, which
 instead of learning functions (regressors) or trying to separate data
-(classifiers), they directly try to model the distribution that have generate
+(classifiers), they directly try to model the distribution that have generated
 the data.
 
-They are based on the *Bayesian theory of probability* and use *inference* as
-core mechanism to learn and make predictions.
+They are mostly based on *probability theory* and use *inference* as core
+mechanism to learn and make predictions.
 
 Modelling data distributions is particularly powerful if compared to pure
 discriminative models because
@@ -22,8 +22,11 @@ discriminative models because
   evidence (now the answer is a valid probability).
 - *Generative*: some probabilistic models are _generative_ because, once
   trained, we can sample from the distribution they model, generating new
-  synthetic data that is consistent with the observed (and if given with the prior
-  knowledge injected)
+  synthetic data that is consistent with the observed (and if given, with the
+  prior knowledge injected)
+
+Probabilistic models tries to reconstruct the story of the data, and who design
+such models typically thinks about how observed data could have been generated.
 
 #note[
   Of course a probabilistic model can be used as a discriminative one by asking
@@ -32,26 +35,24 @@ discriminative models because
 
 So of course these are machine learning models and so they need to have the two
 core functionalities of any machine learning model: _training_ and _prediction_.
-Since we are in bayesian probability setting, both are addressed by solving an
+Since we are in a probabilistic setting, both are addressed by solving an
 inference problem:
 
 - *Prediction*: as for discriminative models we want to give evidences and get
-  in return a value, a label or whatever is meaningful for the task. So
-  typically the prediction of these models is addressed by
+  in return a value, a label or whatever is meaningful for the task.
+  // So
+  //   typically the prediction of these models is addressed by
 
-  $ P(y | x) = frac(P(x | y) dot P(y), P(x)) $
+  $ P(y | x) = frac(P(x | y) P(y), P(x)) $
 
-  where $x$ is the observed data we gave to the model and $y$ is one possible answer
-  answer to a query. To get the most probable answer the model typically computes
+// where $x$ is the observed data we gave to the model and $y$ is one possible answer
+// answer to a query. To get the most probable answer the model typically computes
+//
+// $ arg max_y P(y | x) $
+- *Learning*: we want to know which is the most probable hypothesis $theta$ that
+  have generated the observed data $X$
 
-  $ arg max_y P(y | x) $
-- *Learning*: also the learning process is defined as a specific inference
-  problem and since we want to learn parameters $theta$ of a distribution, this
-  is formalized by
-
-  $ P(theta | X) prop P(X | theta) dot P(theta) $
-
-  where $X$ is a set of observations.
+  $ P(theta | X) = frac(P(X | theta) dot P(theta), P(X)) $
 
 A key aspect to take into account is that we always need to write the *joint
 probability* given by the model structure (if defined). This is because the
