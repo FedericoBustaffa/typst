@@ -86,6 +86,16 @@ While the bayesian learning is a _special_ case, ML and MAP are like point-wise
 estimations of bayesian learning, since they provide the post probable
 hypothesis (according to the posterior computation).
 
+In general, a probabilistic model is bayesian network that defines relations
+between random variables, and adds assumptions in order to simplify the *joint
+probability distribution*
+
+$ P(X, Z | theta) $
+
+needed to perform inference.
+
+== Conjugate Priors
+
 Also, given a distribution, its parameters are modelled by its *conjugate prior*
 distribution, that is very useful for the MAP framework. The resulting
 distribution of the multiplication of a distribution by its conjugate prior has
@@ -116,86 +126,6 @@ The first case of probabilistic model we can think of is the one that want to
 learn distribution parameters of random variables for which we have *complete
 observable data*.
 
-Let's consider a coin toss repeated multiple times; the outcome can be modelled
-as a random variable $C$ that of course is a Bernoulli distribution of parameter
-$theta$:
-
-$ P(X = i) tilde cal(B)(theta) = theta^i dot (1 - theta)^(1-i) $
-
-Now by looking at the data we want to know what are the probabilities
-
-$ P(C = "Head") = theta quad P(C = "Tail") = 1 - theta $
-
-The ML approach finds the $theta$ that is more likely to have generated the
-observed distribution. As said, the underlying family distribution is a
-Bernoulli and so we can say that
-
-$ P(d | theta) = theta^(n_H) (1 - theta)^(n_T) $
-
-where $n_H$ and $n_T$ are respectively the number of heads and tails observed.
-That is our *likelihood* function $cal(L)$ to optimize, but of course we can
-optimize the log-likelihood version:
-
-$ cal(L) (theta | d) = n_H theta + n_T (1 - theta) $
-
-which derivative is
-
-$ (partial cal(L)) / (partial theta) = n_H / theta - n_T / (1 - theta) $
-
-and it is zero when
-
-$ quad theta = n_H / (n_H + n_T) $
-
-that basically is the simplest probability rule (sign that what we are doing has
-sense).
-
-The MAP version of this problem can be solved in the exact same way by
-considering also the *prior* in order to maximize the *posterior*
-
-$ P(theta | d) = P(d | theta) P(theta) $
-
-For a Bernoulli distribution the *conjugate distribution* is Beta and so we can
-write
-
-$
-  P(theta | d) = P(d | theta) P(theta) =
-  underbrace(theta^(n_H) (1 - theta)^(n_T), "Bernoulli") dot
-  underbrace(
-    frac(
-      theta^(alpha - 1) (1 - theta)^(beta - 1),
-      B(alpha, beta)
-    ), "Beta"
-  ) =
-  underbrace(
-    frac(
-      theta^(n_H + alpha - 1) (1 - theta)^(n_T + beta - 1),
-      B(alpha + n_H, beta + n_T)
-    ), "Beta"
-  )
-$
-
-that can be optimized like before and without considering the constant at the
-denominator, since does not affect the optimization problem:
-
-$ cal(L) = theta^(n_H + alpha - 1) (1 - theta)^(n_T + beta - 1) $
-
-and so like before we can use the logarithm in order to transform the formula in
-
-$ cal(L) = (n_H + alpha - 1) theta + (n_T + beta - 1) (1 - theta) $
-
-whose derivative is
-
-$
-  (partial cal(L)) / (partial theta) = (n_H + alpha - 1) / theta -
-  (n_T + beta - 1) / (1 - theta)
-$
-
-which is zero for
-
-$ theta = (n_H + alpha - 1) / (n_H + alpha - 1 + n_T + beta - 1) $
-
-similary to the previous case.
-
 == Latent Variables
 
 The other and most common case is the one where some variable is completely not
@@ -203,6 +133,10 @@ observed (*latent*). And this typically brings computational issues due to the
 fact that if we know that there is latent variable that is necessary to model
 data but we don't have access to any observation of it, we need to marginalize
 it and consider all of its possible values.
+
+This approach is typical of clustering or quantization algorithms in which
+typically we miss the target values, we only have unlabeled observations and we
+want to find recurrent meaningful structures.
 
 = Inference
 
