@@ -171,9 +171,9 @@ and so its gradient will be a row vector with $m dot n$ entries.
 One example could be a neural network that accetps $m times n$ images (typically
 flattened to an $m dot n$ vector) and returns a class label that is an integer.
 
-== Vector-Valued Function of a Matrix
+== Vector Function of a Matrix
 
-The second relevant case is for *vector-valued functions* of a matrix
+The second relevant case is for *vector functions* of a matrix
 
 $ f : RR^(m times n) -> RR^k $
 
