@@ -134,6 +134,19 @@ If instead the functions $f_i$ are not linear we do not obtain a matrix with
 only coefficients, but a collection of functions which can be used to locally
 approximate the original one (Taylor series).
 
+Useful identities of gradients for vector-valued functions are
+
+$
+    pdv(x^T a, x) & = a^T \
+    pdv(a^T x, x) & = a^T \
+  pdv(x^T A x, x) & = x^T (A + A^T)
+$
+
+In particular the last one is very useful to deal with the quadratic form in
+which $A$ is often SPD and so the gradient becomes
+
+$ pdv(x^T A x, x) & = 2 x^T A = 2 A^T x = 2 A x $
+
 = Gradients of Matrices
 
 There are also cases in which we need to take gradients of matrices w.r.t.
@@ -155,9 +168,12 @@ $ f : RR^(m n) -> RR $
 
 and so its gradient will be a row vector with $m dot n$ entries.
 
+One example could be a neural network that accetps $m times n$ images (typically
+flattened to an $m dot n$ vector) and returns a class label that is an integer.
+
 == Vector-Valued Function of a Matrix
 
-The second relevant case is for *vector-valued functions*
+The second relevant case is for *vector-valued functions* of a matrix
 
 $ f : RR^(m times n) -> RR^k $
 
