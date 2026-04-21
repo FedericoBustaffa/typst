@@ -1,9 +1,6 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Discrete Dynamical Systems], doc)
 
-#import "@preview/cetz:0.4.2"
-#import "@preview/cetz-plot:0.1.3": plot
-
 #title()
 
 In a *discrete dynamical system*, all the variables update at a discrete

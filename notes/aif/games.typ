@@ -1,10 +1,7 @@
-#import "@preview/cetz:0.4.2"
+#import "@local/note_template:0.1.0": *
+#show: doc => note_template([Search in Games], doc)
 
-#set page(paper: "a4")
-#set text(font: "New Computer Modern", size: 12pt)
-#set par(justify: true)
-
-#title("Search in Games")
+#title()
 
 Intelligent agents playing #strong[games] is another field where #strong[search
   algorithms] are commonly used. Of course the paradigm is a little bit

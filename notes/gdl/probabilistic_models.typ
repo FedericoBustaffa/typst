@@ -6,61 +6,50 @@
 In contrast with _discriminative models_ like neural networks or SVMs, a
 relevant field of machine learning is occupied by *probabilistic models*, which
 instead of learning functions (regressors) or trying to separate data
-(classifiers), they directly try to model the distribution that have generated
-the data.
+(classifiers), they directly try to model the data distribution that is most
+likely to have generated the data.
 
-They are mostly based on *probability theory* and use *inference* as core
-mechanism to learn and make predictions.
+They are mostly based on *probability theory* (frequentist or bayesian view) and
+use *inference* as core mechanism to learn and make predictions. So its all
+about finding a way to update a _posterior belief_ in order to make predictions.
 
-Modelling data distributions is particularly powerful if compared to pure
-discriminative models because
+The key idea behind probabilistic models is that we want to reconstruct the
+generative process that have generated the data, that is typically something
+more complex than sample from a points from some distribution. This is because
+natural data is not i.i.d. and there is usually some structure and relations
+between data we need capture.
 
-- *Uncertainty*: discriminative models typically operate in a setting in which,
-  given some evidence, they answer with the most probable fact (even if most of
-  them do not model probabilities). Probabilistic models instead comes with
-  _builtin uncertainty_. We can in fact ask how probable is a fact given some
-  evidence (now the answer is a valid probability).
-- *Generative*: some probabilistic models are _generative_ because, once
-  trained, we can sample from the distribution they model, generating new
-  synthetic data that is consistent with the observed (and if given, with the
-  prior knowledge injected)
+This is particularly powerful compared to discriminative models because
 
-Probabilistic models tries to reconstruct the story of the data, and who design
-such models typically thinks about how observed data could have been generated.
+- *Generative*: since the model is built to represent the generative process of
+  data, once trained, is possible to sample from the obtained conditional
+  distribution and get a meaningful sample.
+- *Uncertainty*: Probabilistic models come with _builtin uncertainty_; we can in
+  fact ask for how probable (or how likely) is a fact given some evidence (now
+  the answer is a valid probability).
 
 #note[
   Of course a probabilistic model can be used as a discriminative one by asking
   the most probable fact given some evidence.
 ]
 
-So of course these are machine learning models and so they need to have the two
-core functionalities of any machine learning model: _training_ and _prediction_.
-Since we are in a probabilistic setting, both are addressed by solving an
-inference problem:
+But of course in quality of machine learning models they need to be trained and
+be able to perform predictions. Since we are in a probabilistic setting, both
+are addressed by solving an inference problem:
 
-- *Prediction*: as for discriminative models we want to give evidences and get
-  in return a value, a label or whatever is meaningful for the task.
-  // So
-  //   typically the prediction of these models is addressed by
-
+- *Learning*: find the most probable hypothesis $theta$ that better describe the
+  generative process of data:
+  $ P(theta | X) = frac(P(X | theta) dot P(theta), P(X)) $
+- *Prediction*: given some evidence, get in return a value, a label or whatever
+  is meaningful for the task:
   $ P(y | x) = frac(P(x | y) P(y), P(x)) $
 
-// where $x$ is the observed data we gave to the model and $y$ is one possible answer
-// answer to a query. To get the most probable answer the model typically computes
-//
-// $ arg max_y P(y | x) $
-- *Learning*: we want to know which is the most probable hypothesis $theta$ that
-  have generated the observed data $X$
-
-  $ P(theta | X) = frac(P(X | theta) dot P(theta), P(X)) $
-
-A key aspect to take into account is that we always need to write the *joint
-probability* given by the model structure (if defined). This is because the
-model is typically a bayesian network and, as such, it brings some useful
-assumptions on conditional independence that help simplify the computation.
-
-Modelling the joint probability is something that we always have to do in order
-to train the model for some task.
+To make all of this less abstract we also need to model the *joint probability
+distribution* in such a way that is useful to make predictions. As said in fact
+we want to update our _belief_ over some fact, given data and this is crucial to
+define how the learning is done and since most models are bayesian networks, or
+Markov random fields, they come with useful conditional independence assumptions
+to ease the computation.
 
 = Learning
 
@@ -101,9 +90,9 @@ In general, a probabilistic model is bayesian network that defines relations
 between random variables, and adds assumptions in order to simplify the *joint
 probability distribution*
 
-$ P(X, Z | theta) $
+$ P(X_1, dots, X_n | theta) $
 
-needed to perform inference.
+from which we obtain the posterior needed to perform inference.
 
 == Conjugate Priors
 
@@ -133,18 +122,35 @@ conjugate priors to optimize the posterior in closed form.
 
 == Fully Observable Variables
 
-The first case of probabilistic model we can think of is the one that want to
-learn distribution parameters of random variables for which we have *complete
-observable data*.
+The first and most simple case of probabilistic model we can think of is the one
+that want to learn distribution parameters of random variables for which we have
+*fully observable data*.
 
-Let's assume we have some features ${X_1, dots, X_n}$ and some variable $Z$ on
-which we want to make inference. The model typically tries to be able to
+Once defined the generative process, we want to define the joint probability of
+the model, factorize the joint probability distribution with the chain rule and
+apply the conditional independence assumptions:
 
-$ P(X_1, dots, X_n, Z) = P(Z | X_1, dots, X_n) dot P(X_1, dots, X_n) $
+$ P(X, Y) = P(Y) dot P(X | Y) = P(Y) dot product_(i=1) P(x_i | Y) $
 
-which can be rearranged as
+from which we obtain the likelihood for the paremeter learning inference
+problem.
 
-$ P(Z | X_1, dots, X_n) = frac(P(X_1, dots, X_n, Z), P(X_1, dots, X_n)) $
+#note[
+  In the formula above we assume that all the $x_i$ are conditionally
+  independent given $Y$ but it's not true in general, it depends on the model.
+]
+
+Once we have the joint we can define the posterior on the data in order to make
+predictions:
+
+$
+  P(Y | X) = P(X, Y) / P(X) = (P(Y) dot P(X | Y)) / P(X)
+  = (P(Y) dot product_(i=1) P(x_i | Y)) / P(X)
+$
+
+This is a different posterior than the one considered for the learning process
+$P(theta | X)$, but we will see that in other contexts it will be useful also
+for training other types of models.
 
 == Latent Variables
 
@@ -154,33 +160,14 @@ fact that if we know that there is latent variable that is necessary to model
 data but we don't have access to any observation of it, we need to marginalize
 it and consider all of its possible values.
 
+The process is more or less the same but since we cannot compute some
+probabilities we typically start from a random guess for the parameters, and
+through an iterative process (*EM algorithm*) we converge to the solution that
+most likely have generated the data. Depending on the distributions we are
+dealing with the process could still be intractable and so we rely on
+approximations like *variational inference* or *sampling*.
+
 This approach is typical of clustering or quantization algorithms in which
 typically we miss the target values, we only have unlabeled observations and we
 want to find recurrent meaningful structures.
 
-= Inference
-
-In general, *inference* is a process where, given some _evidence_ (data in our
-case), we want to answer a _query_ on how probable is a fact (or what is the
-most probable answer), exploiting the Bayes rule:
-
-$
-  P("cause" | "evidence")
-  = (P("evidence" | "cause") dot P("cause")) / P("evidence") \
-  P("cause" | "evidence") prop P("evidence" | "cause") dot P("cause")
-$
-
-or in another formulation
-
-$ "Posterior" prop "Likelihood" dot "Prior" $
-
-The marginal probability of the evidence is often omitted because we are not
-interested in valid and normalized probability but just a _score_.
-
-= Generative Process
-
-In general, for every probabilistic model we also have to consider its
-*generative process*, given by the posterior. In other words we ask the model,
-given the parameters $theta$, how it would generate $X$. The generative process
-tells a lot on the flexibility of the model and it's crucial to determine the
-right learning algorithm.
