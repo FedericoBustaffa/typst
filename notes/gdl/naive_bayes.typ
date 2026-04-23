@@ -3,19 +3,29 @@
 
 #title()
 
-The most simple case of probabilistic inference is when the bayesian network is
-already defined and all the variables are *observable*. In general there is an
-hypothesis $h_theta$ that better explains the data, and so is more suitable to
-answer a query.
-
-One of the simplest probabilistic models is the *Naive Bayes* that is based on a
-*strong independence assumption*: every _effect_ is independent from each other
-given the _cause_.
+The simplest case for a probabilistic model is when all variables are
+*observed*. In particular we can think of a classifier, for which we have
+features and targets: the *Naive Bayes*.
 
 #figure(
   image("images/naive_bayes.png", width: 20%),
   caption: [ Naive Bayes ],
 ) <fig-naive-bayes>
+
+This models assumes that features of a sample are _"caused"_ by their class
+label, since typically samples with same label are grouped together.
+
+= Generative Process
+
+The model's *generative process* can be thinked as
+
++ Sample a class label from a multinomial distribution.
++ Sample every feature of that sample from a distribution (also multinomial in
+  our case) given the label from the previous step.
+
+So in practice we can think of a multinomial distribution that produces class
+labels, and a bunch of other distributions (one for feature), each generating a
+piece of information about the sample.
 
 This model is typically involved in classification tasks in which features are
 considered effects and the target class is considered the cause. Each input
