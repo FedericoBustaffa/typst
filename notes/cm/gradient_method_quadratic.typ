@@ -22,4 +22,3 @@ In general given a solution $x_i$ we can see if the gradient in that point is
 zero to stop the algorithm but in general this is not achievable because
 numerical errors and the fact the is very difficult to get exactly zero; what is
 typically done is to a see if the gradient is smaller than a chosen $epsilon$.
-
