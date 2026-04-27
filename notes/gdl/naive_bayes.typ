@@ -3,186 +3,230 @@
 
 #title()
 
-The simplest case for a probabilistic model is when all variables are
-*observed*. In particular we can think of a classifier, for which we have
-features and targets: the *Naive Bayes*.
+The simplest case of probabilistic model is the one that assumes all variables
+are fully observable, in particular one of the most know probabilistic
+classifier is the *Naive Bayes*.
 
 #figure(
   image("images/naive_bayes.png", width: 20%),
   caption: [ Naive Bayes ],
 ) <fig-naive-bayes>
 
-This models assumes that features of a sample are _"caused"_ by their class
-label, since typically samples with same label are grouped together.
+Which relies on strong conditional independence assumptions to simplify both
+learning and prediction, still obtaining good results in many fields.
+
+The model structure involves a bunch of multinomials:
+
+- A multinomial models the $K$ possible classes.
+- For each of the $L$ features we have $K$ multinomials modelling the feature.
+
+In total we have $L times K$ multinomials plus one. Let's also point out that
+features could be continuous; in that case is sufficient the have $K$ gaussians
+for the feature(s).
 
 = Generative Process
 
-The model's *generative process* can be thinked as
+The model assumes that the class of the sample is the "cause" of its features,
+which makes sense if we think that usually, in a classification problem, samples
+classified the same are clustered together.
 
-+ Sample a class label from a multinomial distribution.
-+ Sample every feature of that sample from a distribution (also multinomial in
-  our case) given the label from the previous step.
+This also helps defining the *generative process* with the following steps
+
++ Sample a class label from a the classes multinomial.
++ For each of the $L$ features:
+  + Select the $k$-th multinomial of the $l$-th feature.
+  + Sample the feature value.
 
 So in practice we can think of a multinomial distribution that produces class
-labels, and a bunch of other distributions (one for feature), each generating a
+labels, and a bunch of other distributions ($K$ for feature), each generating a
 piece of information about the sample.
 
-This model is typically involved in classification tasks in which features are
-considered effects and the target class is considered the cause. Each input
-sample is defined as a set of attributes:
+= Learning
 
-$ x = chevron.l a_1, dots, a_L chevron.r $
+To solve the learning inference problem let's write the joint probability of
+this model for one sample $(x, y)$ applying the conditional independence
+assumptions given by the model:
 
-and we have a *target classification function*
+$ P(vb(x), y) = P(x_1, dots, x_L, y) = P(y) product_(l=1)^L P(x_l | y) $
 
-$ f : X --> C $
+that, since they are all multinomials, can be written as
 
-where $X$ is the feature space and $C$ is the class label space. The model wants
-to know the probability of each possible class, given an input pattern
+$ P(vb(x), y) = pi_k product_(l=1)^L product_(s=1)^(S_l) phi.alt_(k l s) $
 
-$
-  P(c_j | a_1, dots, a_L) =
-  frac(P(a_1, dots, a_L | c_j) dot P(c_j), P(a_1, dots, a_L))
-$
-
-that under the Naive Bayes conditional independence assumptions becomes
+with $pi_k = P(y = k)$ and $phi.alt_(k l s) = P(x_l = s | y = k)$. So now is
+possible to write the joint distribution for the whole dataset assuming that
+samples are i.i.d.
 
 $
-  P(c_j | a_1, dots, a_L) =
-  frac(P(c_j) dot product_(i=1)^L P(a_i | c_j), P(a_1, dots, a_L))
+  P(X, Y | theta) = product_(k=1)^K pi_k^(N_k)
+  product_(k=1)^K product_(l=1)^L product_(s=1)^(S_l) phi.alt_(k l s)^(N_(k l s))
 $
 
-or in more compact and _proportional_ form
+with $N_k$ the number of samples classified as $k$ and $N_(k l s)$ the number of
+samples classified as $k$ whose $l$-th feature has value $s$.
 
-$ P(c_j | a_1, dots, a_L) prop P(c_j) dot product_(i=1)^L P(a_i | c_j) $
+== Maximum Likelihood
 
-where the right term is the joint probability of the training data
-
-$ P(c_j) dot product_(i=1)^L P(a_i | c_j) = P(a_1, dots, a_L, c_j) $
-
-Now this is the classification function used for inference. The way in which we
-can train this model is by learn the parameters $theta$ of the joint
-distribution of the whole dataset.
-
-$ P(theta | c_j, a_1, dots, a_L) prop P(c_j, a_1, dots, a_L | theta) P(theta) $
-
-with one of the three framework for learning.
-
-== Maximum Log-Likelihood Learning
-
-Let's focus on maximum log-likelihood for simplicity and let's also consider the
-case where both class labels and features are categorical.
-
-
-Class labels can have $K$ values, while the $l$-th feature can pick values from
-a set $S_l$ of values. So we basically have a bunch of multinomial distributions
-that model the data, hence the likelihood will be
+So now is possible to train the model by *maximum likelihood*, since the joint
+is the likelihood for the learning inference problem. Since is better to work in
+log-space we obtain *log-likelihood* as follows
 
 $
-  P(X, C | theta) & = P(C | theta) dot P(X | C, theta) \
-                  & P(C | theta) dot P(X_1, dots, X_L | C, theta)
+  log P(X, Y | theta) := cal(L) (theta)
+  = sum_(k=1)^K N_k log pi_k +
+  sum_(k=1)^K sum_(l=1)^L sum_(s=1)^(S_l) N_(k l s) log phi.alt_(k l s)
 $
 
-But for the conditional independence assumption the model does, we can write
+that we can maximize by setting
 
-$ P(X, C | theta) = P(C | theta) dot product_(l = 1)^L P(X_l | C, theta) $
+$ pdv(cal(L), theta) = 0 $
 
-that for every sample becomes
+Since they are multinomials their parameters must satisfy the sum to 1
+constraint, enforced with Lagrangian multipliers:
 
-$
-  P(X, C | theta) = product_(i = 1)^N [ P(c_i | theta)
-    product_(l=1)^L P(x_(i l) | c_i, theta) ]
-$
+$ J(pi_k, lambda) = sum_(k=1)^K N_k log pi_k + lambda (sum_(k=1)^K pi_k - 1) $
 
-Now the class labels distribution is a plain multinomial of parameter $pi$, with
-$K$ possible values, and the features distributions are also multinomials, each
-of parameter $phi.alt_l$, we can rewrite the joint distribution like follows
+so now we have to compute the following partial derivatives
 
 $
-  P(X, C | theta) = product_(k=1)^K pi_k^(N_k) dot
-  product_(k=1)^K product_(l=1)^L product_(s=1)^S_l phi.alt_(k l s)^(N_(k l s))
+  pdv(J, pi_k) = N_k / pi_k + lambda \
+  pdv(J, lambda) = sum_(k=1)^K pi_k - 1
 $
 
-where $N_k$ is the number of samples with class $k$ and $N_(k l s)$ is the
-number of samples with classified as $k$ with value $s$ for the $l$-th feature.
-
-A useful way of reformulating the problem is by the introduction of *indicator
-variables*, defined as
+and solve the following system
 
 $
-  z_(i k) = cases(1 "if" c_i = k, 0 "otherwise") quad quad
-  t_(i l s) = cases(1 "if" x_(i l) = s, 0 "otherwise")
+  cases(
+    N_k / pi_k + lambda = 0,
+    sum_(k=1)^K pi_k - 1 = 0
+  ) ==>
+  cases(
+    pi_k = - N_k / lambda,
+    sum_(k=1)^K pi_k = 1
+  ) ==>
+  cases(
+    pi_k = - N_k / lambda,
+    - 1/lambda sum_(k=1)^K N_k = 1
+  )
 $
 
-In this way is possible to model the *likelihood* distribution as follow
+and since $sum_(k=1)^K N_k = N$ we get
+
+$ pi_k = N_k / N $
+
+The same process goes for $phi.alt_(k l s)$
 
 $
-  cal(L) (theta) & =
-  product_(i=1)^N product_(k=1)^K P(c_i = k)^(z_(i k)) (product_(l=1)^L
-    product_(s=1)^S_l (P(x_(i l) = s | c_i = k))^(t_(i l s)))^(z_(i k)) \
-  & = product_(i=1)^N product_(k=1)^K pi_k^(z_(i k))
-  (product_(l=1)^L product_(s=1)^S_l phi.alt_(k l s)^(t_(i l
-    s)))^(z_(i k)) \
+  J(phi.alt_(k l s), gamma_(k l))
+  = sum_(k=1)^K sum_(l=1)^L sum_(s=1)^(S_l) N_(k l s) log phi.alt_(k l s) +
+  gamma_(k l) (sum_(s=1)^(S_l) phi.alt_(k l s) - 1)
 $
 
-Now we can go in log-space and define the *log-likelihood* as follows
+for which we get the following partial derivatives
 
 $
-  log cal(L)(theta) & =
-                      log(
-                        product_(i=1)^N product_(k=1)^K pi_k^(z_(i k))
-                        (product_(l=1)^L product_(s=1)^S_l
-                          phi.alt_(l s)^(t_(i l s)))^(z_(i k))
-                      ) \
-                    & = sum_(i=1)^N sum_(k=1)^K z_(i k) log pi_k +
-                      sum_(i=1)^N sum_(k=1)^K z_(i k)
-                      (sum_(l=1)^L sum_(s=1)^S_l
-                        t_(i l s) log phi.alt_(k l s))
+  pdv(J, phi.alt_(k l s)) = N_(k l s) / phi.alt_(k l s) + gamma_(k l) \
+  pdv(J, gamma_(k l)) = sum_(s=1)^(S_l) phi.alt_(k l s) - 1
 $
 
-So now is possible to optimize it by computing its derivative and set it to zero
+from which we get the following optimal parameter
 
-$ (partial cal(L)) / (partial theta) = 0 $
+$ phi.alt_(k l s) = N_(k l s) / N $
 
-we will obtain the update formula for $pi_k$ and $phi.alt_(k l s)$ that will
-result in
+With this is possible to easily train the model but we have to take care to the
+fact that we can have zero occurences of some feature value or class and that
+will break the probabilities.
 
-$ pi_k = N_k / N quad quad phi.alt_(k l s) = N_(k l s) / N_k $
+== Maximum a Priori
 
-that now we can use to learn the data distribution.
+A practical of avoiding zero-valued probabilities is to start every counter from
+one instead of zero. This works but can be generalized and corresponds in fact
+to add a *Dirichlet prior*, performing *maximum a priori learning* with *pseudo
+counts*.
 
-== Inference
+So now we also have to model $P(theta)$ to solve the learning inference problem:
 
-Once the model is trained we can perform inference by using the updated
-posterior distribution.
+$ P(theta) = P(pi, phi.alt) $
 
-$ P(C | X, theta) & prop P(X | C, theta) dot P(C | theta) $
+for which we can have the same conditional independence assumptions we had for
+data:
 
-which becomes
+$ P(pi, phi.alt) = P(pi) product_(k=1)^K product_(l=1)^L P(phi.alt_(k l)) $
 
-$ P(C = k | X_l = s, theta) = pi_k product_(l=1)^L phi.alt_(k l s) $
+So now we can better define
 
-and so to classify $X$ we can compute
+$
+  P(pi) = frac(product_(k=1)^K pi_k^(alpha_k - 1), B(alpha_1, dots, alpha_K)) \
+  P(phi.alt_(k l)) = frac(
+    product_(s=1)^(S_l) phi.alt_(k l s)^(beta_(k l s) - 1),
+    B(beta_(k l 1), dots, beta_(k l S_l))
+  )
+$
 
-$ arg max_k pi_k product_(l=1)^L phi.alt_(k l s) $
+that all together defines the prior:
 
-that returns the most probable class $k$ given the input $X$. But in practice
-also here is possible to use the logarithm:
+$
+  P(pi, phi.alt) = frac(
+    product_(k=1)^K pi_k^(alpha_k - 1), B(alpha_1, dots, alpha_K)
+  ) product_(k=1)^K product_(l=1)^L frac(
+    product_(s=1)^(S_l) phi.alt_(k l s)^(beta_(k l s) - 1),
+    B(beta_(k l 1), dots, beta_(k l S_l))
+  )
+$
 
-$ arg max_k ( log pi_k + sum_(l=1)^L log phi.alt_(k l s) ) $
+so now we can obtain the *posterior* by multiplying the obtained prior with the
+likelihood
 
-to avoid underflows in practical implementations.
+$
+  P(theta | X, Y) =
+  product_(k=1)^K pi_k^(N_k)
+  product_(k=1)^K product_(l=1)^L product_(s=1)^(S_l) phi.alt_(k l s)^(N_(k l s))
+  frac(
+    product_(k=1)^K pi_k^(alpha_k - 1), B(alpha_1, dots, alpha_K)
+  ) product_(k=1)^K product_(l=1)^L frac(
+    product_(s=1)^(S_l) phi.alt_(k l s)^(beta_(k l s) - 1),
+    B(beta_(k l 1), dots, beta_(k l S_l))
+  )
+$
 
-== Sparse Data and Zero-Frequency
+that is equal to
 
-Can happen that a feature with value $s$ is never observed with class $k$ and so
-$N_(k l s) = 0$ and the resulting probability will go to zero
+$
+  P(theta | X, Y) = frac(
+    product_(k=1)^K pi_k^(N_k + alpha_k - 1), B(alpha_1, dots, alpha_K)
+  ) product_(k=1)^K product_(l=1)^L frac(
+    product_(s=1)^(S_l) phi.alt_(k l s)^(N_(k l s) + beta_(k l s) - 1),
+    B(beta_(k l 1), dots, beta_(k l S_l))
+  )
+$
 
-$ P(x_l = s | c = k) = 0 $
+Now we can transform it in log-space, take the derivative and optimize it as
+before. The resulting values are pretty much the same but this time with the add
+of _pseudo counts_:
 
-because in this cases the Naive Bayes model confuses _unobserved_ with
-_impossible_.
+$
+             pi_k & = frac(N_k + alpha_k - 1, sum_(k=1)^K N_k + alpha_k - 1) \
+  phi.alt_(k l s) & = frac(
+                      N_(k l s) + beta_(k l s) - 1,
+                      sum_(s=1)^(S_l) N_(k l s)+ beta_(k l s) - 1
+                    )
+$
 
-A classical remedy is to add *pseudo-counts* through a Dirichlet prior,
-performing MAP learning.
+So now we can also *regularize* the model by injecting prior knowledge.
 
+= Inference
+
+To make predictions about classes we must define the posterior via Bayes rule:
+
+$
+  P(y | x_1, dots, x_L) = frac(P(x_1, dots, x_L | y) P(y), P(x_1, dots, x_L)) =
+  frac(P(y) product_(l=1)^L P(x_l | y), P(x_1, dots, x_L))
+$
+
+from which we have to compute
+
+$
+  arg max_k frac(P(y = k) product_(l=1)^L P(x_l | y = k), P(x_1, dots, x_L))
+$
+
+to have the most probable class given $x$.
