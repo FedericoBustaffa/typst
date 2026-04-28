@@ -204,40 +204,29 @@ For the parameter $mu_(m l)$ and $sigma_(m l)$ we can instead optimize the
 second term
 
 $
-  cal(L) (mu, sigma) & = sum_(i=1)^N sum_(m=1)^M r_(i m)
-                       sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)) \
-                     & = sum_(i=1)^N sum_(m=1)^M r_(i m)
-                       sum_(l=1)^L (- frac((x_(i l) - mu_(m l))^2, 2 sigma_(m l)^2)
-                         - log sqrt(2 pi) sigma_(m l)) \
-                     & = - sum_(i=1)^N sum_(m=1)^M r_(i m)
-                       sum_(l=1)^L frac((x_(i l) - mu_(m l))^2, 2 sigma_(m l)^2)
-                       - sum_(i=1)^N sum_(m=1)^M r_(i m)
-                       sum_(l=1)^L log sqrt(2 pi) sigma_(m l)
+  J(mu, sigma) & = sum_(i=1)^N sum_(m=1)^M r_(i m)
+                 sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)) \
+               & = sum_(i=1)^N sum_(m=1)^M r_(i m)
+                 sum_(l=1)^L (- frac((x_(i l) - mu_(m l))^2, 2 sigma_(m l)^2)
+                   - log sqrt(2 pi) sigma_(m l)) \
+               & = - sum_(i=1)^N sum_(m=1)^M r_(i m)
+                 sum_(l=1)^L frac((x_(i l) - mu_(m l))^2, 2 sigma_(m l)^2)
+                 - sum_(i=1)^N sum_(m=1)^M r_(i m)
+                 sum_(l=1)^L log sqrt(2 pi) sigma_(m l)
 $
 
 Taking the derivarive w.r.t. $mu_(m l)$ and $sigma_(m l)$ gives us
 
 $
-  pdv(cal(L), mu_(m l)) = 0 <==> mu_(m l) = frac(
+  pdv(J, mu_(m l)) = 0 <==> mu_(m l) = frac(
     sum_(i=1)^N r_(i m) x_(i l),
     sum_(i=1)^N r_(i m)
   ) \
-  pdv(cal(L), sigma_(m l)) = 0 <==> sigma_(m l)^2 = frac(
+  pdv(J, sigma_(m l)) = 0 <==> sigma_(m l)^2 = frac(
     sum_(i=1)^N r_(i m) (x_(i l) - mu_(m l))^2,
     sum_(i=1)^N r_(i m)
   )
 $
 
 So now we are able to update $theta^((k))$ at each step.
-
-== Variational Learning
-
-Let's introduce a variational distribution on the latents that is of course a
-multinomial:
-
-$ q(Z) = product_(i=1)^N q_i (z_i) = product_(i=1)^N phi.alt_i $
-
-Now we have to construct the ELBO as follows
-
-$ cal(L) (x, theta, phi.alt) = $
 

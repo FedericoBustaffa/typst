@@ -233,7 +233,7 @@ replacing the exact posterior with a tractable approximation.
   current model parameters $theta^((k))$:
 
   $
-    phi^((k)) in arg max_phi.alt sum_(i=1)^N cal(L) (x_i, theta^((k)), phi.alt)
+    phi.alt^((k)) in arg max_phi.alt sum_(i=1)^N cal(L) (x_i, theta^((k)), phi.alt)
   $
 
   or by KL divergence minimization.
