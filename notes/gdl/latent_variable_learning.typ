@@ -74,7 +74,7 @@ This must be reconnected with the complete log-likelihood in order to perform so
 optimization and this can be done by the following function:
 
 $
-  Q(theta | theta^((k))) = EE_P(Z | X, theta^((k))) [log P(X, Z | theta^((k)))]
+  Q(theta | theta^((k))) = EE_P(Z | X, theta^((k))) [log P(X, Z | theta)]
 $
 
 that puts together two concepts:

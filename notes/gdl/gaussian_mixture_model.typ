@@ -82,180 +82,162 @@ has generated the data, it would have followed this procedure:
 + Use the value drawn from the previous step as index to choose which gaussian
   sample observations $x$ from.
 
-Now we can try to write the *joint distribution* of this model by thinking about
-the described generative process
-
-$ P(X, Z | theta) = P(Z | pi) dot P(X | Z, mu, sigma) $
-
-Which makes sense if we think it from a generative perspective in which first we
-draw a cluster from the multinomial and then, using that index, we use the
-$m$-th Gaussian to generate a sample.
+Of course the process could be slightly different depending on the GMM variant
+we are using.
 
 = Learning
 
-The next step is to learn the right parameters $theta$ of all the distribution
-involved by solving the *learning inference problem* by Bayesian learning, ML or
-MAP. Let's solve it by maximum likelihood, considering the *likelihood* we have
-on observed data:
-
-$ P(X | theta) $
-
-but as @fig-gmm shows, $X$ is dependent on $Z$ and so we need to introduce it by
-marginalization:
+In order to solve the *learning inference problem* we need the *joint
+distribution* of this model (we will consider the simple case of univariate
+gaussians):
 
 $
-  P(X | theta) = sum_(m=1)^M P(X, Z = m | theta)
-  = sum_(m=1)^M P(Z = m | theta) dot P(X | Z = m, theta)
+  p(x, z | theta) & = p(z | pi) dot p(x | z, mu, sigma) \
+                  & = p(z | pi) product_(l=1)^L p(x_l | z, mu_(m l), sigma_(m l)) \
+                  & = product_(m=1)^M pi_m^(z_(i m)) (product_(l=1)^L
+                      cal(N)(x_l | mu_(m l), sigma_(m l)))^(z_(i m))
 $
 
-and since each sample is i.i.d. we can write
+with $z_(i m)$ indicator variable for the multinomial defined as
+
+$ z_(i m) = cases(1 & "if " z_i = m, 0 & "otherwise") $
+
+so that now we can write the joint probability for the full dataset assuming
+that each sample is i.i.d., defining the *complete likelihood*:
 
 $
-  P(X | theta) & = product_(i=1)^N sum_(m=1)^M
-                 P(z_i = m | pi) dot P(x_i | z_i = m, mu, sigma) \
-               & = product_(i=1)^N sum_(m=1)^M
-                 pi_m dot cal(N) (x_i | mu_m, sigma_m)
+  P(X, Z | theta) & = product_(i=1)^N product_(m=1)^M pi_m^(z_(i m))
+  (product_(l=1)^L cal(N)(x_(i l) | mu_(m l), sigma_(m l)))^(z_(i m))
 $
 
-Now to avoid underflows we generally work in log-space and so we can obtain the
-*log-likelihood*
+that can be turned as usual in the *complete log-likelihood*:
 
 $
-  log P(X | theta) & = log(
-                       product_(i=1)^N sum_(m=1)^M
-                       pi_m dot cal(N) (x_i | mu_m, sigma_m)
-                     ) \
-                   & = sum_(i=1)^N log (sum_(m=1)^M
-                       pi_m dot cal(N) (x_i | mu_m, sigma_m))
+  log P(X, Z | theta) & = sum_(i=1)^N sum_(m=1)^M (z_(i m) log pi_m +
+  z_(i m) sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)) \
+  & = sum_(i=1)^N sum_(m=1)^M z_(i m) (log pi_m +
+    sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)))
 $
 
-that is not nice to optimize directly by computing the derivative and setting it
-to zero. What we can do instead is pretend to know $Z$ and use the *complete
-likelihood*:
-
-$ P(X, Z | theta) = P(Z | pi) dot P(X | Z, mu, sigma) $
-
-Now a useful thing to do is to define *indicator variables*:
-
-$
-  z_(i m) = cases(
-    1 & "if " z_i = m,
-    0 & "otherwise"
-  )
-$
-
-so we can now rewrite the complete likelihood like follows
-
-$
-  P(X, Z | theta) & = product_(i=1)^N product_(m=1)^M (
-                      pi_m dot cal(N) (x_i | mu_m, sigma_m))^(z_(i m))
-$
-
-and so the complete log-likelihood becomes
-
-$
-  log P(X, Z | theta) = sum_(i=1)^N sum_(m=1)^M
-  z_(i m) [ log pi_m + log cal(N) (x_i | mu_m, sigma_m) ]
-$
-
-That is in a much nicer form than before but now we introduced a new problem: in
-practice we don't know $z_(i m)$ values so we still cannot directly optimize
-this directly.
+The multivariate gaussian formula is basically the same but we don't have the
+sum over $L$ features.
 
 == Expectation Maximization
 
-What we can do is use the *expectation maximization* algorithm, that iteratively
-updates the parameters, starting from an initial guess. The idea is to
-
-+ *E-step*: make the model predict every sample, generating the missing $z_(i m)$, based
-  on some initial parameters.
-+ *M-step*: update the parameters by maximizing the log-likelihood.
-
-To make the model predict we need a posterior that, given an observation,
-returns the most probable cluster based on the current parameters $theta^((k))$:
-
-$ P(Z | X, theta^((k))) $
-
-then we just need the likelihood to define a function that gathers the two:
+Now since we want to learn by *maximum likelihood* but we miss $z_(i m)$ values,
+we have to perform use the *expectation maximization* algorithm, starting by the
+$Q$ function:
 
 $
-  Q(theta | theta^((k))) & =
-  sum_(m=1)^M P(Z = m | X, theta^((k))) log P(X, Z = m | theta) \
-  & = EE_(m tilde P(Z | X, theta^((k)))) [ log P(X, Z = m | theta^((k))) ] \
+  Q(theta | theta^((k))) & = EE_P(Z | X, theta^((k))) [log P(X, Z = m | theta)] \
+  & = EE_P(Z | X, theta^((k))) [sum_(i=1)^N sum_(m=1)^M
+    z_(i m) (log pi_m + sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)))] \
+  & = sum_(i=1)^N sum_(m=1)^M EE_P(z_i = m | x_i, theta^((k))) [
+    z_(i m) (log pi_m + sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)))] \
+  & = sum_(i=1)^N sum_(m=1)^M EE_P(z_i = m | x_i, theta^((k))) [ z_(i m) ]
+  (log pi_m + sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l))) \
 $
 
-By maximization of this function is now possible to find the parameters that are
-most likely the right generators of data, since we put together a posterior and
-a likelihood.
-
-Since the function $Q$ is an expectation, we can write:
+and since $z_(i m)$ can only have values only in ${0, 1}$ we can directly write
 
 $
-  Q(theta | theta^((k))) = EE_(P(Z = m | X, theta^((k))))
-  [ sum_(i=1)^N sum_(m=1)^M z_(i m) [ log pi_m + log cal(N) (x_i | mu_m,
-        sigma_m) ]]
+  Q(theta | theta^((k))) = sum_(i=1)^N sum_(m=1)^M
+  P(z_i = m | x_i, theta^((k)))
+  (log pi_m + sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)))
 $
 
-and since the expectation is a linear operator, it can go inside the sum:
+Using the Bayes rule, the *posterior* for one sample $x_i$, is defined as
 
 $
-  Q(theta | theta^((k))) =
-  sum_(i=1)^N sum_(m=1)^M EE_(P(Z = m | X, theta^((k)))) [ z_(i m) ]
-  log(pi_m dot cal(N) (x_i | mu_m, sigma_m))
+  p(z_i = m | x_i, theta^((k))) & = frac(
+                                    p(z_i = m | theta^((k))) dot
+                                    p(x_i | z_i = m, theta^((k))),
+                                    p(x_i | theta^((k)))
+                                  ) \
+                                & = frac(
+                                    p(z_i = m | theta^((k))) product_(l=1)^L
+                                    p(x_(i l) | z_i = m, theta^((k))),
+                                    sum_m'^M
+                                    p(x_i, z = m' | theta^((k)))
+                                  ) \
+                                & = frac(
+                                    pi_m product_(l=1)^L
+                                    cal(N)(x_(i l) | mu_(m l), sigma_(m l)),
+                                    sum_m'^M pi_m'
+                                    product_(l=1)^L cal(N)(x_(i l) | mu_m', sigma_m')
+                                  ) = r_(i m)
 $
 
-and since $z_(i m)$ are all zeros and ones we remain just with the posterior
+with $r_(i m)$ being the responsibilities that each gaussian have for the
+generation of a sample $x_i$. So now we can substitute:
 
 $
-  Q(theta | theta^((k))) =
-  sum_(i=1)^N sum_(m=1)^M P(z_i = m | x_i, theta^((k))) dot
-  log(pi_m dot cal(N) (x_i | mu_m, sigma_m))
+  Q(theta | theta^((k))) & = sum_(i=1)^N sum_(m=1)^M r_(i m)
+  (log pi_m + sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l))) \
+  & = sum_(i=1)^N sum_(m=1)^M r_(i m) log pi_m
+  + sum_(i=1)^N sum_(m=1)^M r_(i m)
+  sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l))
 $
 
-so the last step is to compute this posterior by the Bayes rule:
+The last step is to find the optimal values for the parameters each step of the
+algorithm; let's start with $pi_m$ and considering only the first term of the
+$Q$ function and defining the Lagrangian:
 
 $
-  P(z_i = m | x_i) & = frac(P(x_i | z_i = m) dot P(z_i = m), P(x_i)) \
-                   & = frac(
-                       pi_m dot cal(N) (x_i | mu_m, sigma_m),
-                       sum_m'^M pi_m' dot cal(N) (x_i | mu_m', sigma_m')
-                     )
+  J(pi, lambda) = sum_(i=1)^N sum_(m=1)^M r_(i m) log pi_m +
+  lambda (sum_(m=1)^M pi_m - 1)
 $
 
-that gives us the *responsibilities* for each Gaussian to have generated a sample:
+from which we can derive
+
+$ pdv(J, pi_m) = r_(i m) / pi_m + lambda = 0 <==> pi_m = - r_(i m) / lambda $
+
+and by enforcing the constraint we get
+
+$ sum_(m=1)^M pi_m - 1 = 0 <==> lambda = - sum_(m=1)^M r_(i m) $
+
+finally obtaining
+
+$ pi_m = r_(i m) / (sum_(m=1)^M r_(i m)) $
+
+For the parameter $mu_(m l)$ and $sigma_(m l)$ we can instead optimize the
+second term
 
 $
-  r_(i m) = frac(
-    pi_m dot cal(N) (x_i | mu_m, sigma_m),
-    sum_m'^M pi_m' dot cal(N) (x_i | mu_m', sigma_m')
+  cal(L) (mu, sigma) & = sum_(i=1)^N sum_(m=1)^M r_(i m)
+                       sum_(l=1)^L log cal(N)(x_(i l) | mu_(m l), sigma_(m l)) \
+                     & = sum_(i=1)^N sum_(m=1)^M r_(i m)
+                       sum_(l=1)^L (- frac((x_(i l) - mu_(m l))^2, 2 sigma_(m l)^2)
+                         - log sqrt(2 pi) sigma_(m l)) \
+                     & = - sum_(i=1)^N sum_(m=1)^M r_(i m)
+                       sum_(l=1)^L frac((x_(i l) - mu_(m l))^2, 2 sigma_(m l)^2)
+                       - sum_(i=1)^N sum_(m=1)^M r_(i m)
+                       sum_(l=1)^L log sqrt(2 pi) sigma_(m l)
+$
+
+Taking the derivarive w.r.t. $mu_(m l)$ and $sigma_(m l)$ gives us
+
+$
+  pdv(cal(L), mu_(m l)) = 0 <==> mu_(m l) = frac(
+    sum_(i=1)^N r_(i m) x_(i l),
+    sum_(i=1)^N r_(i m)
+  ) \
+  pdv(cal(L), sigma_(m l)) = 0 <==> sigma_(m l)^2 = frac(
+    sum_(i=1)^N r_(i m) (x_(i l) - mu_(m l))^2,
+    sum_(i=1)^N r_(i m)
   )
 $
 
-and so we can finally define the full function $Q$ as
+So now we are able to update $theta^((k))$ at each step.
 
+== Variational Learning
 
-$
-  Q(theta | theta^((k))) & = sum_(i=1)^N sum_(m=1)^M r_(i m) dot
-  log(pi_m dot cal(N) (x_i | mu_m, sigma_m)) \
-  & = sum_(i=1)^N sum_(m=1)^M r_(i m) dot log pi_m
-  + sum_(i=1)^N sum_(m=1)^M r_(i m) dot log cal(N) (x_i | mu_m, sigma_m)
-$
+Let's introduce a variational distribution on the latents that is of course a
+multinomial:
 
-that we can now optimize by computing its derivative w.r.t. each parameter
+$ q(Z) = product_(i=1)^N q_i (z_i) = product_(i=1)^N phi.alt_i $
 
-$ pdv(Q, theta) = 0 $
+Now we have to construct the ELBO as follows
 
-At each iteration we can update the parameters like follows:
+$ cal(L) (x, theta, phi.alt) = $
 
-$
-     pi_m & = N_m / N \
-     mu_m & = 1 / N_m sum_(i=1)^N r_(i m) x_i \
-  Sigma_m & = 1 / N_m sum_(i=1)^N r_(i m) (x_i - mu_m) (x_i - mu_m)^T
-$
-
-Keep in mind that since $pi$ is the parameter of a discrete random variable we
-need to put also a sum to one constraint to get valid probabilities:
-
-$ sum_(m=1)^M pi_m = 1 $
-
-using Lagrangian multipliers.
