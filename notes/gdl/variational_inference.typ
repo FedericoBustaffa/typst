@@ -1,6 +1,70 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Variational Inference], doc)
 
+#let plot_kl_divergence() = {
+  let gaussian(x, mu, sigma) = {
+    let exponent = -calc.pow(x - mu, 2) / 2 * calc.pow(sigma, 2)
+    let num = calc.exp(exponent)
+    let denom = calc.sqrt(2 * calc.pi * calc.pow(sigma, 2))
+
+    return num / denom
+  }
+
+  let kl_term(q, p) = {
+    if q > 0 {
+      q * calc.log(q / p)
+    } else {
+      0
+    }
+  }
+
+  let x = lq.linspace(0, 4, num: 100)
+
+  figure(
+    lq.diagram(
+      width: 60%,
+      height: 4cm,
+      grid: none,
+      xaxis: none,
+      yaxis: none,
+      legend: (position: top + right, dx: 15%),
+      {
+        lq.plot(
+          x,
+          x => gaussian(x, 1.5, 2),
+          stroke: red + 1pt,
+          mark: none,
+          label: [$q(z)$],
+        )
+      },
+
+      {
+        lq.plot(
+          x,
+          x => gaussian(x, 2.5, 1.75),
+          stroke: blue + 1pt,
+          mark: none,
+          label: [$p(z)$],
+        )
+      },
+
+      {
+        lq.fill-between(
+          x,
+          x => kl_term(
+            gaussian(x, 1.5, 2),
+            gaussian(x, 2.5, 1.75),
+          ),
+          stroke: none,
+          fill: rgb(0, 150, 0, 100),
+          label: [$"KL"(q || p)$],
+        )
+      },
+    ),
+    caption: [Kullback-Leibler Divergence],
+  )
+}
+
 #title()
 
 There are times in which the evaluation of the posterior made by the EM
@@ -37,72 +101,11 @@ where $cal(F)$ is a *functional* and $q$ is the objective we aim to optimize,
 that in our case is a distribution $q(z | phi.alt)$.
 
 The first tool we need is the *Kullback-Leibler divergence* that measures how
-close two distributions $p$ are $q$:
+close two distributions $p$ and $q$ are:
 
 $ "KL" (q || p) = EE_q [log q(z) / p(z)] $
 
-
-#let gaussian(x, mu, sigma) = {
-  let exponent = -calc.pow(x - mu, 2) / 2 * calc.pow(sigma, 2)
-  let num = calc.exp(exponent)
-  let denom = calc.sqrt(2 * calc.pi * calc.pow(sigma, 2))
-
-  return num / denom
-}
-
-#let kl_term(q, p) = {
-  if q > 0 {
-    q * calc.log(q / p)
-  } else {
-    0
-  }
-}
-
-#let x = lq.linspace(0, 4, num: 100)
-
-#figure(
-  lq.diagram(
-    width: 60%,
-    height: 4cm,
-    grid: none,
-    xaxis: none,
-    yaxis: none,
-    legend: (position: top + right, dx: 15%),
-    {
-      lq.plot(
-        x,
-        x => gaussian(x, 1.5, 2),
-        stroke: red + 1pt,
-        mark: none,
-        label: [$q(z)$],
-      )
-    },
-
-    {
-      lq.plot(
-        x,
-        x => gaussian(x, 2.5, 1.75),
-        stroke: blue + 1pt,
-        mark: none,
-        label: [$p(z)$],
-      )
-    },
-
-    {
-      lq.fill-between(
-        x,
-        x => kl_term(
-          gaussian(x, 1.5, 2),
-          gaussian(x, 2.5, 1.75),
-        ),
-        stroke: none,
-        fill: rgb(0, 150, 0, 100),
-        label: [$"KL"(q || p)$],
-      )
-    },
-  ),
-  caption: [Kullback-Leibler integrand],
-)
+#plot_kl_divergence()
 
 that is always nonnegative and equals to zero if and only if $q(z) = p(z)$
 almost everywhere. In our setting the key comparison is between the variational
