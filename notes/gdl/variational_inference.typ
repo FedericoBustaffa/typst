@@ -1,6 +1,8 @@
 #import "@local/note_template:0.1.0": *
 #show: doc => note_template([Variational Inference], doc)
 
+#title()
+
 #let plot_kl_divergence() = {
   let gaussian(x, mu, sigma) = {
     let exponent = -calc.pow(x - mu, 2) / 2 * calc.pow(sigma, 2)
@@ -64,8 +66,6 @@
     caption: [Kullback-Leibler Divergence],
   )
 }
-
-#title()
 
 There are times in which the evaluation of the posterior made by the EM
 algorithm is intractable because we may have to deal with a complex
