@@ -215,7 +215,7 @@ $
                  sum_(l=1)^L log sqrt(2 pi) sigma_(m l)
 $
 
-Taking the derivarive w.r.t. $mu_(m l)$ and $sigma_(m l)$ gives us
+Taking the derivarives w.r.t. $mu_(m l)$ and $sigma_(m l)$ gives us
 
 $
   pdv(J, mu_(m l)) = 0 <==> mu_(m l) = frac(

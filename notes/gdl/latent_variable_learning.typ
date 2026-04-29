@@ -70,6 +70,13 @@ and compute the so called *responsabilities*. In practice we want to know how
 probable is each value of the latent w.r.t. the sample $x_i$ realization
 (considering the current $theta^((k))$).
 
+#note[
+  Responsabilities are computed as function of *fixed distribution parameters*
+  $theta^((k))$, not the distribution parameters $theta$ we are trying to
+  optimize. This makes responsabilities fixed values that must be treated as
+  such when we take the derivative of the $Q$ function.
+]
+
 This must be reconnected with the complete log-likelihood in order to perform some
 optimization and this can be done by the following function:
 
