@@ -3,4 +3,5 @@
 
 #title()
 
-
+An *autoencoder* is a model trained to reconstruct its input, after passing it
+through a *latent bottleneck*.
