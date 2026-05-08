@@ -87,8 +87,8 @@ that at the denominator has the incomplete likelihood which in log-space is
 defined as the logarithm of a sum that could be intractable.
 
 To overcome this issue, a popular optimization choice is *variational inference*
-that introduces approximations of the untractable distributions that easier to
-compute.
+that introduces approximations of the untractable distributions that is easier
+to compute.
 
 = Variational Calculus
 
@@ -130,15 +130,14 @@ get for the data likelihood.
 
 = Evidence Lower Bound
 
-The core idea is to define a lower bound on the data log-likelihood that is
-tractable, the *evidence lower bound (ELBO)*.
-
-Let's start from the marginal likelihood for a single observation $x$:
+The *evidence lower bound (ELBO)* is a tractable lower bound on the data
+log-likelihood, defined by looking at the marginal likelihood for a single
+observation $x$:
 
 $ log p(x | theta) = log integral p(x, z | theta) d z $
 
-and introduce any distribution $q(z | phi.alt)$ that is nonzero where $p(x, z |
-  theta)$ is nonzero and use the identity:
+Now let's introduce a distribution $q(z | phi.alt)$ that is nonzero where
+$p(x, z | theta)$ is nonzero and let's also use the _identity_:
 
 $
   integral p(x, z | theta) d z
@@ -146,15 +145,23 @@ $
   = EE_q(z | phi.alt) [ p(x, z | theta) / q(z | phi.alt) ]
 $
 
-Therefore
+Therefore we can now use the Jensen inequality, since we are using a concave
+function suhc as the logarithm:
 
 $
   log p(x | theta) = log EE_q(z | phi.alt) [ p(x, z | theta) / q(z | phi.alt) ]
   >= EE_q(z | phi.alt) [ log p(x, z | theta) / q(z | phi.alt) ]
 $
 
-for the Jensen inequality, since we are using a concave function such as the
-logarithm. So now we can define the ELBO as
+that by applying the property of logarithms for divisions becomes
+
+$
+  EE_q(z | phi.alt) [ log p(x, z | theta) / q(z | phi.alt) ]
+  = EE_q(z | phi.alt) [log p(x, z | theta)] -
+  EE_q(z | phi.alt) [log q(z | phi.alt)]
+$
+
+which finally defines the ELBO
 
 $
   cal(L) (x, theta, phi.alt)
