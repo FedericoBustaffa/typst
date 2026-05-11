@@ -146,7 +146,7 @@ $
 $
 
 Therefore we can now use the Jensen inequality, since we are using a concave
-function suhc as the logarithm:
+function such as the logarithm:
 
 $
   log p(x | theta) = log EE_q(z | phi.alt) [ p(x, z | theta) / q(z | phi.alt) ]
