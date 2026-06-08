@@ -3,11 +3,21 @@
 
 #title()
 
-One of the basic probabilistic models that can achieve arbitrarily complex
-representation of the joint probability is the *Bayesian network*.
+In the field of probabilistic models in machine learning, *Bayesian networks*
+are the most general concept on which every other model is based. Bayesian
+networks define a framework in order to work with probability distributions in a
+more _automated_ way, also defining useful assumptions to ease the computation
+while keeping a certain level of expressive power.
 
-A bayesian network is a direct acyclic graph $cal(G) = (cal(V), cal(E))$ in
-which nodes $v in cal(V)$ represent random variables, that in the graphical
+The main goal of a bayesian network is to represent *joint probability
+distributions*, central in probabilistic models in order to perform learning and
+inference.
+
+A bayesian network is a *direct acyclic graph (DAG)*, identified with
+
+$ cal(G) = (cal(V), cal(E)) $
+
+in which nodes $v in cal(V)$ represent random variables, that in the graphical
 representation are typically shaded if observed, not shaded otherwise, and
 edges, describing the conditional independence relationships.
 

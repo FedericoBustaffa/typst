@@ -170,4 +170,3 @@ approximations like *variational inference* or *sampling*.
 This approach is typical of clustering or quantization algorithms in which
 typically we miss the target values, we only have unlabeled observations and we
 want to find recurrent meaningful structures.
-
