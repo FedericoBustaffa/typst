@@ -4,7 +4,7 @@
 #title()
 
 In the field of probabilistic models in machine learning, *Bayesian networks*
-are the most general concept on which every other model is based. Bayesian
+define a _building block_ on which a large clas of models is based. Bayesian
 networks define a framework in order to work with probability distributions in a
 more _automated_ way, also defining useful assumptions to ease the computation
 while keeping a certain level of expressive power.
@@ -13,8 +13,36 @@ The main goal of a bayesian network is to represent *joint probability
 distributions*, central in probabilistic models in order to perform learning and
 inference.
 
-A bayesian network is a *direct acyclic graph (DAG)*, identified with
+Let's suppose to have three _discrete_ random variables $Y_1$, $Y_2$ and $Y_3$,
+their joint probability can be represented with a *conditional probability table
+(CPT)*. The problem with that representation is that it takes into account all
+the possible combinations of values for each random variable, that in general is
+$k^N - 1$ (in this case $k=2$) where $k$ is the number of possible values for
+each random variable and $N$ is the number of random variables.
 
+In alternative is possible to define the joint probability via the chain rule:
+
+$ P(Y_1, Y_2, Y_3) = P(Y_1) dot P(Y_2 | Y_1) dot P(Y_3 | Y_1, Y_2) $
+
+but this doesn't solve the problem at all because we still have the same number
+of parameters, since the chain rule just gives an order and a more compact way
+to write the joint distribution; it doesn't affect the number of parameters.
+
+In order to reduce the exponential number of parameters we need to do some
+approximation and in order to do that, we need to introduce *conditional
+independence assumptions*. In general, (conditional) independence is nice
+because simplifies the factorization of a joint probability; for example
+
+$
+  P(Y_1, Y_2, Y_3)
+  = underbrace(P(Y_1), 1) dot underbrace(P(Y_2 | Y_1), 2) dot
+  underbrace(P(Y_3 | Y_2, Y_1), 4)
+  = underbrace(P(Y_1), 1) dot underbrace(P(Y_2), 1) dot underbrace(P(Y_3), 1)
+$
+
+that is much nicer to compute.
+
+A bayesian network is a *direct acyclic graph (DAG)*, identified with
 $ cal(G) = (cal(V), cal(E)) $
 
 in which nodes $v in cal(V)$ represent random variables, that in the graphical
@@ -36,7 +64,7 @@ edges, describing the conditional independence relationships.
       )
       node(Y1, [$Y_1$], fill: color.aqua)
       node(Y2, [$Y_2$], fill: color.aqua)
-      node(Y3, [$Y_3$])
+      node(Y3, [$Y_3$], fill: color.white)
       node(Y4, [$Y_4$], fill: color.aqua)
       node(Y5, [$Y_5$], fill: color.aqua)
 

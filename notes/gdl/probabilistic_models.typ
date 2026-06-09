@@ -39,7 +39,7 @@ are addressed by solving an inference problem:
 
 - *Learning*: find the most probable hypothesis $theta$ that better describe the
   generative process of data:
-  $ P(theta | X) = frac(P(X | theta) dot P(theta), P(X)) $
+  $ P(theta | cal(D)) = frac(P(cal(D) | theta) dot P(theta), P(cal(D))) $
 - *Prediction*: given some evidence, get in return a value, a label or whatever
   is meaningful for the task:
   $ P(y | x) = frac(P(x | y) P(y), P(x)) $
