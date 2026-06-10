@@ -7,6 +7,92 @@ A probabilistic model for sequential data that is an evolution of Markov chains
 is the *hidden Markov model (HMM)*, which is designed to find latent structures
 in sequences.
 
+= Markov Chain
+
+In the context of HMMs, the *Markov chain* is an elementary unit, used to model
+dependecies over hidden states. But let's see why Markov chains do not work as
+well as HMMs for sequence modelling. If we think about a sequence like the
+following
+
+#figure(
+  diagram(
+    node-shape: "circle",
+    node-stroke: 1pt,
+    edge-stroke: 1pt,
+    {
+      let (y1, y2, y3) = (
+        (0, 1),
+        (1, 1),
+        (2, 1),
+      )
+
+      node(y1, [$Y_1$], fill: aqua)
+      node(y2, [$Y_2$], fill: aqua)
+      node(y3, [$Y_3$], fill: aqua)
+
+      edge(y1, "-|>", y2)
+      edge(y2, "-|>", y3)
+    },
+  ),
+  caption: [ Sequence ],
+) <fig-sequence>
+
+it already represents a probabilistic model whose joint probability is trivial
+if we think about the generative process and the usual BNs factorization:
+
+$ p(y_1, y_2, y_3) = p(y_1) dot p(y_2 | y_1) dot p(y_3 | y_2) $
+
+that, more in general becomes
+
+$ p(y_1, dots, y_T) = p(y_1) product_(t=2)^T p(y_t | y_(t-1)) $
+
+that is basically a *first order* Markov chain.
+
+#note(title: "Markov Assumption (1st order)")[
+  The current state only depends on the previous.
+]
+
+Be aware of the fact that usually Markov chains are not DAGs; for example a
+common representation for a Markov chains with three possible states ($A$, $B$
+and $C$) is
+
+#figure(
+  diagram(
+    node-shape: "circle",
+    node-stroke: 1pt,
+    edge-stroke: 1pt,
+    {
+      let (a, b, c) = (
+        (0, 0),
+        (1, 1),
+        (2, 0),
+      )
+
+      node(a, [$A$])
+      node(b, [$B$])
+      node(c, [$C$])
+
+      edge(a, "-|>", b, bend: 10deg)
+      edge(b, "-|>", a, bend: 10deg)
+      edge(b, "-|>", c, bend: 10deg)
+      edge(c, "-|>", b, bend: 10deg)
+      edge(c, "-|>", a, bend: 10deg)
+      edge(a, "-|>", c, bend: 10deg)
+    },
+  ),
+  caption: [ Markov Chain ],
+) <fig-markov-chain>
+
+with the possibility of transitioning from one state to another and back to an
+already visited state. If we think about it's not strange since, if we associate
+each state to a word of a vocabulary, the same sentence can contain the same
+word multiple times.
+
+To have a valid BN we just need to unroll the sequence, obtaining a perfectly
+valid BN like in @fig-sequence.
+
+= Structure
+
 #figure(
   diagram(
     node-shape: "circle",
