@@ -3,95 +3,19 @@
 
 #title()
 
-A probabilistic model for sequential data that is an evolution of Markov chains
-is the *hidden Markov model (HMM)*, which is designed to find latent structures
-in sequences.
+A direct successor of Markov chains for sequence modelling is the *hidden Markov
+model (HMM)*, which uses the Markov chain as a component but this time to model
+hidden states instead of observations.
 
-= Markov Chain
+This model introduces random variables assuming that there is an _hidden
+process_ that regulates the generation of observations. For text in fact we do
+not learn the language by memorizing which is the most probable word after a
+given one, for each possible word we know.
 
-In the context of HMMs, the *Markov chain* is an elementary unit, used to model
-dependecies over hidden states. But let's see why Markov chains do not work as
-well as HMMs for sequence modelling. If we think about a sequence like the
-following
-
-#figure(
-  diagram(
-    node-shape: "circle",
-    node-stroke: 1pt,
-    edge-stroke: 1pt,
-    {
-      let (y1, y2, y3) = (
-        (0, 1),
-        (1, 1),
-        (2, 1),
-      )
-
-      node(y1, [$Y_1$], fill: aqua)
-      node(y2, [$Y_2$], fill: aqua)
-      node(y3, [$Y_3$], fill: aqua)
-
-      edge(y1, "-|>", y2)
-      edge(y2, "-|>", y3)
-    },
-  ),
-  caption: [ Sequence ],
-) <fig-sequence>
-
-it already represents a probabilistic model whose joint probability is trivial
-if we think about the generative process and the usual BNs factorization:
-
-$ p(y_1, y_2, y_3) = p(y_1) dot p(y_2 | y_1) dot p(y_3 | y_2) $
-
-that, more in general becomes
-
-$ p(y_1, dots, y_T) = p(y_1) product_(t=2)^T p(y_t | y_(t-1)) $
-
-that is basically a *first order* Markov chain.
-
-#note(title: "Markov Assumption (1st order)")[
-  The current state only depends on the previous.
-]
-
-Be aware of the fact that usually Markov chains are not DAGs; for example a
-common representation for a Markov chains with three possible states ($A$, $B$
-and $C$) is
-
-#figure(
-  diagram(
-    node-shape: "circle",
-    node-stroke: 1pt,
-    edge-stroke: 1pt,
-    {
-      let (a, b, c) = (
-        (0, 0),
-        (1, 1),
-        (2, 0),
-      )
-
-      node(a, [$A$])
-      node(b, [$B$])
-      node(c, [$C$])
-
-      edge(a, "-|>", b, bend: 10deg)
-      edge(b, "-|>", a, bend: 10deg)
-      edge(b, "-|>", c, bend: 10deg)
-      edge(c, "-|>", b, bend: 10deg)
-      edge(c, "-|>", a, bend: 10deg)
-      edge(a, "-|>", c, bend: 10deg)
-    },
-  ),
-  caption: [ Markov Chain ],
-) <fig-markov-chain>
-
-with the possibility of transitioning from one state to another and back to an
-already visited state. If we think about it's not strange since, if we associate
-each state to a word of a vocabulary, the same sentence can contain the same
-word multiple times.
-
-To have a valid BN we just need to unroll the sequence, obtaining a perfectly
-valid BN like in @fig-sequence.
-
-= Structure
+So we need a model able to capture the underlying structure of a sequence, that
+for text could be grammar or syntax structure. In this way the model can have
+its own representation of nouns, verbs, adjectives and so on (hidden states),
+_clustering_ each observed word, based on the previous.
 
 #figure(
   diagram(
@@ -175,8 +99,14 @@ possible observables.
 
 = Generative Process
 
-For simplicity we can think that everything is modelled by multinomial
-disitributions. There is one multinomial that generates latent states, then
+The core idea is similar to Markov chains but now we have to generate more
+stuff, since we have an *state distribution* and an *emission distribution*.
+
+Supposing to work with categorical distributions to model natural language, we
+can think of
+
+For simplicity we can think that everything is modelled by categorical
+distributions. There is one multinomial that generates latent states, then
 depending on the sampled latent, another multinomial is selected to generate an
 observable.
 
