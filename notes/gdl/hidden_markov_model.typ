@@ -97,26 +97,42 @@ compact representation of an HMM would be like this
 In this case we assumed only two possible latent variables and only three
 possible observables.
 
+As we can in see in @fig-hmm and @fig-hmm2, by focusing on the hidden state
+part, we have a Markov chain, but this time is used to model hidden states
+transitions. Yet it still holds the Markov assumption of Markov chains, but this
+time is applied for hidden states
+
+$ p(s_t | s_(1:t-1)) = p(s_t | s_(t-1)) $
+
+From those hidden state an observation is _emitted_ at each time step and those
+are the same observations that before composed the sequence.
+
 = Generative Process
 
-The core idea is similar to Markov chains but now we have to generate more
-stuff, since we have an *state distribution* and an *emission distribution*.
+The generative process is not much different from a Markov chain, since HMMs are
+based on it.
 
-Supposing to work with categorical distributions to model natural language, we
-can think of
+For simplicity we assume to use the model for text modelling, since it let us
+work with categorical distributions only modelling $K$ possible values for
+hidden states and a vocabulary of $V$ possible words.
 
-For simplicity we can think that everything is modelled by categorical
-distributions. There is one multinomial that generates latent states, then
-depending on the sampled latent, another multinomial is selected to generate an
-observable.
++ Generate the first latent state
+  $ s_1 tilde "Categorical"(pi) $
++ Use the first state to condition the sampling for the next hidden state generation
+  $ s_2 tilde "Categorical"(A, s_1) $
++ Use it as index to generate the first observation $y_1$ from a conditioned
+  distribution
+  $ y_1 tilde "Categorical"(B, s_1) $
 
-+ Generate the first latent state $S_1 tilde P(S_1)$.
-+ Use it to generate the first observable $Y_1 tilde P(Y_1 | S_1)$.
-+ Iteratively repeat
-  - Use the previous hidden state to sample the next $S_i tilde P(S_i |
-      S_(i-1))$.
-  - Use the sampled hidden state to _emit_ new observables $Y_i tilde P(Y_i |
-      S_i)$.
+Until the end we can use the same procedure in order to produce new hiddent
+states and emitting the corresponding observations.
 
-Only the first hidden state is sampled independently from everything else.
+So this gives us the *joint probability distribution* of a sequence of states
+$s$ and observations $y$:
+
+$
+  p(y, s | theta) = underbrace(p(s_1 | pi), "1st state")
+  underbrace(p(y_1 | s_2, B), "1st observation")
+  product_(t=2)^T p(s_t | s_(t-1), A) p(y_t | s_t, B)
+$
 
