@@ -127,9 +127,9 @@ So this gives us the *joint probability distribution* of a sequence of states
 $s$ and observations $y$:
 
 $
-  p(y, s | theta) = underbrace(p(s_1 | pi), "1st state")
+  p(y, s | theta) = underbrace(p(s_1 | pi), "1st state") dot
   underbrace(p(y_1 | s_2, B), "1st observation")
-  product_(t=2)^T p(s_t | s_(t-1), A) p(y_t | s_t, B)
+  product_(t=2)^T p(s_t | s_(t-1), A) dot p(y_t | s_t, B)
 $
 
 that defines the generative process of a full sequence.
@@ -156,3 +156,79 @@ $
 
 But this can quickly become unfeasible for long sequences, having a time
 complexity of $cal(O)(C^T)$.
+
+= Forward-Backward
+
+The *forward-backward* algorithm is crucial in HMM for many reasons; first of
+all is divided in two main pieces
+
+- *Forward*: efficiently computes $p(y | theta)$ in $cal(O)(T C^2)$ time, otherwise
+  computed in exponential time in the sequence length.
+- *Backward*: computes useful quantities for inference, like the probability of
+  generating a certain _suffix_ for the given sequence, starting from the
+  current time.
+
+Both combined give the *forward-backward* algorithm implementation that is
+crucial for learning.
+
+== Forward
+
+The *forward* algorithm uses _dynamic programming_ to ease the computation of
+the likelihood at the cost of more memory usage, since it stores previously done
+computation. As seen before the data likelihood is the following
+
+$
+  p(y | theta) = sum_s p(y, s | theta)
+  = sum_(s_1 = 1)^C dots.c sum_(s_T = 1)^C pi_(s_1) b_(s_1) (y_1)
+  product_(t=2)^T A_(s_t s_(t-1)) b_(s_t) (y_t)
+$
+
+but we can exploit the recurrent structure of the model to define a *recursive
+formulation* for it, by noticing reused substructures. Let's start from the base
+case of a sequence of length $T=1$, its data likelihood is
+
+$
+  p(y_1) = sum_(s_1=1)^C p(s_1) p(y_1 | s_1) = sum_(i=1)^C pi_i b_i (y_1)
+  = sum_(i=1)^C alpha_1(i)
+$
+
+suppose now that we want to compute the data likelihood of a sequence of length
+$T=2$, which is
+
+$
+  p(y_(1:2)) & = sum_(s_1=1)^C sum_(s_2=1)^C p(s_1) p(x_1 | s_1)
+               p(s_2 | s_1) p(y_2 | s_2) \
+             & = sum_(i=1)^C sum_(j=1)^C pi_i b_i (y_1) A_(j i) b_j (y_2) \
+             & = sum_(j=1)^C b_j (y_2) sum_(i=1)^C alpha_1(i) A_(j i)
+               = sum_(j=1)^C alpha_2 (j)
+$
+
+so we can start to find a recurrent pattern, that lets us define the following
+recurrence
+
+$
+  cases(
+    alpha_1 (i) = pi_i dot b_i (y_1) & "base",
+    alpha_t (i) = b_i (y_t) sum_(j=1)^C A_(i j) dot alpha_(t-1) (j) & "general"
+  )
+$
+
+In this way is possible to store the $alpha_t (i)$ we compute going forward in
+the sequence.
+
+== Backward
+
+The other part of the algorithm is the *backward*, that is used to compute the
+probability of generating a certain suffix, starting from the current sequence
+state $s_t$.
+
+Intuitively sounds more like an inference problem in which we are trying to
+predict the next word. In fact this is similar to the posterior computation for
+GMMs, that is needed, since HMM is a latent variable model, to perform learning
+by _expectation maximization_.
+
+== Smoothing
+
+= Viterbi
+
+= Learning
