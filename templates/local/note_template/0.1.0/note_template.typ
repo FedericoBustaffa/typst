@@ -22,7 +22,7 @@
     width: 100%,
   )
 
-  show: super-T-as-transpose
+  // show: super-T-as-transpose
 
   body
 }

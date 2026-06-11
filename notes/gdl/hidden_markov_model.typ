@@ -112,10 +112,6 @@ are the same observations that before composed the sequence.
 The generative process is not much different from a Markov chain, since HMMs are
 based on it.
 
-For simplicity we assume to use the model for text modelling, since it let us
-work with categorical distributions only modelling $K$ possible values for
-hidden states and a vocabulary of $V$ possible words.
-
 + Generate the first latent state
   $ s_1 tilde "Categorical"(pi) $
 + Use the first state to condition the sampling for the next hidden state generation
@@ -136,3 +132,27 @@ $
   product_(t=2)^T p(s_t | s_(t-1), A) p(y_t | s_t, B)
 $
 
+that defines the generative process of a full sequence.
+
+For simplicity we assume to use the model for text modelling, since it let us
+work with categorical distributions only modelling $C$ possible values for
+hidden states and a vocabulary of $K$ possible words:
+
+$
+  p(y, s | theta) = pi_(s_1) b_(s_1) (y_1)
+  product_(t=2)^T A_(s_t s_(t-1)) b_(s t) (y_t)
+$
+
+where $b_(s_t)(y_t) = p(y_t|s_t, B)$ and $A_(s_t s_(t-1)) = p(s_t|s_(t-1), A)$.
+But similarly to GMM, we are dealing with an latent state model, so the
+*observed-data likelihood* is obtained by marginalization over all the latents
+of the sequence:
+
+$
+  p(y | theta) = sum_s p(y, s | theta)
+  = sum_(s_1 = 1)^C dots.c sum_(s_T = 1)^C pi_(s_1) b_(s_1) (y_1)
+  product_(t=2)^T A_(s_t s_(t-1)) b_(s_t) (y_t)
+$
+
+But this can quickly become unfeasible for long sequences, having a time
+complexity of $cal(O)(C^T)$.
