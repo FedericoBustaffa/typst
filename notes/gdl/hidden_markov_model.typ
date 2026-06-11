@@ -196,7 +196,7 @@ suppose now that we want to compute the data likelihood of a sequence of length
 $T=2$, which is
 
 $
-  p(y_(1:2)) & = sum_(s_1=1)^C sum_(s_2=1)^C p(s_1) p(x_1 | s_1)
+  p(y_(1:2)) & = sum_(s_1=1)^C sum_(s_2=1)^C p(s_1) p(y_1 | s_1)
                p(s_2 | s_1) p(y_2 | s_2) \
              & = sum_(i=1)^C sum_(j=1)^C pi_i b_i (y_1) A_(j i) b_j (y_2) \
              & = sum_(j=1)^C b_j (y_2) sum_(i=1)^C alpha_1(i) A_(j i)
@@ -209,25 +209,94 @@ recurrence
 $
   cases(
     alpha_1 (i) = pi_i dot b_i (y_1) & "base",
-    alpha_t (i) = b_i (y_t) sum_(j=1)^C A_(i j) dot alpha_(t-1) (j) & "general"
+    alpha_t (i) = b_i (y_t) sum_(j=1)^C A_(j i) dot alpha_(t-1) (j) & "general"
   )
 $
 
 In this way is possible to store the $alpha_t (i)$ we compute going forward in
-the sequence.
+the sequence. A direct consequence of this formulation is that the likelihood
+of the full sequence can now be expressed as
+
+$ p(y | theta) = sum_(i=1)^C alpha_T (i) $
+
+that is what we wanted in the first place.
 
 == Backward
 
 The other part of the algorithm is the *backward*, that is used to compute the
-probability of generating a certain suffix, starting from the current sequence
-state $s_t$.
+probability to see the rest of the sequence, given the current state $s_t$.
 
-Intuitively sounds more like an inference problem in which we are trying to
-predict the next word. In fact this is similar to the posterior computation for
-GMMs, that is needed, since HMM is a latent variable model, to perform learning
-by _expectation maximization_.
+$
+  p(y_(t+1 : T) | s_t = i)
+  = sum_(s_(t+1)=1)^C dots.c sum_(s_T=1)^C product_(t'=t+1)^T
+  A_(s_t' s_(t'-1)) b_(s_t') (y_t')
+$
+
+but again we can see a recurrence pattern starting from the end of the sequence.
+This time can be a little counterintuitive but the base case is
+
+$ p(y_(T+1) | s_T = i) $
+
+that is the probability of seeing $y_(T+1)$ given that we are in the final
+hidden state $s_T$. To understand it better we have to think that there is no
+such thing as $y_(T+1)$, so we can consider it as an _empty_ element and
+the probability of seeing nothing after the sequence is over is $1$, so
+
+$ p(y_(T+1) | s_T = i) = beta_T (i) = 1 $
+
+is the base case. Let's now suppose to be at state $T-1$ and we want to compute
+the probability of seeing the final observation $y_T$:
+
+$
+  p(y_(T) | s_(T-1) = i)
+  & = sum_(y_T = 1)^C p(s_T | s_(T-1)=i) dot p(y_T | s_T) dot p(y_(T+1) | s_T = i) \
+  & = sum_(y_T = 1)^C p(s_T | s_(T-1)=i) dot p(y_T | s_T) dot beta_T (i) \
+  & = sum_(y_T = 1)^C beta_(T-1) (i)
+$
+
+The general case is very similar to the _forward_ but going backwards of course:
+
+$ beta_t(j) = sum_(i=1)^C A_(i j) b_i (y_(t+1)) beta_(t+1) (i) $
 
 == Smoothing
+
+Now that we defined _forward_ and _backward_ we can combine them to obtain the
+*posterior*, needed to train the model:
+
+$
+  p(s_t = i | y, theta) = frac(
+    p(s_t = i, y_1:t) dot p(y_(t+1:T) | s_t=i),
+    sum_(j=1)^C alpha_t (j) beta_t (j)
+  )
+  = frac(alpha_t (i) dot beta_t (i), sum_(j=1)^C alpha_t (j) beta_t (j))
+$
+
+that usually is denoted in short form as
+
+$
+  gamma_t (i) = frac(alpha_t (i) dot beta_t (i), sum_(j=1)^C alpha_t (j) beta_t (j))
+$
+
+Actually we need a second posterior called *pair-wise posterior* since from a
+specific hidden state we can emit an observation and generate the next hidden
+state.
+
+$ xi_t (i, j) eq.triple p(s_t = i, s_(t-1) = j | y, theta) $
+
+that using the chain rule factorization becomes
+
+$ p(s_t = i, s_(t-1) = j, y) = alpha_(t-1) (j) a_(i j) b_i (y_t) beta_t (i) $
+
+hence
+
+$
+  xi_t (i, j) = frac(
+    alpha_(t-1) (j) a_(i j) b_i (y_t) beta_t (i),
+    sum_(m=1)^C sum_(l=1)^C alpha_(t-1) (m) a_(m l) b_l (y_t) beta_t (l)
+  )
+$
+
+that now is possible to use for learning.
 
 = Viterbi
 
