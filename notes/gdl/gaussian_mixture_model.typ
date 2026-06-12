@@ -23,31 +23,7 @@ independent features. The implication of this is that for each gaussian we have
 a covariance matrix that in general is not diagonal.
 
 #figure(
-  diagram(
-    node-shape: "circle",
-    node-stroke: 1pt,
-    edge-stroke: 1pt,
-    {
-      let (p_pi, z, x, p_mu, p_sigma) = (
-        (0, 0),
-        (0, 0.75),
-        (0, 1.5),
-        (-0.75, 1.75),
-        (0.75, 1.75),
-      )
-
-      node(p_pi, [$pi$])
-      node(z, [$z$])
-      node(x, [$x$], fill: aqua)
-      node(p_mu, [$mu$])
-      node(p_sigma, [$sigma$])
-
-      edge(p_pi, "-|>", z)
-      edge(z, "-|>", x)
-      edge(p_mu, "-|>", x)
-      edge(p_sigma, "-|>", x)
-    },
-  ),
+  image("images/gmm.png", width: 25%),
   caption: [ Gaussian Mixture Model ],
 ) <fig-gmm>
 
