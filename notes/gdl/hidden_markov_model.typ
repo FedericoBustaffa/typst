@@ -372,8 +372,60 @@ $
   xi_t^((n)) (i,j) log A_(i j)
 $
 
-again with sum-to-one constraint $sum_(i=1)^C A_(i j) = 1$ and again we have to
-define the Lagrangian
+again with sum-to-one constraint $sum_(i=1)^C A_(i j) = 1$. To ease the notation
+lets also define for each fixed previous state $j$
+
+$
+    N_(i j) & = sum_(n=1)^N sum_(t=2)^(T_n) xi_t^((n)) (i, j) \
+  N_(dot j) & = sum_(i=1)^C N_(i j)
+$
+
+So now the Lagrangian objective for column $j$ is defined as
+
+$
+  J_j ({A_(i j)}_i, lambda_j) = sum_(i=1)^C N_(i j) log A_(i j) +
+  lambda_j (sum_(i=1)^C A_(i j) - 1)
+$
+
+Since stationarity gives us $A_(i j) = -N_(i j) slash lambda_j$, enforcing the
+constraint let us obtain $lambda_j = -N_(dot j)$, hence
+
+$
+  A_(i j)^((k+1)) = frac(
+    sum_(n=1)^N sum_(t=2)^(T_n) xi_t^((n)) (i, j),
+    sum_(n=1)^N sum_(t=2)^(T_n) gamma_(t-1)^((n)) (j)
+  )
+$
+
+is the optimal value for the transition matrix.
+
+The final set of parameters we need to optimize is the one relative to the
+emission distribution:
+
+$
+  Q_B (B) & = sum_(n=1)^N sum_(t=2)^(T_n) sum_(i=1)^C gamma_t^((n)) (i) log b_i
+            (y_t^((n))) \
+          & = sum_(n, t)^N sum_(i=1)^C sum_(h=1)^H gamma_t^((n)) (i)
+            II[y_t^((n))=h] log B_(h i)
+$
+
+subject to a sum to one constraint $sum_(h=1)^H B_(h i) = 1$. Like before we can
+define counts to ease the notation:
+
+$
+    M_(h i) & = sum_(n=1)^N sum_(t=1)^(T_n) gamma_t^((n)) (i) II[y_t^((n)) = h] \
+  M_(dot i) & = sum_(h=1)^H M_(h i) = sum_(n, t) gamma_t^((n)) (i)
+$
+
+Then for fixed $i$ we can maximize the Lagrangian function that is similar to
+the one above, obtaining
+
+$
+  B_(h i)^((k+1)) = frac(
+    sum_(n=1)^N sum_(t=1)^(T_n) gamma_t^((n)) (i) II[y_t^((n)) = h],
+    sum_(n=1)^N sum_(t=1)^(T_n) gamma_t^((n)) (i)
+  )
+$
 
 = Viterbi Algorithm
 
