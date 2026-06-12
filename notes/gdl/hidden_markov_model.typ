@@ -298,6 +298,131 @@ $
 
 that now is possible to use for learning.
 
-= Viterbi
-
 = Learning
+
+Now that we have a way to compute the likelihood and we defined the posteriors
+we need, is possible to train the model by maximum likelihood using the
+*expectation maximization* algorithm. As said before we consider every
+distribution involved to be categorical, hence the *complete log-likelihood* is
+
+$
+  log p(cal(D), Z | theta) = sum_(n=1)^N [ sum_(i=1)^C z_(1 i)^((n)) log pi_i +
+    sum_(t=2)^(T_n) sum_(i=1)^C sum_(j=1)^C z_(t i, t-1, j)^((n)) log A_(i j) +
+    sum_(t=1)^(T_n) sum_(i=1)^C z_(t i)^((n)) log b_i (y_t^((n))) ]
+$
+
+but since in EM algorithm we can replace indicators with their posterior
+expectations, we have:
+
+$
+   EE [z_(t i)^((n)) | y^((n)), theta^((n))] & = gamma_t^((n)) (i) \
+  EE [z_(t i, t-1 j) | y^((n)), theta^((n))] & = xi_t^((n)) (i, j)
+$
+
+Computed as seen before by the _forward-backward_ algorithm. So now is possible
+to define the *E-step* of the algorithm, that for each sequence runs
+_forward-backward_ under $theta^((k))$ and compute the two posteriors
+
+$
+  gamma_t^((n)) (i) & = p(s_t^((n)) = i | y^((n)), theta^((k))) \
+  xi_t^((n)) (i, j) & = p(s_t^((n)) = i, S_(t-1)^((n)) = j | y^((n)), theta^((k)))
+$
+
+So now assuming a discrete observations alphabet $cal(V) = {1, dots, H}$ and
+defining emission parameters $B_(h i) = p(y_t = h | s_t = i)$, with constraints
+$sum_(h=1)^H B_(h i) = 1$ for each state $i$, we can define the $Q$ function as
+
+$
+  Q(theta | theta^((k)) = EE_(cal(Z) | cal(D), theta^((k)))
+  [log p(cal(D), cal(Z) | theta)]
+$
+
+that by pluggin in the expectations becomes
+
+$
+  Q(theta | theta^((k))) = sum_(n=1)^N [ sum_(i=1)^C gamma_1^((n)) (i) log pi_i
+    + sum_(t=2)^(T_n) sum_(i=1)^C sum_(j=1)^C xi_t^((n)) (i,j) log A_(i j) +
+    sum_(t=1)^(T_n) sum_(i=1)^C gamma_t^((n)) (i) log b_i (y_t^((n))) ]
+$
+
+that we can optimize in the *M-step* in order to find three parameters, starting
+from the *initial state distribution*:
+
+$ Q_pi (pi) = sum_(n=1)^N sum_(i=1)^C gamma_1^((n)) (i) log pi_i $
+
+with the constraint $sum_(i=1)^C pi_i = 1$, so the Lagrangian function we need
+to optimize is
+
+$
+  J(pi, lambda) = sum_(n=1)^N sum_(i=1)^C gamma_1^((n)) (i) log pi_i +
+  lambda (sum_(i=1)^C pi_i - 1)
+$
+
+that after some step brings us the optimal value of
+
+$ pi_i^((k+1)) = 1/N sum_(n=1)^N gamma_1^((n)) (i) $
+
+for the multinomial the models the initial state probability.
+
+Let's now optimize the *transition matrix* that models hidden states
+transitions:
+
+$
+  Q_A (A) = sum_(n=1)^N sum_(t=2)^(T_n) sum_(i=1)^C sum_(j=1)^C
+  xi_t^((n)) (i,j) log A_(i j)
+$
+
+again with sum-to-one constraint $sum_(i=1)^C A_(i j) = 1$ and again we have to
+define the Lagrangian
+
+= Viterbi Algorithm
+
+With the _forward-backward_ we defined a method the know how likely is a
+sequence, a state, or a portion of that sequence (in the past or future w.r.t.
+the current position).
+
+When instead the problem is to find one *most likely* state sequence, given a
+sequence of observations, we can use the *Viterbi algorithm*, that uses again
+dynamic programming to efficiently compute such state sequence.
+
+$ s^star arg max_s p(y, s | theta) $
+
+The algorithm defines the best path score ending in state $i$ at time $t$:
+
+$ gamma_t (i) = max_(s_(1:t-1)) p(s_t = i, s_(1:t-1), y_(1:t) | theta) $
+
+for which we initialize
+
+$ gamma_1 (i) = pi_i b_i (y_1) $
+
+and a recursion step
+
+$ delta_t (i) = b_i (y_t) max_(j in {1, dots, C}) A_(i j) delta_(t-1) (j) $
+
+The algorithm also stores backpointers for faster computation
+
+$ psi_t (i) = arg max_j A_(i j) delta_(t-1) (j) $
+
+The termination step is defined as
+
+$ S_T^star = arg max_i delta_T (i) $
+
+from which we can *backtrack* like following
+
+$ s_t^star = psi_(t+1) (s_(t+1)^star) $
+
+in practice everything is computed in log-space:
+
+$ log delta_t (i) = log b_i (y_t) + max_j (log A_(i j) + log delta_(t-1) (j)) $
+
+Once we have the most probable sequence we can gain information that can be more
+or less interpretable, also depending on the context. The problem is that states
+are not labeled.
+
+For example if we are working on genomic sequences, we can notice that usually
+there is a state mostly related to some kind of observations that an expert is
+able to interpret. The expert can therefore "label" that state and every other
+in a meaningful way, also noticing that usually a subsequence of hidden states
+produces certain observations and after that subsequence, usually there is
+another recurrent kind of state sequence, generating another specific type of
+observations.
