@@ -319,9 +319,13 @@ $
   EE [z_(t i, t-1 j) | y^((n)), theta^((n))] & = xi_t^((n)) (i, j)
 $
 
-Computed as seen before by the _forward-backward_ algorithm. So now is possible
-to define the *E-step* of the algorithm, that for each sequence runs
-_forward-backward_ under $theta^((k))$ and compute the two posteriors
+Computed as seen before by the _forward-backward_ algorithm.
+
+== Expectation Maximization (Baum-Welch)
+
+So now is possible to define the *E-step* of the algorithm, that for each
+sequence runs _forward-backward_ under $theta^((k))$ and compute the two
+posteriors
 
 $
   gamma_t^((n)) (i) & = p(s_t^((n)) = i | y^((n)), theta^((k))) \
