@@ -303,11 +303,33 @@ that now is possible to use for learning.
 Now that we have a way to compute the likelihood and we defined the posteriors
 we need, is possible to train the model by maximum likelihood using the
 *expectation maximization* algorithm. As said before we consider every
-distribution involved to be categorical, hence the *complete log-likelihood* is
+distribution involved to be categorical, so we can define this indicator
+variable:
+
+$ z_(t i) = cases(1 & "if" s_t = i, 0 & "otherwise") $
+
+In this way the *complete likelihood* for one sample can be written as
 
 $
-  log p(cal(D), Z | theta) = sum_(n=1)^N [ sum_(i=1)^C z_(1 i)^((n)) log pi_i +
-    sum_(t=2)^(T_n) sum_(i=1)^C sum_(j=1)^C z_(t i, t-1, j)^((n)) log A_(i j) +
+  p(y, s) = product_(i=1)^C pi_i^(z_(1 i))
+  product_(t=2)^T product_(i=1)^C product_(j=1)^C A_(i j)^z_(t i)^(z_(t j))
+  product_(t=1)^T product_(i=1)^C b_i (y_t)^(z_(t i))
+$
+
+therefore, the complete likelihood for the whole dataset can be written as
+
+$
+  p(Y, S) = product_(n=1)^N (product_(i=1)^C pi_i^(z_(1 i)^((n)))
+    product_(t=2)^T_n product_(i=1)^C product_(j=1)^C A_(i j)^z_(t i)^z_(t j)
+    product_(t=1)^T_n product_(i=1)^C b_i (y_t^((n)))^(z_(t i)^((n))))
+$
+
+hence the *complete log-likelihood* for the full dataset can be written as
+
+$
+  log p(Y, S) = sum_(n=1)^N [ sum_(i=1)^C z_(1 i)^((n)) log pi_i +
+    sum_(t=2)^(T_n) sum_(i=1)^C sum_(j=1)^C z_(t i)^((n))
+    z_(t-1 j)^((n)) log A_(i j) +
     sum_(t=1)^(T_n) sum_(i=1)^C z_(t i)^((n)) log b_i (y_t^((n))) ]
 $
 
@@ -315,8 +337,8 @@ but since in EM algorithm we can replace indicators with their posterior
 expectations, we have:
 
 $
-   EE [z_(t i)^((n)) | y^((n)), theta^((n))] & = gamma_t^((n)) (i) \
-  EE [z_(t i, t-1 j) | y^((n)), theta^((n))] & = xi_t^((n)) (i, j)
+         EE [z_(t i)^((n)) | y^((n)), theta^((n))] & = gamma_t^((n)) (i) \
+  EE [z_(t i, t-1 j)^((n)) | y^((n)), theta^((n))] & = xi_t^((n)) (i, j)
 $
 
 Computed as seen before by the _forward-backward_ algorithm.
@@ -337,7 +359,7 @@ defining emission parameters $B_(h i) = p(y_t = h | s_t = i)$, with constraints
 $sum_(h=1)^H B_(h i) = 1$ for each state $i$, we can define the $Q$ function as
 
 $
-  Q(theta | theta^((k)) = EE_(cal(Z) | cal(D), theta^((k)))
+  Q(theta | theta^((k))) = EE_(cal(Z) | cal(D), theta^((k)))
   [log p(cal(D), cal(Z) | theta)]
 $
 
