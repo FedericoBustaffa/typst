@@ -281,18 +281,18 @@ Actually we need a second posterior called *pair-wise posterior* since from a
 specific hidden state we can emit an observation and generate the next hidden
 state.
 
-$ xi_t (i, j) eq.triple p(s_t = i, s_(t-1) = j | y, theta) $
+$ xi_t (i, j) eq p(s_t = i, s_(t-1) = j | y, theta) $
 
 that using the chain rule factorization becomes
 
-$ p(s_t = i, s_(t-1) = j, y) = alpha_(t-1) (j) a_(i j) b_i (y_t) beta_t (i) $
+$ p(s_t = i, s_(t-1) = j, y) = alpha_(t-1) (j) A_(i j) b_i (y_t) beta_t (i) $
 
 hence
 
 $
   xi_t (i, j) = frac(
-    alpha_(t-1) (j) a_(i j) b_i (y_t) beta_t (i),
-    sum_(m=1)^C sum_(l=1)^C alpha_(t-1) (m) a_(m l) b_l (y_t) beta_t (l)
+    alpha_(t-1) (j) A_(i j) b_i (y_t) beta_t (i),
+    sum_(m=1)^C sum_(l=1)^C alpha_(t-1) (m) A_(m l) b_l (y_t) beta_t (l)
   )
 $
 
@@ -303,16 +303,19 @@ that now is possible to use for learning.
 Now that we have a way to compute the likelihood and we defined the posteriors
 we need, is possible to train the model by maximum likelihood using the
 *expectation maximization* algorithm. As said before we consider every
-distribution involved to be categorical, so we can define this indicator
-variable:
+distribution involved to be categorical, so we can define this two indicator
+variables:
 
-$ z_(t i) = cases(1 & "if" s_t = i, 0 & "otherwise") $
+$
+  z_(t i) = cases(1 & "if" s_t = i, 0 & "otherwise") quad quad
+  z_(t i, t-1 j) = cases(1 & "if" s_t = i "and" s_(t-1) = j, 0 & "otherwise")
+$
 
 In this way the *complete likelihood* for one sample can be written as
 
 $
   p(y, s) = product_(i=1)^C pi_i^(z_(1 i))
-  product_(t=2)^T product_(i=1)^C product_(j=1)^C A_(i j)^z_(t i)^(z_(t j))
+  product_(t=2)^T product_(i=1)^C product_(j=1)^C A_(i j)^z_(t i, t-1 j)
   product_(t=1)^T product_(i=1)^C b_i (y_t)^(z_(t i))
 $
 
@@ -320,7 +323,7 @@ therefore, the complete likelihood for the whole dataset can be written as
 
 $
   p(Y, S) = product_(n=1)^N (product_(i=1)^C pi_i^(z_(1 i)^((n)))
-    product_(t=2)^T_n product_(i=1)^C product_(j=1)^C A_(i j)^z_(t i)^z_(t j)
+    product_(t=2)^T_n product_(i=1)^C product_(j=1)^C A_(i j)^z_(t i, t-1 j)^((n))
     product_(t=1)^T_n product_(i=1)^C b_i (y_t^((n)))^(z_(t i)^((n))))
 $
 
@@ -328,8 +331,8 @@ hence the *complete log-likelihood* for the full dataset can be written as
 
 $
   log p(Y, S) = sum_(n=1)^N [ sum_(i=1)^C z_(1 i)^((n)) log pi_i +
-    sum_(t=2)^(T_n) sum_(i=1)^C sum_(j=1)^C z_(t i)^((n))
-    z_(t-1 j)^((n)) log A_(i j) +
+    sum_(t=2)^(T_n) sum_(i=1)^C sum_(j=1)^C z_(t i, t-1 j)^((n))
+    log A_(i j) +
     sum_(t=1)^(T_n) sum_(i=1)^C z_(t i)^((n)) log b_i (y_t^((n))) ]
 $
 
@@ -346,17 +349,20 @@ Computed as seen before by the _forward-backward_ algorithm.
 == Expectation Maximization (Baum-Welch)
 
 So now is possible to define the *E-step* of the algorithm, that for each
-sequence runs _forward-backward_ under $theta^((k))$ and compute the two
-posteriors
+sequence runs _forward-backward_ under $theta^((k))$ and uses one of the two
+posteriors we wrote before:
 
 $
   gamma_t^((n)) (i) & = p(s_t^((n)) = i | y^((n)), theta^((k))) \
   xi_t^((n)) (i, j) & = p(s_t^((n)) = i, S_(t-1)^((n)) = j | y^((n)), theta^((k)))
 $
 
-So now assuming a discrete observations alphabet $cal(V) = {1, dots, H}$ and
-defining emission parameters $B_(h i) = p(y_t = h | s_t = i)$, with constraints
-$sum_(h=1)^H B_(h i) = 1$ for each state $i$, we can define the $Q$ function as
+If we assume observations to belong to a discrete alphabet
+$ cal(V) = {1, dots, H} $
+
+and define emission parameters $B_(h i) = p(y_t = h | s_t = i)$, with
+constraint $sum_(h=1)^H B_(h i) = 1$ for each state $i$, we can define the $Q$
+function as
 
 $
   Q(theta | theta^((k))) = EE_(cal(Z) | cal(D), theta^((k)))
@@ -402,8 +408,8 @@ again with sum-to-one constraint $sum_(i=1)^C A_(i j) = 1$. To ease the notation
 lets also define for each fixed previous state $j$
 
 $
-    N_(i j) & = sum_(n=1)^N sum_(t=2)^(T_n) xi_t^((n)) (i, j) \
-  N_(dot j) & = sum_(i=1)^C N_(i j)
+  N_(i j) = sum_(n=1)^N sum_(t=2)^(T_n) xi_t^((n)) (i, j) quad quad
+  N_(dot j) = sum_(i=1)^C N_(i j)
 $
 
 So now the Lagrangian objective for column $j$ is defined as
@@ -452,6 +458,8 @@ $
     sum_(n=1)^N sum_(t=1)^(T_n) gamma_t^((n)) (i)
   )
 $
+
+So now that we have all the formulas we can train the model EM algorithm.
 
 = Viterbi Algorithm
 
