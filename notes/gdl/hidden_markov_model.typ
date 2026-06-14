@@ -475,11 +475,11 @@ $ s^star arg max_s p(y, s | theta) $
 
 The algorithm defines the best path score ending in state $i$ at time $t$:
 
-$ gamma_t (i) = max_(s_(1:t-1)) p(s_t = i, s_(1:t-1), y_(1:t) | theta) $
+$ delta_t (i) = max_(s_(1:t-1)) p(s_t = i, s_(1:t-1), y_(1:t) | theta) $
 
 for which we initialize
 
-$ gamma_1 (i) = pi_i b_i (y_1) $
+$ delta_1 (i) = pi_i b_i (y_1) $
 
 and a recursion step
 
