@@ -153,7 +153,26 @@ As we can see each output depends only on a local neighborhood (sparse
 connectivity) and reuse the same weights (weight sharing), drastically reducing
 the number of parameters to optimize.
 
-To have a more clear idea let's take a case in which inputs are images
+To have a more clear idea let's take a case in which inputs are images of size
+$H times W times C_"in"$ and let we use $C_"out"$ kernels. Then the number of
+trainable weights is
+
+$ K^2 dot C_"in" dot C_"out" $
+
+that if we have for example kernels $3 times 3$ and $C_"out" = 32$ and RGB
+images, we would have
+
+$ 3 dot 3 dot 5 dot 32 = 1440 $
+
+and if we can see the size of images never appears in the formulation, so
+increasing resolution doesn't increase the number of weights.
+
+For a dense layer instead with $32$ neurons and fixed image sizes like $28 times
+28$ like MNIST dataset, we would have
+
+$ 28 times 28 times 32 = 25088 $
+
+weights to optimize for such small images.
 
 = Receptive Field
 
@@ -189,16 +208,65 @@ how to derive the convolution operator, also taking weight sharing into account.
 To have a better understanding of what is going on we can simply think about a
 small sequence
 
-$ x = (x_1, x_2, x_3) $
+$ x = vec(x_1, x_2, x_3) $
 
-on which the simplest kernel possible (a scalar $w$) is applied with a convolution.
+on which the simplest kernel possible (a scalar $w$) is applied with a
+convolution:
 
-== Transposed Convolution
+$ x convolve w = vec(x_1 w, x_2 w, x_3 w) = vec(y_1, y_2, y_3) $
 
-= $1 times 1$ Convolutions
+If we now suppose to have a target vector $d$ we can use some loss function to
+know the error we made:
 
-= Advanced CNNs
+$
+  cal(L) (y, d) = norm(y - d)_2^2
+  & = (y_1 - d_1)^2 + (y_2 - d_2)^2 + (y_2 - d_3)^2 \
+  & = (x_1 w - d_1)^2 + (x_2 w - d_2)^2 + (x_2 w - d_3)^2
+$
 
-== Causal Convolutions
+So now we can just compute the derivative w.r.t. $w$:
 
-== Dilated Convolutions
+$
+  pdv(cal(L), w)
+  & = 2 (x_1 w - d_1) x_1 + 2 (x_2 w - d_2) x_2 + 2 (x_3 w - d_3) x_3 \
+  & = delta_1 x_1 + delta_2 x_2 + delta_3 x_3 = delta convolve x
+$
+
+So in other words we can obtain the gradient of a convolutional layer by running
+a convolution between the previous layer outputs and the backpropagated portion
+of the error from next layer.
+
+== Residual Connections
+
+A common trick used especially in very deep networks is the *residual
+connection*, which adds a connection that jumps one or more layers in order to
+propagate the input as it is even in deeper layers.
+
+In other words the network doesn't have to try to learn
+
+$ y = G(x) $
+
+but more something like
+
+$ y = F(x) + x $
+
+The intuition behind this is that if the transformation to be learned is similar
+to the identity, the network must learn only the difference.
+
+The more interesting aspect of this implementation is related to gradients and
+backpropagation, in fact is also a counter-measure (in some sense) to gradient
+vanish. If the output is
+
+$ y = F(x) + x $
+
+than its gradient is
+
+$ pdv(y, x) = I + pdv(F, x) $
+
+that in backpropagation means that
+
+$ pdv(L, x) = pdv(L, y) (I + pdv(F, x)) $
+
+So if $pdv(F, x)$ vanish, there is always a strong term $pdv(L, y)$ that instead
+is backpropagated.
+
