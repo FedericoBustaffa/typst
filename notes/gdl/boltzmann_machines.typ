@@ -22,7 +22,8 @@ that can be either visible or hidden.
 
 #note[
   As it is, the BM is a fully connected graph so the whole graph is clique and
-  the clique factorization accounts for just one clique.
+  the clique factorization accounts for just one clique. This also means that
+  each unit depends on every other unit.
 ]
 
 The model uses a specific *energy function*, defined as
@@ -39,15 +40,23 @@ agreement between two nodes. Therefore, the induced distribution is
 
 $ p(vb(s)) = 1 / Z e^(-E (vb(s))) " with " Z = sum_vb(s)' e^(-E(vb(s)')) $
 
-which gives us the probability of a certain configuration.
+which gives us the probability of a certain configuration. Since we want to
+maximize the probability of data, we can train the model by *maximum
+likelihood*:
 
-The last piece we need is the probability of single neurons, which depends only
-on its neighborhood; this is equivalent to compute the energy function with the
-neuron $i$ having value $1$:
+$ arg max_(M, b) p(s | M, b) $
 
+that in log-space becomes
+
+$ cal(L) (M, b) = $
+
+The last piece we need is the probability of single units to be either $0$ or
+$1$; this is equivalent to compute the energy function with the neuron $i$
+having value $1$, while all the other ones remains fixed:
 
 $ E(vb(s)) = sum_(j) M_(i j) s_j - b_i $
 
 so that the probability
 
 $ p(s_i = 1 | s_(backslash i)) = 1 / Z e^(-E(vb(s))) $
+
