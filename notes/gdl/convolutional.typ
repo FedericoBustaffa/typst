@@ -270,3 +270,17 @@ $ pdv(L, x) = pdv(L, y) (I + pdv(F, x)) $
 So if $pdv(F, x)$ vanish, there is always a strong term $pdv(L, y)$ that instead
 is backpropagated.
 
+= Advanced Convolutions
+
+There are cases in which data has temporal meaning, therefore we might not want
+to look in the future of a sequence. This brings the idea of *causal
+convolutions* in which output at time $t$ depends only on positions up to $t$.
+
+Another similar idea similar to causal convolutions is called *dilated
+convolutions*, which enlarge the receptive field faster. It basically inserts
+gaps between kernel elements with a *dilation factor* $d$:
+
+$ vb(x) convolve_d vb(K)) (i, j) sum_m sum_n x(i + d m, j + d n) K(m, n) $
+
+The result is similar to increase the stride without reducing the feature map
+dimensionality and without increasing the number of parameters.
