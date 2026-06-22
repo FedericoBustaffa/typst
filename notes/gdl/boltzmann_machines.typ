@@ -8,7 +8,7 @@ machine (BM)* where random variables (both visible and hidden) can have only two
 possible states $0$ or $1$.
 
 #figure(
-  image("images/boltzmann_machine.png", width: 35%),
+  image("images/boltzmann_machine.png", width: 40%),
   caption: [ Boltzmann Machine ],
 ) <fig-bm>
 
@@ -36,19 +36,46 @@ $
 with $M$ and $b$ that are learnable parameters; in particular $M$ is symmetric
 and has zero diagonal (no self-recurrent connectivity). In this case we also
 have $f(s_i, s_j) = s_i s_j$ that is a feature function that establish an
-agreement between two nodes. Therefore, the induced distribution is
+agreement between two nodes.
+
+= Joint Probability
+
+The *joint probability* of this model factorizes as any MRF, but this time we have
+only one clique, so we can write
 
 $ p(vb(s)) = 1 / Z e^(-E (vb(s))) " with " Z = sum_vb(s)' e^(-E(vb(s)')) $
 
-which gives us the probability of a certain configuration. Since we want to
-maximize the probability of data, we can train the model by *maximum
-likelihood*:
+which gives us the probability of a certain configuration.
 
-$ arg max_(M, b) p(s | M, b) $
+= Learning
 
-that in log-space becomes
+Since we want to maximize the probability of data, we can train the model by
+*maximum likelihood*:
 
-$ cal(L) (M, b) = $
+$ arg max_(M, b) p(v | M, b) = arg max_(M, b) sum_h p(v, h | M, b) $
+
+that for the full dataset becomes
+
+$ arg max_(M, b) product_(n=1)^N sum_h p(v_n, h_n = h | M, b) $
+
+to avoid underflows we can work in log-space, obtaining the *log-likelihood*:
+
+$
+  cal(L) (M, b) & = sum_(n=1) log sum_h p(v_n, h_n = h | M, b) \
+                & = sum_(n=1)^N log sum_h 1 / Z e^(-E(v_n, h)) \
+                & = sum_(n=1)^N (log sum_h e^(-E(v_n, h)) - log Z) \
+                & = sum_(n=1)^N (log sum_h e^(-E(v_n, h)) - log sum_(v, h)
+                    e^(-E(v, h)))
+$
+
+The second term sum over all the possible states of the model, that for a single
+sample with $V$ visible and $H$ hiddens, becomes $Order(2^(V + H))$ in time
+complexity.
+
+== Sampling
+
+Due to the clear tractability issues of maximum likelihood learning, we can
+learn by *sampling* using Gibbs.
 
 The last piece we need is the probability of single units to be either $0$ or
 $1$; this is equivalent to compute the energy function with the neuron $i$
