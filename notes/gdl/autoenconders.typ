@@ -143,6 +143,42 @@ regions where the activation derivative is small.
 
 = Deep Autoencoders
 
+A simple way to make the autoencoder even more powerful is to make it *deep*,
+just by stacking layers on both the encoder and the decoder:
+
+$ x -> z_1 -> dots -> z_L -> tilde(z)_(L-1) -> dots -> tilde(z)_1 -> tilde(x) $
+
+In this way the model learns intermediate and hierarchical representations,
+encouraging organization in high level features.
+
 == Layerwise Unsupervised Pretraining
 
+An historical way of training autoencoders and more in general deep networks was
+the *layerwise unsupervised pretraining*. This method was useful to train deep
+architectures when it was difficult to optimize them end to end due to gradient
+issues like gradient vanish.
+
+The idea is to train one layer at a time to reconstruct the output of the
+previous layer (the input for the first layer); once a layer is trained another
+one is stacked on top of it and trained, while the older one keeps its weights
+freezed. In this way the training is similar to that of reservoir computing and
+there is no need for backpropagation, just gradient descent or direct methods on
+the last layer.
+
+Once all layers are trained is possible to fine tune the architecture by
+backpropagation with the difference that now weights starts from much better
+values to optimize. We can also stack an additional task-specific layer (for
+example a classifier) that now learns from high-level features.
+
 = Deep Belief Networks
+
+An interesting link with probabilistic models and autoencoders is the fact that
+an RBM has the structure of a neural network layer, therefore, seems legit to
+stack multiple RBMs on top of each other, creating a *deep belief network (DBN)*
+
+The problem is that RBMs are undirected graphical models and so an intermediate
+layer is influenced by the previous and the next, which is not the same flow of
+information we have in a deep autoencoder.
+
+An implication of this is that some contributions may be counted twice and
+that's also why a common technique is to divide them by 2.
