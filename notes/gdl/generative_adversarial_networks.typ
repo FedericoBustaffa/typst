@@ -3,3 +3,7 @@
 
 #title()
 
+A model in the class of _implicit_ density learner is the *generative
+adversarial network (GAN)*, which learns a way to transform noise into
+meaningful data.
+

@@ -130,17 +130,46 @@ configuration and start sampling, updating the network and collecting its
 states.
 
 In order to do it we need to sample from the network node by node and so we need
-the probability distribution associated with a single unit.
+the probability distribution associated with a single unit, that as we know is
+dependent on its neighbors and direct local connections.
 
-The last piece we need is the probability of single units to be either $0$ or
-$1$; this is equivalent to compute the energy function with the neuron $i$
-having value $1$, while all the other ones remains fixed:
+$ p(s_i | s_(-i)) $
 
-$ E(vb(s)) = sum_(j) M_(i j) s_j - b_i $
+So the probability of state $i$ to have (for example) value $1$ is equivalent to
 
-so that the probability
+$
+  p(s_i = 1 | s_(-i)) =
+  frac(p(s_i = 1 | s_(-i)), p(s_i = 0 | s_(-i)) + p(s_i = 1 | s_(-i)))
+$
 
-$ p(s_i = 1 | s_(backslash i)) = 1 / Z e^(-E(vb(s))) $
+and this also means that the energy function simplifies as
+
+$ E(s_i = 1) = -1/2 sum_j M_(i j) s_j - b_i $
+
+and so we obtain
+
+$
+  p(s_i = 1 | s_(-i))
+  = frac(e^(-E(s_i = 1)), e^(-E(s_i = 0)) + e^(-E(s_i = 1)))
+  = frac(1, e^(E(s_i = 1)) (e^(-E(s_i = 0)) + e^(-E(s_i = 1))))
+$
+
+and since
+
+$ E(s_i = 0) = 0 $
+
+we have that
+
+$
+  frac(1, e^(E(s_i = 1)) (e^(-E(s_i = 0)) + e^(-E(s_i = 1))))
+  = frac(1, 1 + e^(E(s_i = 1))))
+$
+
+that is the formulation of *sigmoid*, therefore we can simply write
+
+$ p(x_i = 1 | x_(-i)) = sigma(-1/2 sum_j M_(i j) x_j - b_i) $
+
+that we can use to sample node by node.
 
 = Restricted Boltzmann Machines
 
