@@ -294,3 +294,33 @@ by weight clipping but can worsen the optimization; a much better solution is
 simply given by gradient penalty.
 
 = Adversarial Autoencoders
+
+An interesting way to use _adversarial learning_ is to train autoencoders. An
+*adversarial autoencoder (AAE)* keeps the reconstruction structure of an
+autoencoder but replaces KL-based latent regularization with adversarial
+learning in latent space.
+
+The encoder produces a latent code
+
+$ z = f_theta (x) $
+
+and the decoder tries to reconstruct it
+
+$ tilde(x) = g_theta (z) $
+
+In the VAE formulation the KL term forces the encoder to produce latent codes
+like they were sample from a prior distribution $cal(N) (vb(0), I)$.
+
+In AAE we use a discriminator to discriminate between encoded latent codes and
+latent codes sampled from the prior $cal(N) (vb(0), I)$. In this way the encoder
+is forced to produce latent codes that resemble that distribution in order to
+fool the discriminator.
+
+Therefore, the training has two phases:
+
+- *Reconstruction*: update the encoder and decoder to minimize the
+  reconstruction loss.
+- *Regularization*: use a discriminator in latent space to distinguish prior
+  samples from encoded samples.
+
+In this way we can avoid the KL term when the prior is complicated to compute.
