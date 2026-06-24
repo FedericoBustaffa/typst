@@ -3,41 +3,49 @@
 
 #title()
 
-A typical situation for discrete high-dimensional data a strong *latent
-structure*. Thinking about text, if we a dataset composed of documents, a
-_bag-of-words_ representation is high-dimensional and sparse.
-
-Ideally we want a model able to capture a latent and compressed representation
-of those documents by clustering words by *topic*.
-
-In this sense we want to assign to each word a probability distribution that
-tells us how likely is for that word to belong to a certain topic. The result is
-that we can now have a compressed representation of a document that can
-partially belong to different topics, depending on words it contains.
-
-It is worth specify that topics are not directly specified but are latent
-variables that the model learns autonomously.
-
-Going deeper, a _bag-of-words_ representation doesn't account for words ordering
-and only keeps counts. For each document $d$ we have
-
-$ w^((d)) = (w_(d 1), dots, w_(d L_d)) $
-
-or the equivalent count vector
-
-$ n_d = (n_(d 1), dots, n_(d V)) quad "with " sum_(v=1)^V n_(d v) = L_d $
-
-where $V$ is the vocabulary size. A classical mixture model would assign one
-latent topic to each document but topics models assign a latent topic to each
-token, so that one documetn may combine multiple topics.
-
-In this context one of the simplest topic model is *latent dirichlet allocation
-(LDA)*, that does exactly that.
+A model whose goal is to encode high-dimensional discrete data in a
+lower-dimensional latent space is *latent dirichlet allocation (LDA)*.
 
 #figure(
   image("images/lda.png", width: 25%),
   caption: [ Latent Dirichlet Allocation ],
 ) <fig-lda>
+
+The motivation for the model is simple: high-dimensional data features, often
+relate one another hence, is reasonable to think there is some lower-dimensional
+latent structure that can embed the original data. This of course let
+dimensionality reduction, making easier to work with these kind of data.
+
+The most intuitive setting to figure out LDA is by thinking it as a *topic
+model* that works on documents in a *bag-of-words* representation.
+
+The dataset is composed by $N$ documents composed by words from a vocabulary of
+$V$ elements and we want to assign each word in the document to one of the $K$
+possible latent *topics*.
+
+The _bag-of-words_ representation does not account for ordering of words hence,
+a single document $d$ can be represented either by the word sequence
+
+$ w^((d)) = (w_(d 1), dots, w_(d L_d)) $
+
+but this has the problem that document with different lengths are represented
+with vectors of different lengths. An equivalent and size-preserving method is
+by *word counts*
+
+$ n_d = (n_(d 1), dots, n_(d V)) quad "with " sum_(v=1)^V n_(d v) = L_d $
+
+where $V$ is the vocabulary size. In this way each document vector has length
+$V$ and the whole dataset can be represented as a $N times V$ matrix.
+
+The conceptual shift w.r.t. GMMs is that we don't want to assign a topic to a
+document, instead LDA assigns a topic to each word in the document. In this
+sense is like a _multinomial mixture model_ that runs inside each document,
+clustering words by topic.
+
+In this way is possible to assign to each word a probability distribution,
+describing how likely is for that word to belong to each possible topic.
+
+= Generative Process
 
 This models combines three distributions:
 
@@ -46,49 +54,42 @@ This models combines three distributions:
 - *Categorical over words* for each topic.
 
 The most interesting thing is that topic proportions are drawn from another
-distribution that is dirichlet:
+distribution that is a dirichlet:
 
 $ theta_d tilde "Dirichlet"(alpha) $
 
 that is the natural conjugate prior for categorical distributions, so that the
 posterior over $theta_d$ will also remain a Dirichlet.
 
-Let's define the effect of the $alpha$ parameter by considering a simple case in
-which $alpha_k = alpha$ for all $k$; there are three main behaviors:
+#note(title: [Effect of Parameter $alpha$])[
+  Let's define the effect of the $alpha$ parameter by considering a simple case in
+  which $alpha_k = alpha$ for all $k$; there are three main behaviors:
 
-- $alpha >> 1$: the mass concentrates near uniform topic mixtures, so documents
-  tend to use many topics with similar proportions.
-- $alpha approx 1$: fairly diffuse topic mixtures with some variability.
-- $alpha << 1$: mass concentrates near the corners of the simplex so every
-  document tend to contain words about few specific topics.
+  - $alpha >> 1$: the mass concentrates near uniform topic mixtures, so documents
+    tend to use many topics with similar proportions.
+  - $alpha approx 1$: fairly diffuse topic mixtures with some variability.
+  - $alpha << 1$: mass concentrates near the corners of the simplex so every
+    document tend to contain words about few specific topics.
+]
 
-= Generative Process
+For each of the $N$ documents the generative process is
 
-The *generative process* of LDA is similar to a GMM but with nested
-distributions and for each topic $k$, it assumes a topic-word distribution
-
-$ beta_k = (beta_(1 V), dots, beta_(k V)) $
-
-subject to a sum-to-one constraint $sum_(v=1)^V beta_(k v) = 1$. For each
-document $d$, the generative process is
-
-+ Draw topic proportions
-  $ theta_d = "Dirichlet"(alpha) $
-+ For each token position $n = 1, dots, L_d$:
++ Draw topic proportions for document $d$:
+  $ theta_d tilde p(theta_d | alpha) = "Dirichlet"(alpha) $
++ For each token position $l_d = 1, dots, L_d$:
   + Draw a topic assignment
-    $ Z_(d n) | theta_d tilde "Categorical"(theta_d) $
-  + Draw a word from the vocabulary
-    $ W_(d n) | Z_(d n) = k, beta tilde "Categorical"(beta_k) $
+    $ z_l_d tilde p(z_l_d | theta_d) = "Categorical"(theta_d) $
+  + Draw a word from the vocabulary conditioned by the topic
+    $ w_l_d tilde p(w_l_d | z_l_d = k, beta) = "Categorical"(beta_k) $
 
 Therefore, the equivalent joint distribution for one document is
 
 $
-  p(theta_d, z_d, w_d | alpha, beta) = p(theta_d | alpha) product_(n=1)^L_d
-  p(z_(d n) | theta_d) p(w_(d n) | z_(d n), beta)
+  p(theta_d, vb(z)_d, vb(w)_d | alpha, beta) = p(theta_d | alpha)
+  product_(l_d=1)^L_d p(z_l_d | theta_d) p(w_l_d | z_l_d, beta)
 $
 
 For the whole corpus, assuming documents are conditionally independent given the
 global parameters, the joint probability distribution is
 
 $ p(cal(D) | alpha, beta) = product_(d=1)^N p(w_d | alpha, beta) $
-
