@@ -257,7 +257,7 @@ $ log p(x) = log p(z_0) - sum_(k=1)^K log abs(det J_f_k (z_(k-1))) $
 
 with $K$ being the number of transformations used.
 
-= Normalizing Flow Layers
+= Simple Normalizing Flow Layers
 
 Let's start defining the most simple layers for normalizing flows, starting from
 the *affine linear layer*:
@@ -283,7 +283,7 @@ Jacobian is diagonal so their determinant is easy
 
 $ log abs(det J_f (z)) = sum_(i=1)^D log abs(f_i' (z_i)) $
 
-== Coupling Flows
+= Coupling Flows
 
 The first more structured layer is called *coupling flows*, that gains
 expressive power with nonlinear transformations while keeping inversion and
@@ -310,7 +310,7 @@ is straightforward
 // check the argument of theta
 $ z_1 = z'_1 quad quad z_2 = f^(-1) (z'_2; theta(z'_1)) $
 
-=== Additive Coupling
+== Additive Coupling
 
 A simple coupling layer is the *additive coupling*, which of course simply
 performs an addition
@@ -337,7 +337,7 @@ without shuffling, will remain the same.
   caption: [ Additive Coupling with Shuffling ],
 )
 
-== Multiscale Flows, Masking and Squeezing
+= Multiscale Flows, Masking and Squeezing
 
 A more powerful flow layer, that finds motivation mostly for image processing,
 can be implemented in general by using three fundamental operations
@@ -362,7 +362,7 @@ incrementally. We can say that certain output partition $z'_i$ depends on
 every previous output partition $z'_(1:i-1)$ and the corresponding input
 partition $z_i$.
 
-=== Multiscale Nonlinear Flow
+== Multiscale Nonlinear Flow
 
 An implementation of this multiscale flow with masking and squeezing is the
 following:
@@ -380,7 +380,7 @@ and the Jacobian is defined as
 
 $ J = mat(I, 0; pdv(theta_B (z_1), z_1), diag(exp(theta_A (z_1)))) $
 
-== Autoregressive Flows
+= Autoregressive Flows
 
 An *autoregressive flow* treats each dimension of the input as an independent
 block and each output block depends on every previous one.
@@ -397,8 +397,111 @@ $ x_i = f_i (z_i ; theta_i (z_(1:i-1))) $
 In this way, coordinates generated later have more expressive dependencies, yet
 the determinant is still easy to compute since the Jacobian is triangular.
 
-=== Masked Autoregressive Flows
+== Masked Autoregressive Flows
 
-== Residual Flows
+A particular case is represented by the *masked autoregressive flow (MAF)*, that
+uses an autoregressive Gaussian transformation
 
-= Continuous Normalizing Flows
+$ x_i = mu_i + z_i exp(s_i) $
+
+where
+
+$ mu_i = mu_i (x_(1:i-1)) quad quad s_i = s_i(x_(1:i-1)) $
+
+and equivalently the inverse is
+
+$ z_i = (x_i - mu_i) exp(-s_i) $
+
+Again the Jacobian is low triangular with its diagonal entries being
+
+$ pdv(x_i, z_i) = exp(s_i) $
+
+therefore
+
+$
+  det pdv(x, z) = product_(i=1)^D exp(s_i) quad ==>
+  quad log abs(det pdv(x, z)) = sum_(i=1)^D s_i
+$
+
+= Residual Flows
+
+An attempt to achieve dense Jacobians close to full rank to gain much more
+expressive power while remaining invertible is given by *residual flows*:
+
+$ f(z) = z + theta(z) $
+
+which requires $theta$ to be Lipschitz with constant $L < 1$:
+
+$ norm(theta(z) - theta(f(z))) <= L norm(z - f(z)) $
+
+to be invertible.
+
+The intuition here is that the residual update is small enough that the layer
+remains a perturbation of the identity.
+
+The inverse has no general close form solution but can be approximated by
+*Banach fixed point* iteration:
+
+$ z^(m+1) = f(z) - theta(z^m) $
+
+which converges under contraction condition above.
+
+More expressive Jacobians come at the cost of expensive determinant computation
+
+$ log abs(det J_f (z)) = log det(I + J_theta (z)) $
+
+which is usually approximated by _series expansion_
+
+$
+  log det(I + J_theta (z)) = sum_(k=1)^oo frac((-1)^(k+1), k) tr(J_theta (z)^k)
+$
+
+that is valid under certain spectral conditions. Also the trace can be
+approximated by *Hutchinson's stochastic trace estimator* method.
+
+== Continuous Normalizing Flows
+
+A residual flow can be seen as a discretized dynamical system:
+
+$ f(z) = z + delta theta(z) $
+
+that rearranging terms becomes
+
+$ theta(z) = frac(f(z) - z, delta) $
+
+which looks like a *derivative*. We want to make it more explicit by considering
+a generic $z_t$ and $theta(z_t) = z_(t+delta)$ the infinitesimal update for
+$delta -> 0$
+
+$ z_(t+delta) = z_t + delta theta_t (z_t) = z_t + delta pdv(z_t, t) $
+
+with $theta_t (z_t)$ being the istantaneous change of variable.
+
+Supposing now to cascade multiple residual layers, yielding the decomposition
+
+$ f_T compose f_(T-1) compose dots.c compose f_1 $
+
+Using the istantaneous update previously defined, we can represent the chain of
+transformation by an *ordinary differential equation (ODE)*:
+
+$
+  cases(
+    z_0 tilde N(0, 1) & " initial conditions",
+    pdv(z_t, t) = theta_t (z_t) & " istantaneous update"
+  )
+$
+
+which is the reason we can call this kind of model *continuous normalizing flow
+(CNF)*.
+
+If now plug the above continuous formulation in the change of variable setting
+we can compute the log-likelihood for istantaneous change of variables as
+
+$ log p(x) = log p(z_0) - integral_0^T tr(J_z_t (theta_t)) dd(t) $
+
+which can be solved by numerical integration without computing the determinant.
+
+#important[
+  The conceptual shift is that now instead of composing finitely many discrete
+  layers, is possible to evolve the latent variable continuously in time.
+]
