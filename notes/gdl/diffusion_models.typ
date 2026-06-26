@@ -213,5 +213,29 @@ from which we can derive the data log-likelihood:
 
 $ log p_theta (x) = log integral p_theta (x, z_(1:T)) d z_(1:T) $
 
-which is intractable for maximum log-likelihood learning.
+which is intractable for maximum log-likelihood learning. To solve the problem
+we can use the forward distribution as inference distribution
+
+$
+  log integral p_theta (x, z_(1:T)) d z_(1:T)
+  & = log integral q(z_(1:T) | x) frac(p_theta (x, z_(1:T)), q(z_(1:T)|x)) d z_(1:T) \
+  & = log EE_q(z_(1:T)|x) [frac(p_theta (x, z_(1:T)), q(z_(1:T)|x))]
+$
+
+that by using Jensen inequality becomes
+
+$
+  log EE_q(z_(1:T)|x) [frac(p_theta (x, z_(1:T)), q(z_(1:T)|x))]
+  & >= EE_q(z_(1:T)|x) [log frac(p_theta (x, z_(1:T)), q(z_(1:T)|x))] \
+  & = EE_q(z_(1:T)|x) [log p_theta (x, z_(1:T)) - log q(z_(1:T)|x)] \
+  & = EE_q(z_(1:T)|x) [log p_theta (x) + log p_theta (z_(1:T)) - log q(z_(1:T)|x)]
+$
+
+Now since both the numerator and the denominator can be factorized using
+conditional independence, together with the logarithm property we can write
+
+$
+  EE_q(z_(1:T)|x) [log p_theta (x, z_(1:T))] =
+  sum_(t=1)^T
+$
 
