@@ -312,10 +312,55 @@ closed-form diffusion kernel.
 
 = Sampling
 
+Once the model is trained we can sample a latent code from the prior
+distribution
+
+$ z_T tilde cal(N) (vb(0), I) $
+
+and use the reverse process distribution to reconstruct a meaningful sample
+
+$ z_(t_1) tilde p(z_(t-1) | z_t) $
+
+for $t = T, dots, 1$. At each step the neural network predicts how much noise is
+present in $z_t$, subtract it and generate $z_(t-1)$, until $x$ is generated.
+
 = Conditional Generation
+
+Diffusion models can be conditioned on auxiliary variables as class labels in
+order for the generated samples to be also compatible with a condition $c$.
 
 == Classifier Guidance
 
+A possible way is to train an *unconditioned diffusion model* and a *classifier*
+that predicts
+
+$ p(c | z_t) $
+
+During the sampling the reverse step is adjusted in a direction that increases
+classifier confidence.
+
 == Classifier-Free Guidance
 
+The other and more clean way is to directly train a *conditioned diffusion
+model* that learns *conditional denoising*. At sampling time the two predictions
+are combined
+
+$ s = (1 - gamma) u + gamma c $
+
+where $s$ is a score, $u$ is the unconditioned score, $c$ the conditioned
+score and $gamma$ a _guidance scale_ to weight more one or the other.
+
 = Latent Diffusion
+
+An interesting improvement fot efficiency is to perform the diffusion in latent
+space. The image is simply encoded in a lower-dimensional learned latent space
+
+$ h = E(x) $
+
+then the diffusion is computed starting from that latent code, and in the end
+decoded back
+
+$ hat(x) = D(h) $
+
+In this way the model works on lower-dimensional tensors that capture meaningful
+semantics structures.
