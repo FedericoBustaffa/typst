@@ -47,12 +47,6 @@ describing how likely is for that word to belong to each possible topic.
 
 = Generative Process
 
-This models combines three distributions:
-
-- *Dirichlet prior* over document-specific topic proportions.
-- *Categorical over topics* for each token.
-- *Categorical over words* for each topic.
-
 The most interesting thing is that topic proportions are drawn from another
 distribution that is a dirichlet:
 
@@ -92,4 +86,35 @@ $
 For the whole corpus, assuming documents are conditionally independent given the
 global parameters, the joint probability distribution is
 
-$ p(cal(D) | alpha, beta) = product_(d=1)^N p(w_d | alpha, beta) $
+$ p(cal(D) | alpha, beta) = product_(d=1)^N p(vb(w)_d | alpha, beta) $
+
+that of course can be rewritten marginalizing over the two latent variables
+$theta$ and $z$.
+
+= Learning
+
+If $alpha$ is fixed by the practitioner, the only parameter to learn is $beta$.
+The problem is that
+
+$
+  p(vb(w)_d | alpha, beta) =
+  integral p(theta_d | alpha) product_(l_d =1)^L_d sum_(z_l_d = 1)^K
+  p(z_l_d | theta_d) p(w_l_d | z_l_d, beta) d theta_d
+$
+
+with the corresponding posterior over latent variables:
+
+$
+  p(theta_d, z_d | w_d, alpha, beta) =
+  frac(p(theta_d, z_d, w_d | alpha, beta), p(w_d | alpha, beta))
+$
+
+with the denominator that is intractable because involve two marginalizations,
+the first one over $theta$ with an integral and the other over $z$ with a sum.
+
+== Variational Objective
+
+In order to make learning tractable we need to approximate the posterior with
+variational inference. In particular we need to approximate two posteriors, one
+for $theta$ prediction and the other for $z$ prediction.
+
