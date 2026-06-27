@@ -41,7 +41,7 @@ $y_t$.
   Iverting the input sequence can improve the performance.
 ]
 
-= Soft Attention
+= Attention
 
 The problem of that architecture is how the context is built. We still have a
 fixed size tensor that embeds the full story of a sequence, and this can be a
@@ -56,15 +56,24 @@ The advantage is also that an early generated hidden state might be gone
 (partially or entirely) in the full context $c$. In this way we can look at its
 full representation back in the history.
 
-Here comes the *soft attention* module which receives in input every
-intermediate representation of the input sequence
+The *attention* mechanism receives in input every intermediate representation of
+the input sequence
 
 #figure(
   image("images/attention.png", width: 60%),
   caption: [ Attention ],
 )
 
+== Soft Attention
+
+A popular implementation of attention is the *soft attention*, which takes in
+input all the encodings of the input sequence $h_i$ and the current decoder
+state $s_(t-1)$.
+
 #figure(
   image("images/soft_attention.png", width: 50%),
   caption: [Soft Attention Module],
 )
+
+// explain the full story from encoder to decoder !!!
+
