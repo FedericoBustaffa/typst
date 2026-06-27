@@ -226,16 +226,96 @@ that by using Jensen inequality becomes
 
 $
   log EE_q(z_(1:T)|x) [frac(p_theta (x, z_(1:T)), q(z_(1:T)|x))]
-  & >= EE_q(z_(1:T)|x) [log frac(p_theta (x, z_(1:T)), q(z_(1:T)|x))] \
-  & = EE_q(z_(1:T)|x) [log p_theta (x, z_(1:T)) - log q(z_(1:T)|x)] \
-  & = EE_q(z_(1:T)|x) [log p_theta (x) + log p_theta (z_(1:T)) - log q(z_(1:T)|x)]
+  >= EE_q(z_(1:T)|x) [log frac(p_theta (x, z_(1:T)), q(z_(1:T)|x))]
 $
 
-Now since both the numerator and the denominator can be factorized using
-conditional independence, together with the logarithm property we can write
+After some some semplification the ELBO decomposes as
 
 $
-  EE_q(z_(1:T)|x) [log p_theta (x, z_(1:T))] =
-  sum_(t=1)^T
+  underbrace(EE_q(z_(1:T)|x) [log p_theta (x, z_(1:T))], "Reconstruction") -
+  underbrace(sum_(t=2)^T "KL"(q(z_(t-1) | z_t, x) || p(z_(t-1) | z_t)), "Aligning")
 $
 
+with each KL term that is a KL between Gaussians that is very convenient.
+
+== Practical Training Objective: Noise Prediction
+
+The ELBO objective defined before can be simplified dramatically by
+reparameterization of the noisy sample as
+
+$ z_t = sqrt(overline(alpha)_t) x + sqrt(1 - overline(alpha)_t) epsilon $
+
+and the model is trained to predict the noise $epsilon$ itself. Let the neural
+network be written as
+
+$ epsilon_theta (z_t, t) $
+
+The simplified loss becomes
+
+$
+  cal(L) (theta) = EE_(x tilde cal(D)) EE_t EE_(epsilon tilde cal(N)(vb(0), I))
+  [ norm(epsilon - epsilon_(theta (z_t, t)))_2^2 ]
+$
+
+which basically says, given a sample $x$, the time $t$ and the corresponding
+noised sample $epsilon$, predict the exact noise that was added.
+
+In this way is possible to write the reparameterized formula
+
+$ z_t = sqrt(overline(alpha)_t) x + sqrt(1 - overline(alpha)_t) epsilon $
+
+and solve for $x$:
+
+$
+  x = 1 / sqrt(overline(alpha)_t) z_t -
+  sqrt(1-overline(alpha)_t) / sqrt(overline(alpha)_t) epsilon
+$
+
+In this sense, if the network correctly predicts the noise added at each time
+step $t$, we can reconstruct the real sample just by subtract the noise from the
+corrupted version.
+
+With the ELBO objective instead the model tries to reconstruct the original
+sample directly from its corrupted version, that is harder and lead to worse
+results.
+
+== Training Algorithm
+
+A simple practical training algorithm for diffusion models, for each mini-batch:
+
++ Sample clean data $x$ from the training set.
++ Sample a timestep $t$ uniformly from ${1, dots, T}$.
++ Sample noise $ epsilon tilde cal(N) (vb(0), I) $
++ Construct the noisy input
+  $
+    z_t = sqrt(overline(alpha)_t) x + sqrt(1 - overline(alpha)_t) epsilon
+  $
++ Feed $z_t$ and $t$ to the neural network $theta(z_t, t)$ and minimize the loss
+  $ norm(epsilon - epsilon_(theta (z_t, t)))_2^2 $
+
+= Noise Schedule
+
+The noise schedule $beta_t$ should be chosen wisely since too aggressive
+corruption and the beginning could result in a too difficult reconstruction;
+while too slow requires too many steps. A common choice is the *linear
+schedule*:
+
+$ beta_1 < beta_2 < dots.c < beta_T $
+
+and for the reverse process the reverse variance is simply tied to the forward
+process:
+
+$ sigma_t^2 = beta_t $
+
+It's also possible to learn the noise schedule at the cost of loosing the
+closed-form diffusion kernel.
+
+= Sampling
+
+= Conditional Generation
+
+== Classifier Guidance
+
+== Classifier-Free Guidance
+
+= Latent Diffusion
