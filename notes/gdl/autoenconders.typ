@@ -101,8 +101,8 @@ Laplace distribution as a prior over $z$.
 == Denoising Autoencoders
 
 A type of autencoder strictly related to the manifolds hypothesis defined before
-is the *denoising*. These models are trained to reconstruct input that is
-manually perturbed, usually with a gaussian noise
+is the *denoising* autoencoder. These models are trained to reconstruct input
+that is manually perturbed, usually with a gaussian noise
 
 $ hat(x) = x + epsilon " with " epsilon tilde cal(N) (vb(0), sigma^2 I) $
 
@@ -110,6 +110,39 @@ The encoder receives $hat(x)$, while the target remains the original $x$.
 
 The model learns a way to fix the corruption, or in other words, a *vector
 field* that points towards the manifold where data should lie.
+
+A more involved point of view is that the DAE learns a *conditional denoising
+distribution* of input data
+
+$ p(x | hat(x)) $
+
+by minimizing the MSE or equivalently by maximizing the conditional
+log-likelihood
+
+$ EE_(x, hat(x)) [log p(x | z = f(hat(x)))] $
+
+This should give the idea that, given a probability density $p(x)$, we can
+define a *score function* that is the gradient w.r.t. the input of the log-density
+
+$ s(x) = pdv(log p(x), x) = nabla_x log p(x) $
+
+so now we have that $log p(x)$ represents how likely a point is, while $nabla_x
+log p(x)$ represents the direction of the steepest increase in that probability.
+
+The DAE optimizes $EE_(x, hat(x)) [norm(x - g(f(hat(x))))_2^2]$ which has an
+optimal minimizer when
+
+$ g(f(hat(x))) = EE[x | hat(x)] $
+
+For a small Gaussian noise we can use the *Tweedie's formula*:
+
+$ EE[x | hat(x)] = hat(x) + sigma^2 nabla_(hat(x)) log p(hat(x)) $
+
+If now use the minimizer and solve for the score we have
+
+$ frac(g(f(hat(x))) - hat(x), sigma^2) = nabla_hat(x) log p(hat(x)) $
+
+that is the vector field learned by the DAE.
 
 An interesting implication is that if the model learns how to bring back to the
 manifold data that is moderately corrupted, multiple iterations over a sample

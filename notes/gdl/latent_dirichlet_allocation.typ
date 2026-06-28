@@ -118,3 +118,29 @@ In order to make learning tractable we need to approximate the posterior with
 variational inference. In particular we need to approximate two posteriors, one
 for $theta$ prediction and the other for $z$ prediction.
 
+The first is approximated by
+
+$ q(theta_d | gamma_d) = "Dirichlet"(gamma_d) $
+
+while the second one by
+
+$ q(z_l_d | phi.alt_l_d) = "Categorical"(phi.alt_l_d) $
+
+Defining the *mean-field* factorization
+
+$
+  q(theta_d, z_d | gamma_d, phi.alt_d)
+  = q(theta_d | gamma_d) product_(l_d=1)^L_d q(z_l_d | phi.alt_l_d)
+$
+
+that breaks posterior dependencies in order to obtain a tractable family.
+
+The ELBO for one document is defined as
+
+$
+  cal(L) (w_d, gamma_d, phi.alt_d, beta) =
+  EE_q [log p(theta_d, z_d, w_d | alpha, beta)] -
+  EE_q [log q(theta_d, z_d)]
+$
+
+from which we can obtain the corpus ELBO by summing over all documents.
