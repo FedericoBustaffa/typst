@@ -32,9 +32,9 @@ NFs don't use a BN to define the joint probability and then try to fit the model
 to data; instead they learn a function $f$ that determines the shape of $p(x)$.
 
 A direct consequence of this is that, starting from something like a VAE, we can
-rid of the encoder, which kind of implements the posterior distribution which
-needs to marginalize over latents, and replace it with a decoder that is also
-able to map data sampled from $x$ back to its latent vector $z$.
+get rid of the encoder, which kind of implements the posterior distribution
+which needs to marginalize over latents, and replace it with a decoder that is
+also able to map data sampled from $x$ back to its latent vector $z$.
 
 This defines the *generative direction* in which we can sample
 

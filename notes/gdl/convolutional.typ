@@ -9,8 +9,8 @@ organization.
 
 The key idea is to treat nearby locations of the input as strongly related one
 another. In other words the network tries to capture local relations among
-between inputs so that they can be reused to recognize the same pattern in
-different positions.
+inputs so that they can be reused to recognize the same pattern in different
+positions.
 
 For images we want to learn what a specific subject is regardless its position
 or scaling w.r.t. to the image frame. A multi-layer perceptron instead learns
@@ -280,7 +280,7 @@ Another similar idea similar to causal convolutions is called *dilated
 convolutions*, which enlarge the receptive field faster. It basically inserts
 gaps between kernel elements with a *dilation factor* $d$:
 
-$ vb(x) convolve_d vb(K)) (i, j) sum_m sum_n x(i + d m, j + d n) K(m, n) $
+$ (vb(x) convolve_d vb(K)) (i, j) = sum_m sum_n x(i + d m, j + d n) K(m, n) $
 
 The result is similar to increase the stride without reducing the feature map
 dimensionality and without increasing the number of parameters.
