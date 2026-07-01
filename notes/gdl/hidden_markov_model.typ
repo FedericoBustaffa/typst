@@ -354,7 +354,7 @@ posteriors we wrote before:
 
 $
   gamma_t^((n)) (i) & = p(s_t^((n)) = i | y^((n)), theta^((k))) \
-  xi_t^((n)) (i, j) & = p(s_t^((n)) = i, S_(t-1)^((n)) = j | y^((n)), theta^((k)))
+  xi_t^((n)) (i, j) & = p(s_t^((n)) = i, s_(t-1)^((n)) = j | y^((n)), theta^((k)))
 $
 
 If we assume observations to belong to a discrete alphabet
