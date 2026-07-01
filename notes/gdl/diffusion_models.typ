@@ -187,7 +187,7 @@ $ q(z_(t-1) | z_t, x) $
 is tractable and Gaussian, allowing for the derivation of a *variational
 training objective* that approximates the true one.
 
-The idea is to build a parameterized *reverse Markov* chain:
+The idea is to build a parameterized *reverse Markov chain*:
 
 $ p_theta (z_(t-1) | z_t) = cal(N) (mu_theta (z_t, t), sigma_t^2 I) $
 
@@ -254,7 +254,7 @@ The simplified loss becomes
 
 $
   cal(L) (theta) = EE_(x tilde cal(D)) EE_t EE_(epsilon tilde cal(N)(vb(0), I))
-  [ norm(epsilon - epsilon_(theta (z_t, t)))_2^2 ]
+  [ norm(epsilon - epsilon_theta (z_t, t))_2^2 ]
 $
 
 which basically says, given a sample $x$, the time $t$ and the corresponding
