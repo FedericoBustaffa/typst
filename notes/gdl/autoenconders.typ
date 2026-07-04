@@ -116,7 +116,11 @@ distribution* of input data
 
 $ p(x | hat(x)) $
 
-by minimizing the MSE or equivalently by maximizing the conditional
+by minimizing the MSE
+
+$ EE_(x, hat(x)) [norm(x - g(f(hat(x))))_2^2] $
+
+or equivalently by maximizing the conditional
 log-likelihood
 
 $ EE_(x, hat(x)) [log p(x | z = f(hat(x)))] $
@@ -136,7 +140,9 @@ $ g(f(hat(x))) = EE[x | hat(x)] $
 
 For a small Gaussian noise we can use the *Tweedie's formula*:
 
-$ EE[x | hat(x)] = hat(x) + sigma^2 nabla_(hat(x)) log p(hat(x)) $
+$
+  g(f(hat(x))) = EE[x | hat(x)] = hat(x) + sigma^2 nabla_(hat(x)) log p(hat(x))
+$
 
 If now use the minimizer and solve for the score we have
 
