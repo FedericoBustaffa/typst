@@ -140,7 +140,7 @@ hidden states and a vocabulary of $K$ possible words:
 
 $
   p(y, s | theta) = pi_(s_1) b_(s_1) (y_1)
-  product_(t=2)^T A_(s_t s_(t-1)) b_(s t) (y_t)
+  product_(t=2)^T A_(s_t s_(t-1)) b_(s_t) (y_t)
 $
 
 where $b_(s_t)(y_t) = p(y_t|s_t, B)$ and $A_(s_t s_(t-1)) = p(s_t|s_(t-1), A)$.
@@ -265,7 +265,7 @@ Now that we defined _forward_ and _backward_ we can combine them to obtain the
 
 $
   p(s_t = i | y, theta) = frac(
-    p(s_t = i, y_1:t) dot p(y_(t+1:T) | s_t=i),
+    p(s_t = i, y_(1:t)) dot p(y_(t+1:T) | s_t=i),
     sum_(j=1)^C alpha_t (j) beta_t (j)
   )
   = frac(alpha_t (i) dot beta_t (i), sum_(j=1)^C alpha_t (j) beta_t (j))
