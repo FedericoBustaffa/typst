@@ -282,7 +282,7 @@ strengthens information to travel forward. The problem is that some directions
 of the space could grow so fast that the process leads to instability, also
 risking to propagate noise:
 
-$ norm(pdv(h_t, x_l)) = oo $
+$ norm(pdv(h_t, x_l)) -> oo $
 
 The desiderable regime is when memory is preserved in a stable way without
 fading or become unstable.
