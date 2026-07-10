@@ -3,11 +3,11 @@
 
 #title()
 
-In the field of probabilistic models in machine learning, *Bayesian networks*
-define a _building block_ on which a large class of models is based. Bayesian
-networks define a framework in order to work with probability distributions in a
-more _automated_ way, also defining useful assumptions to ease the computation
-while keeping a certain level of expressive power.
+In the field of probabilistic models in machine learning, *Bayesian networks
+(BN)* define a _building block_ on which a large class of models is based.
+Bayesian networks define a framework in order to work with probability
+distributions in a more _automated_ way, also defining useful assumptions to
+ease the computation while keeping a certain level of expressive power.
 
 When working with probabilistic models a fundamental thing to do is to write the
 *joint probability distribution*. That without knowing anything about the data
