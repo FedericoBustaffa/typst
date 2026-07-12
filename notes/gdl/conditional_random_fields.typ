@@ -16,6 +16,8 @@ $ Z(X) = sum_y product_k e^(theta_k f_k (X_k, Y_k = y_k)) $
 and where $X_k$ is the observable inputs in factor $k$, $Y_k$ are the hidden
 variables in factor $k$ and $f_k (X_k, Y_k)$ is the factor $k$ feature function.
 
+= Linear-Chain Conditional Random Fields
+
 This defines the so called *conditional random fields (CRF)* and a special case
 of CRF is the *linear CRF*, that can be seen as an indirected version of hidden
 markov model to work with sequences.
@@ -32,8 +34,6 @@ $
   P(Y | X, theta) = 1 / Z(X) product_t product_k
   exp{theta_k f_k (Y_(t-1), Y_t, X_t)}
 $
-
-= Linear-Chain Conditional Random Fields
 
 == Inference
 
