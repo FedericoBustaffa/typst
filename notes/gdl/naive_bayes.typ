@@ -131,7 +131,7 @@ $
 
 from which we get the following optimal parameter
 
-$ phi.alt_(k l s) = N_(k l s) / N $
+$ phi.alt_(k l s) = N_(k l s) / N_k $
 
 With this is possible to easily train the model but we have to take care to the
 fact that we can have zero occurences of some feature value or class and that
