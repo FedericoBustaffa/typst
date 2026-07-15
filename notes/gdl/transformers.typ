@@ -215,7 +215,7 @@ $M$ structured as follows
 $
   M_(i j) = cases(
     0 & " if " j <= i,
-    1 & " if " j > i
+    -oo & " if " j > i
   )
 $
 
