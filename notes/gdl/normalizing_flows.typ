@@ -404,11 +404,8 @@ uses an autoregressive Gaussian transformation
 
 $ x_i = mu_i + z_i exp(s_i) $
 
-where
-
-$ mu_i = mu_i (x_(1:i-1)) quad quad s_i = s_i(x_(1:i-1)) $
-
-and equivalently the inverse is
+where $mu_i = mu_i (x_(1:i-1))$ and $s_i = s_i (x_(1:i-1))$ and equivalently the
+inverse is
 
 $ z_i = (x_i - mu_i) exp(-s_i) $
 
