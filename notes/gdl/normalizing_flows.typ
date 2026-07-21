@@ -60,8 +60,9 @@ likelihood evaluation is exact.
 
 = Change of Variable
 
-In order to achieve a functioning NF, the core mechanism to morph one
-distribution into another is the *change of variable*
+The core mechanism to achieve a functioning NF is the *change of variable*,
+which tells how to to morph one distribution into another by an invertible
+transformation
 
 #figure(
   image("images/change_of_variable.png", width: 50%),
@@ -78,7 +79,7 @@ $ x = f(z) $
 
 It's very important understading that, under an invertible transformation, the
 probability contained in a small volume is conserved between the two
-distributions.
+distributions, therefore it holds
 
 $ p(z) dd(z) = p(x) dd(x) $
 
@@ -86,8 +87,8 @@ from which we can derive
 
 $ p(x) = p(z) abs(dv(z, x)) $
 
-This tells that even if the volume under the curve stays the same, even if the
-shape changes.
+This tells that the volume under the curve stays the same, even if the shape
+changes.
 
 #figure(
   lq.diagram(
@@ -142,9 +143,9 @@ shape changes.
 So now we have a density defined in function of $z$ but this is only useful for
 sampling, if we start from a given sample $x$ and we want to estimate its
 density $p(x)$ we need a formulation in function of $x$, which can obtained
-simply by using the inverse because $z = f^(-1) (x)$
+simply by using the inverse:
 
-$ p(x) = p(f^(-1) (x)) abs(dv(f^(-1)(x), x)) $
+$ p(x) = p(f^(-1) (x)) abs(dv(f^(-1), x)) $
 
 that now can be used to estimate the density of a sample $x$.
 
@@ -159,9 +160,9 @@ that now can be used to estimate the density of a sample $x$.
 
   Now we can apply the change of variable in order to obtain the data density
 
-  $ p(x) = p(z) abs(dv(z, x)) = p(f^(-1) (x)) abs(dv(f^(-1)(x), x)) $
+  $ p(x) = p(z) abs(dv(z, x)) = p(f^(-1) (x)) abs(dv(f^(-1), x)) $
 
-  and since the density of $z$ is
+  and since the density of $z$ is a standard Gaussian
 
   $ p(z) = frac(1, sqrt(2 pi)) exp(-1/2 z^2) $
 
@@ -171,7 +172,7 @@ that now can be used to estimate the density of a sample $x$.
 
   The derivative instead is simply defined as
 
-  $ abs(dv(f^(-1)(x), x)) = 1/abs(sigma) $
+  $ abs(dv(f^(-1), x)) = 1/abs(sigma) $
 
   putting everything together gives us the density of $x$
 
@@ -187,13 +188,13 @@ that now can be used to estimate the density of a sample $x$.
 In the multivariate case the interval length $dd(x)$ is replaced by the volume
 change induced by the of the Jacobian, computed as its determinant:
 
-$ p(x) = p(z) abs(det pdv(z, f)) = p(z) abs(det pdv(f, z))^(-1) $
+$ p(x) = p(z) abs(det pdv(z, x)) $
 
 for which we have again to use the inverse in order to define the density in
 function of $x$
 
 $
-  p(x) = p(f^(-1)(x)) abs(det pdv(f^(-1)(x), f))
+  p(x) = p(f^(-1)(x)) abs(det pdv(f^(-1), x))
   = p(f^(-1)(x)) abs(det pdv(f, f^(-1)(x)))^(-1)
 $
 
@@ -229,11 +230,11 @@ that translates in
 
 $
   p(x) & = p(f_1^(-1)(f_2^(-1)(x)))
-         abs(dv(f_1^(-1)(f_2^(-1)(x)), f_1(f_1^(-1)(f_2^(-1)(x)))))
+         abs(dv(f_1^(-1) compose f_2^(-1), f_1(f_1^(-1)(f_2^(-1)(x)))))
          abs(dv(f_2^(-1)(x), f_2 (f_2^(-1) (x)))) \
        & = p(f_1^(-1)(f_2^(-1)(x)))
-         abs(dv(f_1^(-1)(f_2^(-1)(x)), f_2^(-1)(x)))
-         abs(dv(f_2^(-1)(x), x))
+         abs(dv(f_1^(-1) compose f_2^(-1), f_2^(-1)(x)))
+         abs(dv(f_2^(-1), x))
 $
 
 now defined in terms of $x$ only.
@@ -242,8 +243,10 @@ For the multivariate case the same reasoning can be applied introducing the
 determinant of the Jacobian
 
 $
-  p(x) = p(f_1^(-1)(f_2^(-1)(x))) abs(det pdv(f_1^(-1)(f_2^(-1)(x)), f_2^(-1)(x)))
-  abs(det pdv(f_2^(-1)(x), x))
+  p(x) = p(f_1^(-1)(f_2^(-1)(x))) abs(
+    det pdv(f_1^(-1) compose f_2^(-1), f_2^(-1)(x))
+  )
+  abs(det pdv(f_2^(-1), x))
 $
 
 That can be written in a more general notation considering general Jacobians for
@@ -268,7 +271,7 @@ with $W$ that needs to be full rank to be invertible, then
 
 $ J_f (z) = W quad ==> quad log abs(det J_f) = log abs(det W) $
 
-This is exact but for unrestricted dense $W$ the determinant could be exponsive
+This is exact but for unrestricted dense $W$ the determinant could be expensive
 and that's why we can choose *diagonal* or *triangular* matrices whose
 determinant is much simpler to compute, however they pay the price of poor
 expressive power.
