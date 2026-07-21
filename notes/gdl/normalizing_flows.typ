@@ -230,11 +230,11 @@ that translates in
 
 $
   p(x) & = p(f_1^(-1)(f_2^(-1)(x)))
-         abs(dv(f_1^(-1)(f_2^(-1)(x)), f_1(f_1^(-1)(f_2^(-1)(x)))))
+         abs(dv(f_1^(-1) compose f_2^(-1), f_1(f_1^(-1)(f_2^(-1)(x)))))
          abs(dv(f_2^(-1)(x), f_2 (f_2^(-1) (x)))) \
        & = p(f_1^(-1)(f_2^(-1)(x)))
-         abs(dv(f_1^(-1)(f_2^(-1)(x)), f_2^(-1)(x)))
-         abs(dv(f_2^(-1)(x), x))
+         abs(dv(f_1^(-1) compose f_2^(-1), f_2^(-1)(x)))
+         abs(dv(f_2^(-1), x))
 $
 
 now defined in terms of $x$ only.
@@ -243,8 +243,10 @@ For the multivariate case the same reasoning can be applied introducing the
 determinant of the Jacobian
 
 $
-  p(x) = p(f_1^(-1)(f_2^(-1)(x))) abs(det pdv(f_1^(-1)(f_2^(-1)(x)), f_2^(-1)(x)))
-  abs(det pdv(f_2^(-1)(x), x))
+  p(x) = p(f_1^(-1)(f_2^(-1)(x))) abs(
+    det pdv(f_1^(-1) compose f_2^(-1), f_2^(-1)(x))
+  )
+  abs(det pdv(f_2^(-1), x))
 $
 
 That can be written in a more general notation considering general Jacobians for
@@ -269,7 +271,7 @@ with $W$ that needs to be full rank to be invertible, then
 
 $ J_f (z) = W quad ==> quad log abs(det J_f) = log abs(det W) $
 
-This is exact but for unrestricted dense $W$ the determinant could be exponsive
+This is exact but for unrestricted dense $W$ the determinant could be expensive
 and that's why we can choose *diagonal* or *triangular* matrices whose
 determinant is much simpler to compute, however they pay the price of poor
 expressive power.
