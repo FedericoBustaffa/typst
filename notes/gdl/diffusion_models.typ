@@ -6,7 +6,7 @@
 In the family of explicit density learners models with latent variables we can
 find the *diffusion model (DM)*, which defines a *diffusion process*, that
 gradually corrupts an input adding noise and then try to reconstruct it by
-removing the noise.
+removing that noise.
 
 In this sense the generation is divided in many simple steps which may be
 simpler than generate something like an image from pure noise in one shot like a
