@@ -34,7 +34,7 @@ noising process.
 The forward diffusion process is implemented by a Markov chain that gradually
 adds Gaussian noise. A standard choice is
 
-$ q(z_t | z_(t-1)) = cal(N) (sqrt(1 - beta_t) z_(t-1), sqrt(beta_t) I) $
+$ q(z_t | z_(t-1)) = cal(N) (sqrt(1 - beta_t) z_(t-1), beta_t I) $
 
 with $beta_t in [0, 1]$. This formulation is crucial in order to have in the end
 that
