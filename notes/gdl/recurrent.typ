@@ -86,47 +86,6 @@ hidden representation. One common approach is called *backpropagation through
 time (BPTT)* that simply perform the complete forward step and the backward
 update weights only when the first element of the sequence is reached.
 
-// Let's assume to have a sequence of length $T=2$ of scalars:
-//
-// $ vb(x) = vec(x_1, x_2) $
-//
-// The linear layer is a scalar as well, so first element produces the hidden state
-//
-// $ h_1 = tanh(W_"in" x_1 + b_h) $
-//
-// that is also a scalar. The second element produces instead
-//
-// $ h_2 = tanh(W_h h_1 + W_"in" x_2 + b_h) $
-//
-// that in the end is used to produce an output
-//
-// $ y = f(W_"out" h_2 + b_"out") $
-//
-// As usual we can apply a loss function in the end:
-//
-// $ e = cal(L) (y) $
-//
-// Now we can backpropagate almost as usual to update $W_"out"$ and $b_"out"$
-//
-// $
-//   pdv(cal(L), W_"out") = pdv(cal(L), f) pdv(f, "net"_"out")
-//   pdv("net"_"out", W_"out")
-// $
-//
-// that if $f$ is just the identity simply becomes
-//
-// $ pdv(cal(L), W_"out") = delta h_2 quad quad pdv(cal(L), b_"out") = delta $
-//
-// But the interesting part is how to update the time dynamics parameters $W_h$ and
-// $b_h$ and this come from the fact that the final error also depends on $h_2$, in
-// fact we can write
-//
-// $
-//   pdv(cal(L), h_2) = pdv(cal(L), "net"_"out") pdv("net"_"out", h_2) = delta W_"out"
-// $
-//
-// that we can call $delta_2$ and compute notice that
-
 In this way we can apply backpropagation on the unrolled computational graph and
 since the same parameters are reused at every step, the total gradient is a sum
 of contributions from all time positions. In general, accounting for possible
@@ -134,7 +93,7 @@ tasks, we have that if a loss occurs at time $t$, the gradient w.r.t. to
 recurrent parameters has the form
 
 $
-  pdv(cal(L)_t, W_h) = sum_(k=1)^t pdv(cal(L)_t, h_t) pdv(h_t, h_k) pdv(h_k, W_h)
+  dv(cal(L)_t, W_h) = sum_(k=1)^t pdv(cal(L)_t, h_t) pdv(h_t, h_k) pdv(h_k, W_h)
 $
 
 where the key term is the one the middle because it measures how a perturbation
