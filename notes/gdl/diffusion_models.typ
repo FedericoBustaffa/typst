@@ -43,7 +43,6 @@ $ q(z_T | z_(T-1)) approx cal(N)(vb(0), I) $
 
 for $T$ sufficiently large.
 
-
 #note[
   Adding noise from normal distribution will cause the variance to grow at each
   step; we want instead something that, independetly from the input and the
