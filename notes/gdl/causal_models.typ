@@ -72,7 +72,7 @@ The intervention replaces the variable of the model with the constant value
 $ P(Y_2 | Y_1 = k) != P(Y_2 | "do"(Y_1 := k)) $
 
 Of course in this case we are still interested in representing a joint
-distribution but now we have to deal with an *joint interventional
+distribution but now we have to deal with a *joint interventional
 distribution*, that can be defined with a set of variables $V$ and a set of
 values $k$ such that
 
@@ -180,7 +180,7 @@ The back-door criterion defines some but not all adjustments sets so it's
 
 In a know graph the *optimal adjustment set* is
 
-$ *O*(X, Y) = "Pa"("Med"(X, Y)) backslash ("Med"(X, Y) union {X}) $
+$ O(X, Y) = "Pa"("Med"(X, Y)) backslash ("Med"(X, Y) union {X}) $
 
 where $"Med"(X, Y)$ is the set of *mediators* from $X$ to $Y$, including $Y$ but
 excluding $X$.
@@ -252,7 +252,7 @@ $ Y_j = f_j (Y_"Pa"(Y_j), U_j) $
       edge(U3, "-|>", Y3)
     },
   ),
-  caption: [ Structuiral Causal Model ],
+  caption: [ Structural Causal Model ],
 ) <fig-structural-causal-models>
 
 A specific instance of SCM is the *linear additive noise model (ANM)*, where the
