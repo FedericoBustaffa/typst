@@ -165,8 +165,8 @@ Jacobians involved, so let's take the norm and see that
 $
   norm(pdv(cal(L)_t, h_k)) & <=
   norm(pdv(cal(L)_t, h_t)) product_(l=k)^(t-1) norm(D_(l+1)) norm(W_h) \
-  & approx norm(pdv(cal(L)_t, h_t)) norm(D)^(k-1) norm(W_h)^(k-1)
-  approx norm(pdv(cal(L)_t, h_t)) rho(D)^(k-1) rho(W_h)^(k-1)
+  & approx norm(pdv(cal(L)_t, h_t)) norm(D)^(k-1) norm(W_h)^(k-1) \
+  & approx norm(pdv(cal(L)_t, h_t)) rho(D)^(k-1) rho(W_h)^(k-1)
 $
 
 In general we have that after many steps, if the dominant singular values of
